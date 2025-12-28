@@ -11,15 +11,15 @@
 #include <iostream>
 #include <math.h>
 
-// Vertex positions (x, y, z). These form a small triangle-based shape.
+// Vertices coordinates
 GLfloat vertices[] =
-{
-    -0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Outer lower-left vertex
-    0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,  // Outer lower-right vertex
-    0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, // Outer top vertex
-    -0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner left vertex
-    0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f,  // Inner right vertex
-    0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f     // Inner bottom vertex
+{ //               COORDINATES                  /     COLORS           //
+	-0.5f, -0.5f * float(sqrt(3)) * 1 / 3, 0.0f,     0.8f, 0.3f,  0.02f, // Lower left corner
+	 0.5f, -0.5f * float(sqrt(3)) * 1 / 3, 0.0f,     0.8f, 0.3f,  0.02f, // Lower right corner
+	 0.0f,  0.5f * float(sqrt(3)) * 2 / 3, 0.0f,     1.0f, 0.6f,  0.32f, // Upper corner
+	-0.25f, 0.5f * float(sqrt(3)) * 1 / 6, 0.0f,     0.9f, 0.45f, 0.17f, // Inner left
+	 0.25f, 0.5f * float(sqrt(3)) * 1 / 6, 0.0f,     0.9f, 0.45f, 0.17f, // Inner right
+	 0.0f, -0.5f * float(sqrt(3)) * 1 / 3, 0.0f,     0.8f, 0.3f,  0.02f  // Inner down
 };
 
 // Index buffer defining three triangles using the vertices above
@@ -80,12 +80,15 @@ int main()
 	EBO EBO1(indices, sizeof(indices));
 
 	// Associate the VBO with the VAO and define vertex attribute layout
-	VAO1.LinkVBO(VBO1, 0);
+	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
 	// Unbind objects to avoid accidental state modification
 	VAO1.Unbind();
 	VBO1.Unbind();
 	EBO1.Unbind();
+
+    GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
 
     // Main render loop
 	while (!glfwWindowShouldClose(window))
@@ -96,7 +99,7 @@ int main()
 
 		// Activate the shader program
 		shaderProgram.Activate();
-
+        glUniform1f(uniID, 0.5f);
 		// Bind the VAO containing vertex and index state
 		VAO1.Bind();
 
