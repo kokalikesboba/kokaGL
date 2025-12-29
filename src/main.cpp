@@ -1,17 +1,14 @@
-#include "utils.h"   // framebuffer resize callback and other utilities
-
 #include <glad/glad.h>
 #include "stb/stb_img.h"
 
-#include <GLFW/glfw3.h>
+#include "glfw/window.h"
 #include "opengl/shader.h"
 #include "opengl/vao.h"
 #include "opengl/vbo.h"
 #include "opengl/ebo.h"
 #include "opengl/texture.h"
 
-#include <iostream>
-#include <math.h>
+#include <chrono>
 
 // Vertices coordinates
 GLfloat vertices[] =
@@ -31,35 +28,16 @@ GLuint indices[] =
 
 int main()
 {
-    // Initialize GLFW library
-    if (!glfwInit()) {
-        std::cerr << "Failed to init GLFW\n";
-        return -1;
-    }
 
-    // Request an OpenGL 3.3 core profile context
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // Create window and associated OpenGL context
-    GLFWwindow* window =
-        glfwCreateWindow(800, 600, "kokaGL", nullptr, nullptr);
-    if (!window) {
-        std::cerr << "Failed to create window\n";
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
+    GlfwContext glfw;
+    Window window(800, 600, "kokaGL");
+    window.makeContextCurrent();
 
     // Load OpenGL function pointers via GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to init GLAD\n";
         return -1;
     }
-
-    // Register callback to update the viewport when the window is resized
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // Set the initial OpenGL viewport
 	// Defines the region of the window OpenGL will render into
@@ -94,8 +72,10 @@ int main()
     boub.texUnit(shaderProgram, "tex0", 0);
 
     // Main render loop
-	while (!glfwWindowShouldClose(window))
+	while (!window.shouldClose())
 	{
+        std::chrono::steady_clock::time_point frameStart = std::chrono::steady_clock::now();
+
 		// Clear the framebuffer with a solid background color
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -113,10 +93,11 @@ int main()
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// Swap the front and back buffers
-		glfwSwapBuffers(window);
+		window.swapBuffers();
 
 		// Process pending window and input events
-		glfwPollEvents();
+		window.pollEvents();
+
 	}
 
     // Manually release OpenGL resources
@@ -125,7 +106,5 @@ int main()
     EBO1.Delete();
     shaderProgram.Delete();
 
-    // Shut down GLFW and destroy the window/context
-    glfwTerminate();
     return 0;
 }
