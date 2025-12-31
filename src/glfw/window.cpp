@@ -1,4 +1,5 @@
 #include "window.h"
+#include "stb/stb_img.h"
 
 GlfwContext::GlfwContext()
 {
@@ -22,12 +23,24 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
     // Create window and associated OpenGL context
     windowPtr = glfwCreateWindow(width, height, title, nullptr, nullptr);
     if (!windowPtr) {
         throw std::runtime_error("Failed to create a GLFW window");
     }
+
+    GLFWimage icon;
+    unsigned char* imgPixels =
+        stbi_load("assets/textures/boub.png",
+                &icon.width,
+                &icon.height,
+                nullptr,
+                4);
+    icon.pixels = imgPixels;
+    if (!icon.pixels) {
+        throw std::runtime_error("Failed to load window icon");
+    }
+    glfwSetWindowIcon(windowPtr, 1, &icon);
 
     glfwMakeContextCurrent(windowPtr);
 }
@@ -59,6 +72,12 @@ void Window::pollEvents() const
     }
 }
 
+void Window::resizeViewport() const
+{
+    int width, height;
+    glfwGetFramebufferSize(windowPtr, &width, &height);
+    glViewport(0, 0, width, height);
+}
 
 bool Window::shouldClose() const
 {

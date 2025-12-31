@@ -23,6 +23,7 @@ class Window {
     void makeContextCurrent() const;
     void swapBuffers() const;
     void pollEvents() const;
+    void resizeViewport() const;
 
     bool shouldClose() const;
 

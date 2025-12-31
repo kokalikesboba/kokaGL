@@ -30,7 +30,7 @@ int main()
 {
 
     GlfwContext glfw;
-    Window window(800, 600, "kokaGL");
+    Window window(800, 800, "kokaGL");
     window.makeContextCurrent();
 
     // Load OpenGL function pointers via GLAD
