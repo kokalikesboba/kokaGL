@@ -60,7 +60,10 @@ float Window::getWidth()
     if (windowPtr) {
         glfwGetWindowSize(windowPtr, &width, nullptr);
         return width;
-    }
+    } else {
+        throw std::runtime_error("windowPtr is null");
+        return -1.f;
+    }     
 }
 
 float Window::getHeight()
@@ -69,7 +72,10 @@ float Window::getHeight()
     if (windowPtr) {
         glfwGetWindowSize(windowPtr, &height, nullptr);
         return height;
-    }
+    } else {
+        throw std::runtime_error("windowPtr is null");
+        return -1.f;
+    }  
 }
 
 void Window::makeContextCurrent() const
