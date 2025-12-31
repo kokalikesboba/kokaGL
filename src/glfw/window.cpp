@@ -44,6 +44,9 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
     stbi_image_free(imgPixels);
 
     glfwMakeContextCurrent(windowPtr);
+    
+        // Vsync on by default
+    glfwSwapInterval(0);
 }
 
 Window::~Window()
@@ -104,7 +107,18 @@ void Window::resizeViewport() const
     glViewport(0, 0, width, height);
 }
 
+void Window::renameWindow(const char* title) const
+{
+    glfwSetWindowTitle(windowPtr, title);
+}
+
+void Window::verticalSync(bool state) const
+{
+    glfwSwapInterval(state);
+}
+
 bool Window::shouldClose() const
 {
     return glfwWindowShouldClose(windowPtr) != 0;
 }
+

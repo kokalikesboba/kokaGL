@@ -26,7 +26,8 @@ class Window {
     void swapBuffers() const;
     void pollEvents() const;
     void resizeViewport() const;
-
+    void renameWindow(const char* title) const;
+    void verticalSync(bool state) const;
     bool shouldClose() const;
 
     //TODO: make non-copyable 

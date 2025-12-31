@@ -13,6 +13,7 @@
 #include "opengl/ebo.h"
 #include "opengl/texture.h"
 
+#include <chrono>
 
 // Vertices coordinates
 GLfloat vertices[] =
@@ -86,6 +87,11 @@ int main()
     // Main render loop
 	while (!window.shouldClose())
 	{	
+
+		using clock = std::chrono::steady_clock;
+
+		auto start = clock::now();
+
 		// Clear the framebuffer with a solid background color
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -125,6 +131,14 @@ int main()
 		window.pollEvents();
 
 		rotation += 0.5f;
+
+		auto end = clock::now();
+		std::chrono::duration<float> elapsed = end - start;
+		start = end;
+		float fps = 1.f / elapsed.count();
+		std::string secondsAsString = std::to_string(fps);
+		std::string title = std::string("KokaGL - ") + secondsAsString + std::string(" FPS");
+		window.renameWindow(title.c_str());
 
 	}
 
