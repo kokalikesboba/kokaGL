@@ -1,5 +1,10 @@
+
 #include <glad/glad.h>
-#include "stb/stb_img.h"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 
 #include "glfw/window.h"
 #include "opengl/shader.h"
@@ -7,6 +12,7 @@
 #include "opengl/vbo.h"
 #include "opengl/ebo.h"
 #include "opengl/texture.h"
+
 
 #include <chrono>
 
@@ -45,6 +51,15 @@ int main()
 
     // Create and link the shader program from source files
     Shader shaderProgram("src/shaders/vertex.glsl", "src/shaders/fragment.glsl");
+
+	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 proj = glm::mat4(1.0f);
+
+	view = glm::translate(view, glm::vec3(0.0, -0.5f, -2.0f));
+	proj = glm::perspective(glm::radians(45.0f),(float)(800/800),0.1f, 100.0f);
+	
+
 
 	// Create a Vertex Array Object to store vertex attribute state
 	VAO VAO1;

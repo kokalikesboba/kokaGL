@@ -19,7 +19,9 @@ class Window {
     Window(unsigned int width, unsigned int height, const char* title);
     ~Window();
 
-    GLFWwindow* windowPtr;
+   
+    float getWidth();
+    float getHeight();
     void makeContextCurrent() const;
     void swapBuffers() const;
     void pollEvents() const;
@@ -28,6 +30,8 @@ class Window {
     bool shouldClose() const;
 
     //TODO: make non-copyable 
+    private:
+    GLFWwindow* windowPtr;
 
 };
 

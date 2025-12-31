@@ -41,6 +41,7 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
         throw std::runtime_error("Failed to load window icon");
     }
     glfwSetWindowIcon(windowPtr, 1, &icon);
+    stbi_image_free(imgPixels);
 
     glfwMakeContextCurrent(windowPtr);
 }
@@ -50,6 +51,24 @@ Window::~Window()
     if (windowPtr) {
         glfwDestroyWindow(windowPtr);
         windowPtr = nullptr;
+    }
+}
+
+float Window::getWidth()
+{
+    int width;
+    if (windowPtr) {
+        glfwGetWindowSize(windowPtr, &width, nullptr);
+        return width;
+    }
+}
+
+float Window::getHeight()
+{
+    int height;
+    if (windowPtr) {
+        glfwGetWindowSize(windowPtr, &height, nullptr);
+        return height;
     }
 }
 
