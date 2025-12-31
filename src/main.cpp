@@ -14,8 +14,6 @@
 #include "opengl/texture.h"
 
 
-#include <chrono>
-
 // Vertices coordinates
 GLfloat vertices[] =
 { //     COORDINATES     /        COLORS      /   TexCoord  //
@@ -87,9 +85,7 @@ int main()
 
     // Main render loop
 	while (!window.shouldClose())
-	{
-        std::chrono::steady_clock::time_point frameStart = std::chrono::steady_clock::now();
-
+	{	
 		// Clear the framebuffer with a solid background color
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
