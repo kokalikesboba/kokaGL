@@ -29,6 +29,9 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
         throw std::runtime_error("Failed to create a GLFW window");
     }
 
+    // Vsync on by default
+    glfwSwapInterval(0);
+
     GLFWimage icon;
     unsigned char* imgPixels =
         stbi_load("assets/textures/boub.png",
@@ -43,10 +46,6 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
     glfwSetWindowIcon(windowPtr, 1, &icon);
     stbi_image_free(imgPixels);
 
-    glfwMakeContextCurrent(windowPtr);
-    
-        // Vsync on by default
-    glfwSwapInterval(0);
 }
 
 Window::~Window()
