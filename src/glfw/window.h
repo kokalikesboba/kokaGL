@@ -31,7 +31,6 @@ class Window {
     bool shouldClose() const;
 
     //TODO: make non-copyable 
-    private:
     GLFWwindow* windowPtr;
 
 };

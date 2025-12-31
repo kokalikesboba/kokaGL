@@ -12,6 +12,7 @@
 #include "opengl/vbo.h"
 #include "opengl/ebo.h"
 #include "opengl/texture.h"
+#include "opengl/camera.h"
 
 #include <chrono>
 
@@ -49,22 +50,14 @@ int main()
         return -1;
     }
 
-    // Set the initial OpenGL viewport
-	// Defines the region of the window OpenGL will render into
-	glViewport(0, 0, 800, 800);
-	glEnable(GL_DEPTH_TEST);
-
     // Create and link the shader program from source files
     Shader shaderProgram("src/shaders/vertex.glsl", "src/shaders/fragment.glsl");
 
-	// Create a Vertex Array Object to store vertex attribute state
+	// VAO is explicitly bound because it is an input-state container.
 	VAO VAO1;
 	VAO1.Bind();
-
-	// Create a Vertex Buffer Object and upload vertex data to the GPU
+	// VB0/EBO are implicitly bound by their constructors for uploading data.
 	VBO VBO1(vertices, sizeof(vertices));
-
-	// Create an Element Buffer Object and upload index data to the GPU
 	EBO EBO1(indices, sizeof(indices));
 
 	// Associate the VBO with the VAO and define vertex attribute layout
@@ -77,12 +70,12 @@ int main()
 	VBO1.Unbind();
 	EBO1.Unbind();
 
-    GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
-
     Texture boub("assets/textures/boub.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
     boub.texUnit(shaderProgram, "tex0", 0);
 
-	float rotation;
+	glEnable(GL_DEPTH_TEST);
+
+	Camera camera(window.getWidth(), window.getHeight(), glm::vec3(0.0f,0.0f,2.0f));
 
     // Main render loop
 	while (!window.shouldClose())
@@ -97,26 +90,12 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		// Activate the shader program
+		// OpenGL will remember this state.
 		shaderProgram.Activate();
 
-		glm::mat4 model = glm::mat4(1.0f);
-		glm::mat4 view = glm::mat4(1.0f);
-		glm::mat4 proj = glm::mat4(1.0f);
+		// TODO: Handles view and projection while uploading it as a uniform. It needs to be split into more member functions since it is too rigid.
+		camera.uploadMatrixToUni(45.f, 0.1f, 100.f, shaderProgram, "camMatrix");
 
-		model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-		view = glm::translate(view, glm::vec3(0.0, -0.5f, -2.0f));
-		proj = glm::perspective(glm::radians(45.0f),(float)(window.getWidth()/window.getHeight()),0.1f, 100.0f);
-
-		int modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		int viewLoc = glGetUniformLocation(shaderProgram.ID, "view");
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-		int projLoc = glGetUniformLocation(shaderProgram.ID, "proj");
-		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
-
-        // Bind the VAO containing vertex and index state
-		glUniform1f(uniID, 0.5f);
         boub.Bind();
         
         VAO1.Bind();
@@ -130,7 +109,11 @@ int main()
 		// Process pending window and input events
 		window.pollEvents();
 
-		rotation += 0.5f;
+		// Resizes OpenGL's vieport to the size of the window.
+		window.resizeViewport();
+
+		// TODO: Decouple input management from camera class.
+		camera.Inputs(window.windowPtr);
 
 		auto end = clock::now();
 		std::chrono::duration<float> elapsed = end - start;
