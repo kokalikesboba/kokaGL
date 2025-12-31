@@ -80,7 +80,7 @@ int main()
 
     GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
 
-    Texture boub("assets/textures/buge.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+    Texture boub("assets/textures/obam.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
     boub.texUnit(shaderProgram, "tex0", 0);
 
     // Main render loop
