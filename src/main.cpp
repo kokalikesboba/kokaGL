@@ -80,8 +80,10 @@ int main()
 
     GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
 
-    Texture boub("assets/textures/obam.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+    Texture boub("assets/textures/boub.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
     boub.texUnit(shaderProgram, "tex0", 0);
+
+	float rotation;
 
     // Main render loop
 	while (!window.shouldClose())
@@ -100,7 +102,7 @@ int main()
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 proj = glm::mat4(1.0f);
 
-		model = glm::rotate(model, glm::radians(70.f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
 		view = glm::translate(view, glm::vec3(0.0, -0.5f, -2.0f));
 		proj = glm::perspective(glm::radians(45.0f),(float)(window.getWidth()/window.getHeight()),0.1f, 100.0f);
 
@@ -125,6 +127,8 @@ int main()
 
 		// Process pending window and input events
 		window.pollEvents();
+
+		rotation += 0.5f;
 
 	}
 
