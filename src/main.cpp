@@ -95,7 +95,7 @@ int main()
     }
 
     // Create and link the shader program from source files
-    Shader shaderProgram("src/shaders/vertex.glsl", "src/shaders/fragment.glsl");
+    Shader shaderProgram("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 
 	// VAO is explicitly bound because it is an input-state container.
 	VAO VAO1;
