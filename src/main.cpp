@@ -80,6 +80,8 @@ GLuint lightIndices[] =
 	4, 6, 7
 };
 
+const GLsizei stride = 11 * sizeof(float);
+
 
 int main()
 {
@@ -95,7 +97,7 @@ int main()
     }
 
     // Create and link the shader program from source files
-    Shader shaderProgram("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
+    Shader shaderProgram("assets/shaders/default.vert", "assets/shaders/default.frag");
 
 	// VAO is explicitly bound because it is an input-state container.
 	VAO VAO1;
@@ -105,22 +107,62 @@ int main()
 	EBO EBO1(indices, sizeof(indices));
 
 	// Associate the VBO with the VAO and define vertex attribute layout
-	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
-	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, stride, (void*)(0));
+	// color
+	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, stride, (void*)(3 * sizeof(float)));
+	// uv
+	VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, stride, (void*)(6 * sizeof(float)));
+	// normal
+	VAO1.LinkAttrib(VBO1, 3, 3, GL_FLOAT, stride, (void*)(8 * sizeof(float)));
 
 	// Unbind objects to avoid accidental state modification
 	VAO1.Unbind();
 	VBO1.Unbind();
 	EBO1.Unbind();
 
-    Texture boub("assets/textures/boub.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+    Texture boub("assets/textures/buge.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
     boub.texUnit(shaderProgram, "tex0", 0);
 
 
 	glEnable(GL_DEPTH_TEST);
 
 	Camera camera(window.getWidth(), window.getHeight(), glm::vec3(0.0f,0.0f,2.0f));
+
+	Shader lightShader("assets/shaders/light.vert", "assets/shaders/light.frag");
+
+	VAO lightVAO;
+	lightVAO.Bind();
+
+	VBO lightVBO(lightVertices, sizeof(lightVertices));
+	EBO lightEBO(lightIndices, sizeof(lightIndices));
+
+	lightVAO.LinkAttrib(lightVBO, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+
+	lightVAO.Unbind();
+	lightVBO.Unbind();
+	lightEBO.Unbind();
+
+
+	glm::vec4 lightColor = glm::vec4(1.f, 1.f, 1.f, 1.f); 
+	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
+	glm::mat4 lightModel = glm::mat4(1.0f); 
+	lightModel = glm::translate(lightModel, lightPos);
+
+	glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::mat4 pyramidModel = glm::mat4(1.0f); 
+	pyramidModel = glm::translate(pyramidModel, pyramidPos);
+
+	lightShader.Activate();
+	glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
+	glUniform4f(glGetUniformLocation(lightShader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	shaderProgram.Activate(); 
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
+	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
+
+
+
 
     // Main render loop
 	while (!window.shouldClose())
@@ -137,18 +179,19 @@ int main()
 
 		// OpenGL will remember this state.
 		shaderProgram.Activate();
-
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
 		// TODO: Handles view and projection while uploading it as a uniform. It needs to be split into more member functions since it is too rigid.
 		camera.updateMatrix(45.f, 0.1f, 100.f);
-
 		camera.Matrix(shaderProgram, "camMatrix");
-
         boub.Bind();
-        
         VAO1.Bind();
-
-		// Draw indexed triangles using the element buffer
+				// Draw indexed triangles using the element buffer
 		glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
+
+		lightShader.Activate();
+		camera.Matrix(lightShader, "camMatrix");
+		lightVAO.Bind();
+		glDrawElements(GL_TRIANGLES, sizeof(lightIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
 
 		// Swap the front and back buffers
 		window.swapBuffers();
