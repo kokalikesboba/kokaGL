@@ -7,7 +7,7 @@ Camera::Camera(int width, int height, glm::vec3 position)
 	Position = position;
 }
 
-void Camera::uploadMatrixToUni(float FOVdeg, float nearPlane, float farPlane, Shader& shader, const char* uniform)
+void Camera::updateMatrix(float FOVdeg, float nearPlane, float farPlane)
 {
 	// Initializes matrices since otherwise they will be the null matrix
 	glm::mat4 view = glm::mat4(1.0f);
@@ -18,11 +18,12 @@ void Camera::uploadMatrixToUni(float FOVdeg, float nearPlane, float farPlane, Sh
 	// Adds perspective to the scene
 	projection = glm::perspective(glm::radians(FOVdeg), (float)width / height, nearPlane, farPlane);
 
-	// Exports the camera matrix to the Vertex Shader
-	glUniformMatrix4fv(glGetUniformLocation(shader.ID, uniform), 1, GL_FALSE, glm::value_ptr(projection * view));
+	cameraMatrix = projection * view; 
 }
 
-
+void Camera::Matrix(Shader& shader, const char* uniform) {
+	glUniformMatrix4fv(glGetUniformLocation(shader.ID, uniform), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
+}
 // TODO: Input should be handled with it's own class. 
 void Camera::Inputs(GLFWwindow* window)
 {
