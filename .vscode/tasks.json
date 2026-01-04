@@ -23,6 +23,7 @@
                 "src/opengl/ebo.cpp",
                 "src/opengl/texture.cpp",
                 "src/opengl/camera.cpp",
+                "src/opengl/mesh.cpp",
 
                 "-o",
                 "${workspaceFolder}/kokaGL",

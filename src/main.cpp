@@ -1,27 +1,14 @@
-
-#include <glad/glad.h>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-
-#include "glfw/window.h"
-#include "opengl/shader.h"
-#include "opengl/vao.h"
-#include "opengl/vbo.h"
-#include "opengl/ebo.h"
-#include "opengl/texture.h"
-#include "opengl/camera.h"
+#include "opengl/mesh.h"
 
 #include <chrono>
 
-GLfloat vertices[] =
-{ //     COORDINATES     /        COLORS        /    TexCoord    /       NORMALS     //
-	-1.0f, 0.0f,  1.0f,		0.0f, 0.0f, 0.0f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
-	-1.0f, 0.0f, -1.0f,		0.0f, 0.0f, 0.0f,		0.0f, 1.0f,		0.0f, 1.0f, 0.0f,
-	 1.0f, 0.0f, -1.0f,		0.0f, 0.0f, 0.0f,		1.0f, 1.0f,		0.0f, 1.0f, 0.0f,
-	 1.0f, 0.0f,  1.0f,		0.0f, 0.0f, 0.0f,		1.0f, 0.0f,		0.0f, 1.0f, 0.0f
+// Vertices coordinates
+Vertex vertices[] =
+{ //               COORDINATES           /            COLORS          /           NORMALS         /       TEXTURE COORDINATES    //
+	Vertex{glm::vec3(-1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
+	Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
+	Vertex{glm::vec3( 1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
+	Vertex{glm::vec3( 1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)}
 };
 
 // Indices for vertices order
@@ -31,16 +18,16 @@ GLuint indices[] =
 	0, 2, 3
 };
 
-GLfloat lightVertices[] =
+Vertex lightVertices[] =
 { //     COORDINATES     //
-	-0.1f, -0.1f,  0.1f,
-	-0.1f, -0.1f, -0.1f,
-	 0.1f, -0.1f, -0.1f,
-	 0.1f, -0.1f,  0.1f,
-	-0.1f,  0.1f,  0.1f,
-	-0.1f,  0.1f, -0.1f,
-	 0.1f,  0.1f, -0.1f,
-	 0.1f,  0.1f,  0.1f
+	Vertex{glm::vec3(-0.1f, -0.1f,  0.1f)},
+	Vertex{glm::vec3(-0.1f, -0.1f, -0.1f)},
+	Vertex{glm::vec3(0.1f, -0.1f, -0.1f)},
+	Vertex{glm::vec3(0.1f, -0.1f,  0.1f)},
+	Vertex{glm::vec3(-0.1f,  0.1f,  0.1f)},
+	Vertex{glm::vec3(-0.1f,  0.1f, -0.1f)},
+	Vertex{glm::vec3(0.1f,  0.1f, -0.1f)},
+	Vertex{glm::vec3(0.1f,  0.1f,  0.1f)}
 };
 
 GLuint lightIndices[] =
@@ -59,15 +46,15 @@ GLuint lightIndices[] =
 	4, 6, 7
 };
 
-const GLsizei stride = 11 * sizeof(float);
-
-
 int main()
-{
-
+{ 
     GlfwContext glfw;
     Window window(800, 800, "kokaGL");
     window.makeContextCurrent();
+
+    /*  glfwSetErrorCallback([](int code, const char* desc) {
+        std::cerr << "GLFW error " << code << ": " << desc << "\n";
+	}); */
 
     // Load OpenGL function pointers via GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -75,75 +62,44 @@ int main()
         return -1;
     }
 
-    // Create and link the shader program from source files
+	Texture textures[] {
+		Texture("assets/textures/boub.png", "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE), 
+		Texture("assets/speculars/spec.png", "specular", 0, GL_RED, GL_UNSIGNED_BYTE), 
+	};
+
+	// Create and link the shader program from source files
     Shader shaderProgram("assets/shaders/default.vert", "assets/shaders/default.frag");
-
-	// VAO is explicitly bound because it is an input-state container.
-	VAO VAO1;
-	VAO1.Bind();
-	// VB0/EBO are implicitly bound by their constructors for uploading data.
-	VBO VBO1(vertices, sizeof(vertices));
-	EBO EBO1(indices, sizeof(indices));
-
-	// Associate the VBO with the VAO and define vertex attribute layout
-	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, stride, (void*)(0));
-	// color
-	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, stride, (void*)(3 * sizeof(float)));
-	// uv
-	VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, stride, (void*)(6 * sizeof(float)));
-	// normal
-	VAO1.LinkAttrib(VBO1, 3, 3, GL_FLOAT, stride, (void*)(8 * sizeof(float)));
-
-	// Unbind objects to avoid accidental state modification
-	VAO1.Unbind();
-	VBO1.Unbind();
-	EBO1.Unbind();
-
-    Texture boub("assets/textures/boub.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
-    boub.texUnit(shaderProgram, "tex0", 0);
-	Texture boubSpec("assets/speculars/spec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
-	boubSpec.texUnit(shaderProgram, "tex1", 1);
-
-
-	glEnable(GL_DEPTH_TEST);
-
-	Camera camera(window.getWidth(), window.getHeight(), glm::vec3(0.0f,0.0f,2.0f));
+	std::vector <Vertex> verts(vertices, vertices + sizeof(vertices) / sizeof(Vertex));
+	std::vector <GLuint> ind(indices, indices + sizeof(indices) / sizeof(GLuint));
+	std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
+	Mesh floor(verts, ind, tex);
 
 	Shader lightShader("assets/shaders/light.vert", "assets/shaders/light.frag");
+	std::vector <Vertex> lightVerts(lightVertices, lightVertices + sizeof(lightVertices) / sizeof(Vertex));
+	std::vector<GLuint> lightInd(lightIndices, lightIndices + sizeof(lightIndices) / sizeof(GLuint));
+	Mesh light(lightVerts, lightInd, tex);
 
-	VAO lightVAO;
-	lightVAO.Bind();
-
-	VBO lightVBO(lightVertices, sizeof(lightVertices));
-	EBO lightEBO(lightIndices, sizeof(lightIndices));
-
-	lightVAO.LinkAttrib(lightVBO, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
-
-	lightVAO.Unbind();
-	lightVBO.Unbind();
-	lightEBO.Unbind();
-
-
-	glm::vec4 lightColor = glm::vec4(1.f, 1.f, 1.f, 1.f); 
+	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
-	glm::mat4 lightModel = glm::mat4(1.0f); 
+	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);
 
-	glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::mat4 pyramidModel = glm::mat4(1.0f); 
-	pyramidModel = glm::translate(pyramidModel, pyramidPos);
+	glm::vec3 objectPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::mat4 objectModel = glm::mat4(1.0f);
+	objectModel = glm::translate(objectModel, objectPos);
+
 
 	lightShader.Activate();
 	glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
 	glUniform4f(glGetUniformLocation(lightShader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-	shaderProgram.Activate(); 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
+	shaderProgram.Activate();
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(objectModel));
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
+	glEnable(GL_DEPTH_TEST);
 
-
-
+	Camera camera(window.getWidth(), window.getHeight(), glm::vec3(0.0f,0.0f,2.0f));
 
     // Main render loop
 	while (!window.shouldClose())
@@ -158,34 +114,18 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		// OpenGL will remember this state.
-		shaderProgram.Activate();
-		glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-		// TODO: Handles view and projection while uploading it as a uniform. It needs to be split into more member functions since it is too rigid.
-		camera.updateMatrix(45.f, 0.1f, 100.f);
-		camera.Matrix(shaderProgram, "camMatrix");
-        boub.Bind();
-		boubSpec.Bind();	
-        VAO1.Bind();
-				// Draw indexed triangles using the element buffer
-		glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
-
-		lightShader.Activate();
-		camera.Matrix(lightShader, "camMatrix");
-		lightVAO.Bind();
-		glDrawElements(GL_TRIANGLES, sizeof(lightIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
+		floor.Draw(shaderProgram, camera);
+		light.Draw(lightShader, camera);
 
 		// Swap the front and back buffers
 		window.swapBuffers();
-
-		// Process pending window and input events
-		window.pollEvents();
-
 		// Resizes OpenGL's vieport to the size of the window.
 		window.resizeViewport();
-
+		// Process pending window and input events
+		window.pollEvents();
 		// TODO: Decouple input management from camera class.
 		camera.Inputs(window.windowPtr);
+		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
 		auto end = clock::now();
 		std::chrono::duration<float> elapsed = end - start;
@@ -198,10 +138,8 @@ int main()
 	}
 
     // Manually release OpenGL resources
-    VAO1.Delete();
-    VBO1.Delete();
-    EBO1.Delete();
     shaderProgram.Delete();
+	lightShader.Delete();
 
     return 0;
 }
