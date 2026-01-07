@@ -15,8 +15,7 @@
                 "libs/glad/glad.c",
                 "libs/stb/stb.cpp",
                 
-                "src/main.cpp",
-                "src/glfw/window.cpp",      
+                "src/window/window.cpp",      
                 "src/opengl/shader.cpp",
                 "src/opengl/vao.cpp",
                 "src/opengl/vbo.cpp",
@@ -24,6 +23,9 @@
                 "src/opengl/texture.cpp",
                 "src/opengl/camera.cpp",
                 "src/opengl/mesh.cpp",
+                "src/opengl/model.cpp",
+
+                "src/main.cpp",
 
                 "-o",
                 "${workspaceFolder}/kokaGL",

@@ -63,6 +63,17 @@ void Camera::Inputs(GLFWwindow* window)
 
 
 	// Handles mouse inputs
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	{
+		width += 5.f; 
+	}
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	{
+		width -= 5.f; 
+	}
+
+
+	// Handles mouse inputs
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
 		// Hides mouse cursor
