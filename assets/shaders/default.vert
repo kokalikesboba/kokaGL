@@ -32,15 +32,18 @@ uniform mat4 scale;
 
 void main()
 {
-	// calculates current position
-	crntPos = vec3(model * translation * -rotation * scale * vec4(aPos, 1.0f));
-	// Assigns the normal from the Vertex Data to "Normal"
-	Normal = aNormal;
-	// Assigns the colors from the Vertex Data to "color"
-	color = aColor;
-	// Assigns the texture coordinates from the Vertex Data to "texCoord"
-	texCoord = mat2(0.0, -1.0, 1.0, 0.0) * aTex;
-	
-	// Outputs the positions/coordinates of all vertices
-	gl_Position = camMatrix * vec4(crntPos, 1.0);
+    // 1. Calculate the Model Matrix by combining TRS
+    // Note: We remove the '-' from rotation and the 'model' uniform (since it's identity anyway)
+    mat4 modelMatrix = translation * rotation * scale;
+    
+    // 2. Calculate current world position
+    crntPos = vec3(modelMatrix * vec4(aPos, 1.0f));
+    
+    // 3. Assign attributes
+    Normal = aNormal;
+    color = aColor;
+    texCoord = aTex; // Keep it simple for the sanity check
+    
+    // 4. Final screen position
+    gl_Position = camMatrix * vec4(crntPos, 1.0);
 }

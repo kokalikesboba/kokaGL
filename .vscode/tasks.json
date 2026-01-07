@@ -21,7 +21,7 @@
                 "src/opengl/vbo.cpp",
                 "src/opengl/ebo.cpp",
                 "src/opengl/texture.cpp",
-                "src/opengl/camera.cpp",
+                "src/opengl/viewport.cpp",
                 "src/opengl/mesh.cpp",
                 "src/opengl/model.cpp",
 

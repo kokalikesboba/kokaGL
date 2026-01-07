@@ -1,4 +1,4 @@
-#include "camera.h"
+#include "viewport.h"
 
 Camera::Camera(int width, int height, glm::vec3 position)
 {
