@@ -18,6 +18,7 @@ GlfwContext::~GlfwContext()
 Window::Window(unsigned int width, unsigned int height, const char *title) 
 {
     windowPtr = nullptr;
+    desiredTitle = std::string(title);
 
     // Request an OpenGL 3.3 core profile context
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -75,6 +76,12 @@ float Window::getHeight()
     }  
 }
 
+GLFWwindow *Window::getWindowPtr()
+{
+    // Constructor already checks if windowPtr is NULL
+    return windowPtr;
+}
+
 void Window::makeContextCurrent() const
 {
     glfwMakeContextCurrent(windowPtr);
@@ -109,6 +116,23 @@ void Window::renameWindow(const char* title) const
 void Window::verticalSync(bool state) const
 {
     glfwSwapInterval(state);
+}
+
+void Window::measureTitleBarFPS(bool state)
+{
+    using clock = std::chrono::high_resolution_clock;
+
+    if (state == true) { 
+        frameTimeStart = clock::now();
+    } else {
+        frameTimeEnd = clock::now();
+		std::chrono::duration<float> elapsed = frameTimeEnd - frameTimeStart;
+		frameTimeStart = frameTimeEnd;
+		float fps = 1.f / elapsed.count();
+		std::string secondsAsString = std::to_string(fps);
+		std::string title = desiredTitle + std::string(" - ") + secondsAsString + std::string(" FPS");
+		renameWindow(title.c_str());
+    }
 }
 
 bool Window::shouldClose() const
