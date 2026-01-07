@@ -4,7 +4,7 @@
 #include <opengl/shader.h>
 
 #include <glad/glad.h>
-#include <glfw/window.h>
+#include <window/window.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
