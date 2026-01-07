@@ -1,4 +1,22 @@
-#include "opengl/model.h"
+#include "opengl/mesh.h"
+
+// Define the 4 corners of a square
+std::vector<Vertex> vertices = {
+    // Position             // Normal (Up)         // Color (White)      // UVs
+    {glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0,0,1), glm::vec3(1,1,1), glm::vec2(0,0)}, // Bottom Left
+    {glm::vec3( 0.5f, -0.5f, 0.0f), glm::vec3(0,0,1), glm::vec3(1,1,1), glm::vec2(1,0)}, // Bottom Right
+    {glm::vec3( 0.5f,  0.5f, 0.0f), glm::vec3(0,0,1), glm::vec3(1,1,1), glm::vec2(1,1)}, // Top Right
+    {glm::vec3(-0.5f,  0.5f, 0.0f), glm::vec3(0,0,1), glm::vec3(1,1,1), glm::vec2(0,1)}  // Top Left
+};
+
+// Indices to form two triangles from the 4 vertices
+std::vector<GLuint> indices = {
+    0, 1, 2, // First Triangle
+    0, 2, 3  // Second Triangle
+};
+
+// Empty textures for now
+std::vector<Texture> textures;
 
 int main()
 { 
@@ -29,12 +47,14 @@ int main()
 
 	Camera camera(window.getWidth(), window.getHeight(), glm::vec3(0.f,0.f,3.f));
 
+	// Initialize the mesh
+	Mesh square(vertices, indices, textures);
+
+
     // Main render loop
 	while (!window.shouldClose())
 	{
 		window.pollEvents();
-
-
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -44,7 +64,7 @@ int main()
 		camera.Inputs(window.getWindowPtr());
 		camera.updateMatrix(45.f, 0.1f, 100.0f);
 		
-
+		square.Draw(shaderProgram, camera);
 
 		window.measureTitleBarFPS(true);
 		window.swapBuffers();

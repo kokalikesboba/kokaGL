@@ -3,7 +3,7 @@
 
 #include "vao.h"
 #include "ebo.h"
-#include "camera.h"
+#include "viewport.h"
 #include "texture.h"
 
 #include <string>

@@ -59,10 +59,10 @@ void Mesh::Draw(
     rot = glm::mat4_cast(rotation);
     sca = glm::scale(sca, scale);
 
-    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "translation"), 1, GL_FALSE, glm::value_ptr(translation));
+    // Change these in Mesh.cpp
+    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "translation"), 1, GL_FALSE, glm::value_ptr(trans));
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "rotation"), 1, GL_FALSE, glm::value_ptr(rot));
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "scale"), 1, GL_FALSE, glm::value_ptr(sca));
-    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(matrix));
 
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,0);
 
