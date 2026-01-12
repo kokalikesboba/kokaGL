@@ -18,20 +18,32 @@ public:
 
     textureType type;
 
-    // Constructor is more stbi sided
-    Texture(const char* image, textureType, GLenum slot);
-    // Shove that into OpenGL
-    void texUnit(Shader shader, const char* uniform, GLuint unit);
+    // Construct a texture object, it takes a texture unit (0-15).
+    Texture(textureType type, GLuint slot);
+    // Loads a texture from a directory into texture data buffer. 
+    // REVIEW: Do NOT load a texture twice
+    void stbLoad(const char* image);
+    // Buffers texture data into OpenGL
+    void genTexture(Shader shader);
+    // Links texture to uniform
+    void linkUni(const Shader& shader, const char* uniformName);
     // Binds
     void Bind();
     // Unbinds
     void Unbind();
-    // Cleaning
+    // Cleans up texture on GPU side.
     void Delete();
     ~Texture();
 private:
+
     GLuint ID;
     GLuint unit;
+
+    int colorChannels;
+    int imgWidth;
+    int imgHeight;
+    unsigned char* data;
+    bool stbiLoaded;
 };
 
 #endif

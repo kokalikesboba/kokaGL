@@ -1,22 +1,49 @@
 #include "texture.h"
 
-Texture::Texture(const char* image, textureType type, GLuint slot)
-{
-	// Assigns the type of the texture ot the texture object
-	this->type = type;
+unsigned char fallbackPixels[] = {
+    255, 0, 255, 255,  0, 0, 0, 255,    // Row 1: Pink, Black
+    0, 0, 0, 255,     255, 0, 255,255     // Row 2: Black, Pink
+};
 
-	// Stores the width, height, and the number of color channels of the image
-	int widthImg, heightImg, numColCh;
+Texture::Texture(textureType type, GLuint slot)
+{
+	// Loads default texture
+	imgWidth = 2;
+	imgHeight = 2;
+	colorChannels = 3;
+	data = fallbackPixels;
+	stbiLoaded = false;
+
+	// Calculates proper enum vale
+	unit = GL_TEXTURE0 + slot;
+
+	glGenTextures(1, &ID);
+	// There are many texture units, we are choosing to modify this one on our bind.
+	glActiveTexture(unit);
+	glBindTexture(GL_TEXTURE_2D, ID);
+}
+
+void Texture::stbLoad(const char* fileName)
+{
 	// Flips the image so it appears right side up
 	stbi_set_flip_vertically_on_load(true);
 	// Reads the image from a file and stores it in bytes
-	unsigned char* bytes = stbi_load(image, &widthImg, &heightImg, &numColCh, 0);
+	data = stbi_load(fileName, &imgWidth, &imgHeight, &colorChannels, 0);
+	if (!data) {
+		imgWidth = 2;
+		imgHeight = 2;
+		colorChannels = 4;
+		data = fallbackPixels;
+		std::cout << std::string(fileName) + " not found." << std::endl;
+	} else {
+		stbiLoaded = true;
+	}
+}
 
-	// Generates an OpenGL texture object
-	glGenTextures(1, &ID);
+void Texture::genTexture(Shader shader)
+{
 	// Assigns the texture to a Texture Unit
-	glActiveTexture(GL_TEXTURE0 + slot);
-	unit = slot;
+	glActiveTexture(unit);
 	glBindTexture(GL_TEXTURE_2D, ID);
 
 	// Configures the type of algorithm that is used to make the image smaller or bigger
@@ -27,49 +54,45 @@ Texture::Texture(const char* image, textureType type, GLuint slot)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	// Extra lines in case you choose to use GL_CLAMP_TO_BORDER
-	// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-	// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
-
 	// Check what type of color channels the texture has and load it accordingly
-	if (numColCh == 4)
+	if (colorChannels == 4)
 		glTexImage2D
 		(
 			GL_TEXTURE_2D,
 			0,
 			GL_RGBA,
-			widthImg,
-			heightImg,
+			imgWidth,
+			imgHeight,
 			0,
 			GL_RGBA,
 			GL_UNSIGNED_BYTE,
-			bytes
+			data
 		);
-	else if (numColCh == 3)
+	else if (colorChannels == 3)
 		glTexImage2D
 		(
 			GL_TEXTURE_2D,
 			0,
 			GL_RGBA,
-			widthImg,
-			heightImg,
+			imgWidth,
+			imgHeight,
 			0,
 			GL_RGB,
 			GL_UNSIGNED_BYTE,
-			bytes
+			data
 		);
-	else if (numColCh == 1)
+	else if (colorChannels == 1)
 		glTexImage2D
 		(
 			GL_TEXTURE_2D,
 			0,
 			GL_RGBA,
-			widthImg,
-			heightImg,
+			imgWidth,
+			imgHeight,
 			0,
 			GL_RED,
 			GL_UNSIGNED_BYTE,
-			bytes
+			data
 		);
 	else
 		throw std::invalid_argument("Automatic Texture type recognition failed");
@@ -77,23 +100,22 @@ Texture::Texture(const char* image, textureType type, GLuint slot)
 	// Generates MipMaps
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	// Deletes the image data as it is already in the OpenGL Texture object
-	stbi_image_free(bytes);
-
 	// Unbinds the OpenGL Texture object so that it can't accidentally be modified
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// REVIEW: If I decide to create a shared texture system, this will get in the way. 
+	if (stbiLoaded) stbi_image_free(data);
 }
 
-void Texture::texUnit(Shader shader, const char *uniform, GLuint unit)
+void Texture::linkUni(const Shader& shader, const char *uniformName)
 {
-    GLuint tex0Uni = glGetUniformLocation(shader.ID, uniform);
-    shader.Activate();
-    glUniform1i(tex0Uni,unit);
+    GLuint uniformAdr = glGetUniformLocation(shader.ID, uniformName);
+    glUniform1i(uniformAdr, (unit - GL_TEXTURE0));
 }
 
 void Texture::Bind()
 {
-    glActiveTexture(GL_TEXTURE0 + unit);
+    glActiveTexture(unit);
     glBindTexture(GL_TEXTURE_2D,ID);
 }
 
