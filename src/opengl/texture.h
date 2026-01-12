@@ -7,14 +7,19 @@
 
 #include <iostream>
 
+enum class textureType {
+    Diffuse,
+    Specular,
+};
+
 class Texture
 {
 public:
 
-    const char* type;
+    textureType type;
 
     // Constructor is more stbi sided
-    Texture(const char* image,  const char* texType, GLenum slot);
+    Texture(const char* image, textureType, GLenum slot);
     // Shove that into OpenGL
     void texUnit(Shader shader, const char* uniform, GLuint unit);
     // Binds

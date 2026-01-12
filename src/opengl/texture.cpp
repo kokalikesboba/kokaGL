@@ -1,9 +1,9 @@
 #include "texture.h"
 
-Texture::Texture(const char* image, const char* texType, GLuint slot)
+Texture::Texture(const char* image, textureType type, GLuint slot)
 {
 	// Assigns the type of the texture ot the texture object
-	type = texType;
+	this->type = type;
 
 	// Stores the width, height, and the number of color channels of the image
 	int widthImg, heightImg, numColCh;

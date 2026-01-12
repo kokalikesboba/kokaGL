@@ -31,7 +31,7 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
     }
     GLFWimage icon;
     unsigned char* imgPixels =
-        stbi_load("assets/textures/boub.png",
+        stbi_load("assets/images/boub.png",
                 &icon.width,
                 &icon.height,
                 nullptr,

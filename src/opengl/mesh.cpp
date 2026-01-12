@@ -1,5 +1,13 @@
 #include "mesh.h"
 
+std::string getTextureTypePrefix(textureType type) {
+    switch (type) {
+        case textureType::Diffuse: return "diffuse";
+        case textureType::Specular: return "specular";
+        default: return "unknown";
+    }
+}
+
 Mesh::Mesh(std::vector<Vertex> &vertices, std::vector<GLuint> &indices, std::vector<Texture> &textures)
 {
     this->vertices = vertices;
@@ -54,13 +62,13 @@ void Mesh::Draw(Shader &shader, Viewport &camera, glm::vec3 translation, glm::qu
     unsigned int numSpecular = 0;
     for (unsigned int i = 0;  i < textures.size(); i++) {
         std::string num;
-        std::string type = textures[i].type;
-        if (type == "diffuse") {
+        textureType type = textures[i].type;
+        if (type == textureType::Diffuse) {
             num = std::to_string(numDiffuse++);
-        } else if (type == "specular") {
+        } else if (type == textureType::Specular) {
             num = std::to_string(numSpecular++);
         }
-        textures[i].texUnit(shader, (type + num).c_str(), i);
+        textures[i].texUnit(shader, (getTextureTypePrefix(type) + num).c_str(), i);
         textures[i].Bind();
     }
    

@@ -15,9 +15,6 @@ std::vector<GLuint> indices = {
     0, 2, 3  // Second Triangle
 };
 
-// Empty textures for now
-std::vector<Texture> textures;
-
 int main()
 { 
     GlfwContext glfw;
@@ -37,6 +34,11 @@ int main()
 	// Create and link the shader program from source files
     Shader shaderProgram("assets/shaders/default.vert", "assets/shaders/default.frag");
 	shaderProgram.Activate();
+
+	Texture boub("assets/images/pixelvap.png", textureType::Diffuse, GL_TEXTURE0);
+	// Empty textures for now
+	std::vector<Texture> textures;
+	textures.push_back(std::move(boub));
 	// Initialize the mesh
 	Mesh square(vertices, indices, textures);
 
