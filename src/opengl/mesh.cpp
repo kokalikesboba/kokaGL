@@ -31,20 +31,37 @@ Mesh::Mesh(std::vector<Vertex> &vertices, std::vector<GLuint> &indices, std::vec
 	ebo.Unbind();   
 }
 
+void Mesh::bufferTexture(std::vector<Texture> &textures, const Shader& shader)
+{
+    numDiffuse = 0;
+    numSpecular = 0;
+    for (unsigned int i = 0;  i < textures.size(); i++) {
+        std::string num;
+        textureType type = textures[i].type;
+        if (type == textureType::Diffuse) {
+            num = std::to_string(numDiffuse++);
+        } else if (type == textureType::Specular) {
+            num = std::to_string(numSpecular++);
+        }
+        textures[i].linkUni(shader, (getTextureTypePrefix(type) + num).c_str(), i);
+        textures[i].Bind();
+    }
+}
+
 Mesh::~Mesh()
 {
     // Should be empty!
 }
 
-void Mesh::Draw(Shader &shader, Viewport &camera, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
+void Mesh::Draw(Shader &shader, Viewport &viewport, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
 {   
     // Bind again in the case that the bound vao is not this instance.
     vao.Bind(); 
     // Make this the current shader
     shader.Activate();
     // Upload camera position as a uniform to the shader program.
-    glUniform3f(glGetUniformLocation(shader.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-    camera.Matrix(shader, "camMatrix");
+    glUniform3f(glGetUniformLocation(shader.ID, "camPos"), viewport.Position.x, viewport.Position.y, viewport.Position.z);
+    viewport.Matrix(shader, "camMatrix");
 
     glm::mat4 trans = glm::mat4(1.0f);
     glm::mat4 rot = glm::mat4(1.0f);
@@ -57,20 +74,6 @@ void Mesh::Draw(Shader &shader, Viewport &camera, glm::vec3 translation, glm::qu
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "translation"), 1, GL_FALSE, glm::value_ptr(trans));
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "rotation"), 1, GL_FALSE, glm::value_ptr(rot));
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "scale"), 1, GL_FALSE, glm::value_ptr(sca));
-
-    unsigned int numDiffuse = 0;
-    unsigned int numSpecular = 0;
-    for (unsigned int i = 0;  i < textures.size(); i++) {
-        std::string num;
-        textureType type = textures[i].type;
-        if (type == textureType::Diffuse) {
-            num = std::to_string(numDiffuse++);
-        } else if (type == textureType::Specular) {
-            num = std::to_string(numSpecular++);
-        }
-        textures[i].texUnit(shader, (getTextureTypePrefix(type) + num).c_str(), i);
-        textures[i].Bind();
-    }
    
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,0);
 
