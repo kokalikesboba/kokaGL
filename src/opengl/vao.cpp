@@ -6,6 +6,22 @@ VAO::VAO()
 	glGenVertexArrays(1, &ID);
 }
 
+VAO::~VAO()
+{
+	Delete();
+}
+
+// Deletes the VAO
+void VAO::Delete()
+{
+	if (ID != 0) {
+		glDeleteVertexArrays(1, &ID);
+		ID = 0;
+	} else {
+		std::cout << "VAO already empty or deleted" << std::endl;
+	}
+}
+
 // Links a VBO Attribute such as a position or color to the VAO
 void VAO::LinkAttrib(VBO& VBO, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset)
 {
@@ -27,8 +43,3 @@ void VAO::Unbind()
 	glBindVertexArray(0);
 }
 
-// Deletes the VAO
-void VAO::Delete()
-{
-	glDeleteVertexArrays(1, &ID);
-}

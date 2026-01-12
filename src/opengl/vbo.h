@@ -5,6 +5,8 @@
 #include <glad/glad.h>
 #include <vector>
 
+#include <iostream>
+
 struct Vertex {
 	glm::vec3 position;
 	glm::vec3 normal;
@@ -15,17 +17,21 @@ struct Vertex {
 class VBO
 {
 public:
-	// Reference ID of the Vertex Buffer Object
-	GLuint ID;
-	// Constructor that generates a Vertex Buffer Object and links it to vertices
+	// Empty constructor
+	VBO();
+	// Contstuctor with parameters
 	VBO(std::vector <Vertex> vertices);
-
 	// Binds the VBO
 	void Bind();
+	// Buffers data into existing array 
+	void Buffer(std::vector<Vertex> vertices);
 	// Unbinds the VBO
 	void Unbind();
 	// Deletes the VBO
 	void Delete();
+	~VBO();
+private:
+	GLuint ID;
 };
 
 #endif

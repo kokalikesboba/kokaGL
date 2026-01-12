@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef VIEWPORT_H
+#define VIEWPORT_H
 
 #include <opengl/shader.h>
 
@@ -12,9 +12,13 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/vector_angle.hpp>
 
-class Camera
+class Viewport
 {
 public:
+	// Stores the width and height of the window
+	int fbWidth;
+	int fbHeight;
+
 	// Stores the main vectors of the camera
 	glm::vec3 Position;
 	glm::vec3 Orientation = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -23,17 +27,13 @@ public:
 
 	// Prevents the camera from jumping around when first clicking left click
 	bool firstClick = true;
-
-	// Stores the width and height of the window
-	int width;
-	int height;
-
+	
 	// Adjust the speed of the camera and it's sensitivity when looking around
 	float speed = 1.0f;
 	float sensitivity = 1.0f;
 
 	// Camera constructor to set up initial values
-	Camera(int width, int height, glm::vec3 position);
+	Viewport(int width, int height, glm::vec3 position);
 
 	// Updates and exports the camera matrix to the Vertex Shader
 	void updateMatrix(float FOVdeg, float nearPlane, float farPlane);

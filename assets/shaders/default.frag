@@ -102,9 +102,8 @@ vec4 spotLight()
 	return (texture(diffuse0, texCoord) * (diffuse * inten + ambient) + texture(specular0, texCoord).r * specular * inten) * lightColor;
 }
 
-
 void main()
 {
-	// outputs final color
-	FragColor = direcLight();
+    float alpha = 1.0; 
+    FragColor = vec4(color, 1.0);
 }
