@@ -1,5 +1,10 @@
 #include"vbo.h"
 
+VBO::VBO()
+{
+	glGenBuffers(1, &ID);
+}
+
 // Constructor that generates a Vertex Buffer Object and links it to vertices
 VBO::VBO(std::vector <Vertex> vertices)
 {
@@ -14,6 +19,14 @@ void VBO::Bind()
 	glBindBuffer(GL_ARRAY_BUFFER, ID);
 }
 
+
+void VBO::Buffer(std::vector<Vertex> vertices)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, ID);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(),GL_STATIC_DRAW);
+}
+
+
 // Unbinds the VBO
 void VBO::Unbind()
 {
@@ -23,5 +36,16 @@ void VBO::Unbind()
 // Deletes the VBO
 void VBO::Delete()
 {
-	glDeleteBuffers(1, &ID);
+    if (ID != 0) {
+        glDeleteBuffers(1, &ID);
+        ID = 0; // Crucial: Reset to 0 so we don't delete it twice
+    } else {
+        std::cout << "VBO already empty or deleted." << std::endl;
+    }
 }
+
+VBO::~VBO()
+{
+	Delete();
+}
+

@@ -104,5 +104,15 @@ void Texture::Unbind()
 
 void Texture::Delete()
 {
-    glDeleteTextures(1, &ID);
+    if (ID != 0) {
+		glDeleteTextures(1, &ID);
+		ID = 0;
+	} else {
+		std::cout << "Texture was deleted or empty" << std::endl;
+	}
+}
+
+Texture::~Texture()
+{
+	Delete();
 }

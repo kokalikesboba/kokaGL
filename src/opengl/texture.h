@@ -3,22 +3,30 @@
 
 #include "glad/glad.h"
 #include "stb/stb_img.h"
-
 #include "shader.h"
 
-class Texture {
-    public:
-    GLuint ID;
+#include <iostream>
+
+class Texture
+{
+public:
+
     const char* type;
-    GLuint unit;
 
+    // Constructor is more stbi sided
     Texture(const char* image,  const char* texType, GLenum slot);
-
+    // Shove that into OpenGL
     void texUnit(Shader shader, const char* uniform, GLuint unit);
+    // Binds
     void Bind();
+    // Unbinds
     void Unbind();
+    // Cleaning
     void Delete();
-
+    ~Texture();
+private:
+    GLuint ID;
+    GLuint unit;
 };
 
 #endif

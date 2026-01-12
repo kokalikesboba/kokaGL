@@ -56,7 +56,7 @@ float Window::getWidth()
 {
     int width;
     if (windowPtr) {
-        glfwGetWindowSize(windowPtr, &width, nullptr);
+        glfwGetFramebufferSize(windowPtr, &width, nullptr);
         return width;
     } else {
         throw std::runtime_error("windowPtr is null");
@@ -68,7 +68,7 @@ float Window::getHeight()
 {
     int height;
     if (windowPtr) {
-        glfwGetWindowSize(windowPtr, &height, nullptr);
+        glfwGetFramebufferSize(windowPtr, &height, nullptr);
         return height;
     } else {
         throw std::runtime_error("windowPtr is null");
