@@ -1,7 +1,4 @@
-#include "opengl/vao.h"
-#include "opengl/ebo.h"
-#include "opengl/viewport.h"
-#include "opengl/texture.h"
+#include "opengl/mesh.h"
 
 // Define the 4 corners of a square
 std::vector<Vertex> vertices = {
@@ -42,17 +39,10 @@ int main()
 	boub.stbLoad("assets/images/pixelvap.png");
 	boub.genTexture();
 	boub.linkUni(shaderProgram,"diffuse0");
+	std::vector<Texture> textures;
+	textures.push_back(boub);
 
-	VAO vao;
-	vao.Bind();
-	VBO vbo(vertices);
-	EBO ebo;
-	ebo.Buffer(indices);
-	
-	vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, position));
-    vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-    vao.LinkAttrib(vbo, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, color));
-    vao.LinkAttrib(vbo, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texUV));
+	Mesh mesh(vertices, indices, textures);
 
     // Main render loop
 	while (!window.shouldClose())
@@ -66,30 +56,6 @@ int main()
 		// TODO: Decouple input management from viewport class.
 		viewport.Inputs(window.getWindowPtr());
 		viewport.updateMatrix(45.f, 0.1f, 100.0f);
-
-		    // Bind again in the case that the bound vao is not this instance.
-
-
-
-	vao.Bind();
-	boub.Bind();
-    // Upload camera position as a uniform to the shader program.
-    glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), viewport.Position.x, viewport.Position.y, viewport.Position.z);
-    viewport.Matrix(shaderProgram, "camMatrix");
-
-    glm::mat4 trans = glm::mat4(1.0f);
-    glm::mat4 rot = glm::mat4(1.0f);
-    glm::mat4  sca = glm::mat4(1.0f);
-
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "translation"), 1, GL_FALSE, glm::value_ptr(trans));
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "rotation"), 1, GL_FALSE, glm::value_ptr(rot));
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "scale"), 1, GL_FALSE, glm::value_ptr(sca));
-   
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,0);
-
-
-
-
 
 
 
