@@ -13,12 +13,10 @@ void VAO::LinkAttrib(
 	const GLsizeiptr& stride,
 	const void* offset) const
 {
-	Bind();
 	VBO.Bind();
 	glVertexAttribPointer(layout, numComponents, type, GL_FALSE, stride, offset);
 	glEnableVertexAttribArray(layout);
 	VBO.Unbind();
-	Unbind();
 }
 
 void VAO::Bind() const

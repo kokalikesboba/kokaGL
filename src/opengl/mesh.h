@@ -18,18 +18,20 @@ public:
         const std::vector <Texture>& textures
     );
     void Draw(
-        Shader& shader,
-        Viewport& viewport,
-        glm::vec3 translation = glm::vec3(0.0f, 0.0f, 0.0f),
-        glm::quat rotation = glm::quat(0.0f, 0.0f, 0.0f, 0.0f),
-        glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f)    
+        const Shader& shader,
+        const Viewport& viewport,
+        const glm::vec3& translation = glm::vec3(0.0f, 0.0f, 0.0f),
+        const glm::quat& rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+        const glm::vec3& scale = glm::vec3(1.0f, 1.0f, 1.0f)    
     ) const;
     // Destructor
     ~Mesh();
 
 private:
     // OpenGL glints 
-    VAO vao;
+    VAO vao; 
+    VBO vbo;
+    EBO ebo;
 
     unsigned int numDiffuse = 0;
     unsigned int numSpecular = 0;

@@ -12,10 +12,7 @@
 class Texture
 {
 public:
-
-    textureType type;
-
-    // Construct a texture object, it takes a texture unit (0-15).
+     // Construct a texture object, it takes a texture unit (0-15).
     Texture(textureType type, GLuint slot);
     // Loads a texture from a directory into texture data buffer. 
     // TODO: Do NOT load a texture twice
@@ -33,11 +30,12 @@ public:
     ~Texture();
 
     // Make non-copyable
-    Texture(const Texture&) = delete;
+    /*Texture(const Texture&) = delete;
     Texture& operator=(const Texture&) = delete;
+    */
 
 private:
-
+    textureType type;
     GLuint ID = 0;
     GLuint unit = 0;
 

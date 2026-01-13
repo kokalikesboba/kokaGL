@@ -104,7 +104,7 @@ void Texture::genTexture()
 
 void Texture::linkUni(const Shader& shader, const char *uniformName) const
 {
-    GLuint uniformAdr = glGetUniformLocation(shader.ID, uniformName);
+    GLuint uniformAdr = glGetUniformLocation(shader.getID(), uniformName);
     glUniform1i(uniformAdr, (unit - GL_TEXTURE0));
 }
 
