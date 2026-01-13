@@ -1,7 +1,7 @@
-#include "opengl/mesh.h"
+#include "opengl/renderer/mesh.h"
 
 // Define the 4 corners of a square
-std::vector<Vertex> vertices = {
+const std::vector<Vertex> vertices = {
     // Position             // Normal (Up)         // Color (White)      // UVs
     {glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0,0,1), glm::vec3(1,1,1), glm::vec2(0,0)}, // Bottom Left
     {glm::vec3( 0.5f, -0.5f, 0.0f), glm::vec3(0,0,1), glm::vec3(1,1,1), glm::vec2(1,0)}, // Bottom Right
@@ -10,7 +10,7 @@ std::vector<Vertex> vertices = {
 };
 
 // Indices to form two triangles from the 4 vertices
-std::vector<GLuint> indices = {
+const std::vector<GLuint> indices = {
     0, 1, 2, // First Triangle
     0, 2, 3  // Second Triangle
 };
@@ -37,10 +37,9 @@ int main()
 	std::vector<Texture> textures;
 	textures.reserve(2);
 	textures.emplace_back(textureType::Diffuse, 0);
-	textures[0].stbLoad("assets/images/pixelvap.png");
+	textures[0].stbLoad("assets/images/wood.jpg");
 	textures.emplace_back(textureType::Specular, 1);
 	textures[1].stbLoad("assets/speculars/spec.png");
-
 
 	Mesh mesh(shaderProgram,
 		std::move(vertices),

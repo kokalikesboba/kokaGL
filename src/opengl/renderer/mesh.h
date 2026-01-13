@@ -1,10 +1,10 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "vao.h"
-#include "ebo.h"
-#include "viewport.h"
-#include "texture.h"
+#include <opengl/buffers/vao.h>
+#include "opengl/buffers/ebo.h"
+#include "opengl/pipeline/texture.h"
+#include "opengl/renderer/viewport.h"
 
 #include <string>
 #include <vector>
