@@ -10,27 +10,29 @@
 #include <vector>
 
 class Mesh {
-    public:
-    // Constructor intakes generic vert/ind/uv vector.
-    Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector <Texture>& textures);
-    void bufferTexture(std::vector <Texture>& textures);
+
+public:
+    Mesh(
+        const std::vector<Vertex>& vertices,
+        const std::vector<GLuint>& indices,
+        const std::vector <Texture>& textures
+    );
     void Draw(
         Shader& shader,
         Viewport& viewport,
         glm::vec3 translation = glm::vec3(0.0f, 0.0f, 0.0f),
         glm::quat rotation = glm::quat(0.0f, 0.0f, 0.0f, 0.0f),
         glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f)    
-    );
+    ) const;
+    // Destructor
     ~Mesh();
 
-    private:
+private:
     // OpenGL glints 
-    VAO vao; 
-    VBO vbo;
-    EBO ebo;
+    VAO vao;
 
-    unsigned int numDiffuse;
-    unsigned int numSpecular;
+    unsigned int numDiffuse = 0;
+    unsigned int numSpecular = 0;
     
     // Copy of data that GPU is crunching
     std::vector <Vertex> vertices;

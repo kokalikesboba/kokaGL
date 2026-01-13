@@ -9,21 +9,24 @@
 class EBO
 {
 public:
-	// ID reference of Elements Buffer Object
-	GLuint ID;
-	EBO();
-	// Constructor that generates a Elements Buffer Object and links it to indices
-	EBO(std::vector<GLuint>& indices);
+	// Creates and uploads an element buffer (index buffer).
+	// Note: GL_ELEMENT_ARRAY_BUFFER binding is stored in the currently bound VAO,
+	// so do NOT unbind the EBO while configuring a VAO you want to keep indexed.
+	EBO(const std::vector<GLuint>& indices);
 	// Binds the EBO
-	void Bind();
-	// Buffers data into EBO
-	void Buffer(std::vector<GLuint>& indices);
+	void Bind() const;
 	// Unbinds the EBO
-	void Unbind();
+	void Unbind() const;
 	// Deletes the EBO
 	void Delete();
 	// Deconstructor
 	~EBO();
+
+	// Prevents copying
+	EBO(const EBO&) = delete;
+	EBO& operator=(const EBO&) = delete;
+private:
+	GLuint ID;
 };
 
 #endif

@@ -8,17 +8,16 @@ std::string getTextureTypePrefix(textureType type) {
     }
 }
 
-Mesh::Mesh(std::vector<Vertex> &vertices, std::vector<GLuint> &indices, std::vector<Texture> &textures)
+Mesh::Mesh(
+    const std::vector<Vertex> &vertices,
+    const std::vector<GLuint> &indices,
+    const std::vector<Texture> &textures
+)
 {
-    this->vertices = vertices;
-    this->indices = indices;
-    this->textures = textures;
-
-    // VAO is explicitly bound because it is an input-state container.
 	vao.Bind();
-	// VBO/EBO are implicitly bound by their member functions.
-	vbo.Buffer(vertices);
-	ebo.Buffer(indices);
+    VBO vbo(vertices);
+    EBO ebo(indices)
+
 
 	vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, position));
     vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
