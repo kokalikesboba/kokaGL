@@ -3,16 +3,11 @@
 
 #include <glm/glm.hpp>
 #include <glad/glad.h>
+
+#include "format.h"
+
 #include <vector>
-
 #include <iostream>
-
-struct Vertex {
-	glm::vec3 position;
-	glm::vec3 normal;
-	glm::vec3 color;
-	glm::vec2 texUV;
-};
 
 class VBO
 {
