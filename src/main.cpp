@@ -40,7 +40,7 @@ int main()
 
 	Texture boub(textureType::Diffuse, 0);
 	boub.stbLoad("assets/images/pixelvap.png");
-	boub.genTexture(shaderProgram);
+	boub.genTexture();
 	boub.linkUni(shaderProgram,"diffuse0");
 
 	VAO vao;

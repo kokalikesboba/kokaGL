@@ -21,29 +21,34 @@ public:
     // Construct a texture object, it takes a texture unit (0-15).
     Texture(textureType type, GLuint slot);
     // Loads a texture from a directory into texture data buffer. 
-    // REVIEW: Do NOT load a texture twice
+    // TODO: Do NOT load a texture twice
     void stbLoad(const char* image);
     // Buffers texture data into OpenGL
-    void genTexture(Shader shader);
+    void genTexture();
     // Links texture to uniform
-    void linkUni(const Shader& shader, const char* uniformName);
+    void linkUni(const Shader& shader, const char* uniformName) const;
     // Binds
-    void Bind();
+    void Bind() const;
     // Unbinds
-    void Unbind();
-    // Cleans up texture on GPU side.
+    void Unbind() const;
+    // Cleans up texture on OpenGL's side.
     void Delete();
     ~Texture();
+
+    // Make non-copyable
+    Texture(const Texture&) = delete;
+    Texture& operator=(const Texture&) = delete;
+
 private:
 
-    GLuint ID;
-    GLuint unit;
+    GLuint ID = 0;
+    GLuint unit = 0;
 
-    int colorChannels;
-    int imgWidth;
-    int imgHeight;
-    unsigned char* data;
-    bool stbiLoaded;
+    int colorChannels = 0;
+    int imgWidth = 0;
+    int imgHeight = 0;
+    unsigned char* data = nullptr;
+    bool stbiLoaded = false;
 };
 
 #endif
