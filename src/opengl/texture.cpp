@@ -16,11 +16,8 @@ Texture::Texture(textureType type, GLuint slot)
 
 	// Calculates proper enum vale
 	unit = GL_TEXTURE0 + slot;
-
+	
 	glGenTextures(1, &ID);
-	// There are many texture units, we are choosing to modify this one on our bind.
-	glActiveTexture(unit);
-	glBindTexture(GL_TEXTURE_2D, ID);
 }
 
 void Texture::stbLoad(const char* fileName)
@@ -40,11 +37,9 @@ void Texture::stbLoad(const char* fileName)
 	}
 }
 
-void Texture::genTexture(Shader shader)
+void Texture::genTexture()
 {
-	// Assigns the texture to a Texture Unit
-	glActiveTexture(unit);
-	glBindTexture(GL_TEXTURE_2D, ID);
+	Bind();
 
 	// Configures the type of algorithm that is used to make the image smaller or bigger
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
@@ -101,25 +96,25 @@ void Texture::genTexture(Shader shader)
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	// Unbinds the OpenGL Texture object so that it can't accidentally be modified
-	glBindTexture(GL_TEXTURE_2D, 0);
+	Unbind();
 
 	// REVIEW: If I decide to create a shared texture system, this will get in the way. 
 	if (stbiLoaded) stbi_image_free(data);
 }
 
-void Texture::linkUni(const Shader& shader, const char *uniformName)
+void Texture::linkUni(const Shader& shader, const char *uniformName) const
 {
     GLuint uniformAdr = glGetUniformLocation(shader.ID, uniformName);
     glUniform1i(uniformAdr, (unit - GL_TEXTURE0));
 }
 
-void Texture::Bind()
+void Texture::Bind() const
 {
     glActiveTexture(unit);
     glBindTexture(GL_TEXTURE_2D,ID);
 }
 
-void Texture::Unbind()
+void Texture::Unbind() const
 {
     glBindTexture(GL_TEXTURE_2D,0);
 }
