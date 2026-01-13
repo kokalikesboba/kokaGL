@@ -1,5 +1,4 @@
 #include "mesh.h"
-#include "format.h"
 
 std::string getTextureTypePrefix(textureType type) {
     switch (type) {
@@ -8,7 +7,6 @@ std::string getTextureTypePrefix(textureType type) {
         default: return "unknown";
     }
 }
-
 
 Mesh::Mesh(
     const Shader& shader,

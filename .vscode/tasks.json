@@ -17,13 +17,13 @@
                 
                 "src/window/window.cpp",
 
-                "src/opengl/shader.cpp",
-                "src/opengl/vao.cpp",
-                "src/opengl/vbo.cpp",
-                "src/opengl/ebo.cpp",
-                "src/opengl/texture.cpp",
-                "src/opengl/viewport.cpp",
-                "src/opengl/mesh.cpp",
+                "src/opengl/buffers/vao.cpp",
+                "src/opengl/buffers/vbo.cpp",
+                "src/opengl/buffers/ebo.cpp",
+                "src/opengl/pipeline/texture.cpp",
+                "src/opengl/pipeline/shader.cpp",
+                "src/opengl/renderer/viewport.cpp",
+                "src/opengl/renderer/mesh.cpp",
 
                 "src/entities/model.cpp",
 
