@@ -25,6 +25,8 @@ public:
     void Bind() const;
     // Unbinds
     void Unbind() const;
+    // Type getter
+    textureType getType() const;
     // Cleans up texture on OpenGL's side.
     void Delete();
     ~Texture();
@@ -39,6 +41,7 @@ private:
     GLuint ID = 0;
     GLuint unit = 0;
 
+    const char* fileName;
     int colorChannels = 0;
     int imgWidth = 0;
     int imgHeight = 0;

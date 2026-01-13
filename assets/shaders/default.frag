@@ -104,6 +104,8 @@ vec4 spotLight()
 
 void main()
 {
-    float alpha = 1.0; 
-    FragColor = texture(diffuse0, texCoord);
+    vec4 diffuse = texture(diffuse0, texCoord);
+    vec4 specular = texture(specular0, texCoord);
+
+    FragColor = diffuse - specular * 0.5;
 }
