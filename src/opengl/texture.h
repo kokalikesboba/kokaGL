@@ -3,14 +3,11 @@
 
 #include "glad/glad.h"
 #include "stb/stb_img.h"
+
 #include "shader.h"
+#include "format.h"
 
 #include <iostream>
-
-enum class textureType {
-    Diffuse,
-    Specular,
-};
 
 class Texture
 {
