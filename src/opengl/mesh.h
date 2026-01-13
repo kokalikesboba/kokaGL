@@ -13,9 +13,10 @@ class Mesh {
 
 public:
     Mesh(
-        const std::vector<Vertex>& vertices,
-        const std::vector<GLuint>& indices,
-        const std::vector <Texture>& textures
+        const Shader& shader,
+        std::vector<Vertex> vertices,
+        std::vector<GLuint> indices,
+        std::vector<Texture> textures
     );
     void Draw(
         const Shader& shader,
@@ -27,19 +28,15 @@ public:
     // Destructor
     ~Mesh();
 
-private:
-    // OpenGL glints 
+private: 
+    std::vector <Vertex> vertices;
+    std::vector <GLuint> indices;
+    std::vector <Texture> textures;
     VAO vao; 
     VBO vbo;
     EBO ebo;
-
-    unsigned int numDiffuse = 0;
-    unsigned int numSpecular = 0;
-    
-    // Copy of data that GPU is crunching
-    std::vector <Vertex> vertices;
-    std::vector <GLuint> indices;
-    std::vector <Texture> textures; 
+    int numDiffuse = 0;
+    int numSpecular = 0;
 
 };
 

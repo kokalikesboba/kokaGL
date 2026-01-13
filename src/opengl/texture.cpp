@@ -8,6 +8,9 @@ unsigned char fallbackPixels[] = {
 Texture::Texture(textureType type, GLuint slot)
 {
 	// Loads default texture
+	this->type = type;
+
+	fileName = "null";
 	imgWidth = 2;
 	imgHeight = 2;
 	colorChannels = 3;
@@ -22,6 +25,7 @@ Texture::Texture(textureType type, GLuint slot)
 
 void Texture::stbLoad(const char* fileName)
 {
+	this->fileName = fileName;
 	// Flips the image so it appears right side up
 	stbi_set_flip_vertically_on_load(true);
 	// Reads the image from a file and stores it in bytes
@@ -50,9 +54,8 @@ void Texture::genTexture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	// Check what type of color channels the texture has and load it accordingly
-	if (colorChannels == 4)
-		glTexImage2D
-		(
+	if (colorChannels == 4) {
+		glTexImage2D (
 			GL_TEXTURE_2D,
 			0,
 			GL_RGBA,
@@ -63,9 +66,9 @@ void Texture::genTexture()
 			GL_UNSIGNED_BYTE,
 			data
 		);
-	else if (colorChannels == 3)
-		glTexImage2D
-		(
+		std::cout << fileName << " loaded with 4 channels" << std::endl;
+	} else if (colorChannels == 3) {
+		glTexImage2D (
 			GL_TEXTURE_2D,
 			0,
 			GL_RGBA,
@@ -76,9 +79,9 @@ void Texture::genTexture()
 			GL_UNSIGNED_BYTE,
 			data
 		);
-	else if (colorChannels == 1)
-		glTexImage2D
-		(
+		std::cout << fileName << " loaded with 3 channels" << std::endl;
+	} else if (colorChannels == 1) {
+		glTexImage2D (
 			GL_TEXTURE_2D,
 			0,
 			GL_RGBA,
@@ -89,8 +92,10 @@ void Texture::genTexture()
 			GL_UNSIGNED_BYTE,
 			data
 		);
-	else
+		std::cout << fileName << " loaded with 1 channel" << std::endl;
+	} else {
 		throw std::invalid_argument("Automatic Texture type recognition failed");
+	}
 
 	// Generates MipMaps
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -117,6 +122,11 @@ void Texture::Bind() const
 void Texture::Unbind() const
 {
     glBindTexture(GL_TEXTURE_2D,0);
+}
+
+textureType Texture::getType() const
+{
+	return type;
 }
 
 void Texture::Delete()

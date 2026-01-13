@@ -33,15 +33,20 @@ int main()
 
 	// Create and link the shader program from source files
     Shader shaderProgram("assets/shaders/default.vert", "assets/shaders/default.frag");
-	shaderProgram.Activate();
 
 	std::vector<Texture> textures;
+	textures.reserve(2);
 	textures.emplace_back(textureType::Diffuse, 0);
 	textures[0].stbLoad("assets/images/pixelvap.png");
-	textures[0].genTexture();
-	textures[0].linkUni(shaderProgram,"diffuse0");
+	textures.emplace_back(textureType::Specular, 1);
+	textures[1].stbLoad("assets/speculars/spec.png");
 
-	Mesh mesh(vertices, indices, textures);
+
+	Mesh mesh(shaderProgram,
+		std::move(vertices),
+		std::move(indices),
+		std::move(textures)
+	);
 
     // Main render loop
 	while (!window.shouldClose())
@@ -56,7 +61,7 @@ int main()
 		viewport.Inputs(window.getWindowPtr());
 		viewport.updateMatrix(45.f, 0.1f, 100.0f);
 
-		textures[0].Bind();
+		mesh.Draw(shaderProgram, viewport);
 
 		window.measureTitleBarFPS(true);
 		window.swapBuffers();
