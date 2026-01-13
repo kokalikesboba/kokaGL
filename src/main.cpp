@@ -45,8 +45,7 @@ int main()
 
 	VAO vao;
 	vao.Bind();
-	VBO vbo;
-	vbo.Buffer(vertices);
+	VBO vbo(vertices);
 	EBO ebo;
 	ebo.Buffer(indices);
 	
@@ -71,7 +70,7 @@ int main()
 		    // Bind again in the case that the bound vao is not this instance.
 
 
-			
+
 
 	boub.Bind();
     // Upload camera position as a uniform to the shader program.

@@ -23,7 +23,7 @@
                 "src/opengl/ebo.cpp",
                 "src/opengl/texture.cpp",
                 "src/opengl/viewport.cpp",
-                
+
 
                 "src/entities/model.cpp",
 

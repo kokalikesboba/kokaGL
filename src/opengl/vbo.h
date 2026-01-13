@@ -17,21 +17,22 @@ struct Vertex {
 class VBO
 {
 public:
-	// Empty constructor
-	VBO();
-	// Contstuctor with parameters
-	VBO(std::vector <Vertex> vertices);
+	// Constructs a VBO. This buffer will not remain bound after execution.
+	VBO(const std::vector <Vertex>& vertices);
 	// Binds the VBO
-	void Bind();
-	// Buffers data into existing array 
-	void Buffer(std::vector<Vertex> vertices);
+	void Bind() const;
 	// Unbinds the VBO
-	void Unbind();
-	// Deletes the VBO
+	void Unbind() const;
+	// Cleans up VBO on OpenGL's side
 	void Delete();
 	~VBO();
+
+	// Makes this class non-copyable
+	VBO(const VBO&) = delete;
+	VBO& operator=(const VBO&) = delete;
+
 private:
-	GLuint ID;
+	GLuint ID = 0;
 };
 
 #endif

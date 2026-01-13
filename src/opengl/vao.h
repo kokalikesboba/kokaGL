@@ -9,20 +9,25 @@
 class VAO
 {
 public:
-	// Constructor that generates a VAO ID
+	// Construct a VAO.
 	VAO();
-	// Links a VBO to the VAO using a certain layout
-	void LinkAttrib(VBO& VBO, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset);
+	// Links a VBO to a VAO. 
+	void LinkAttrib(const VBO& VBO,
+		const GLuint& layout,
+		const GLuint& numComponents,
+		const GLenum& type,
+		const GLsizeiptr& stride,
+		const void* offset) const;
 	// Binds the VAO
-	void Bind();
+	void Bind() const;
 	// Unbinds the VAO
-	void Unbind();
-	// Deletes the VAO
+	void Unbind() const;
+	// Cleans up VAO on OpenGL's side
 	void Delete();
 	// Deconstructor
 	~VAO();
 private:
 	// ID reference for the Vertex Array Object
-	GLuint ID;
+	GLuint ID = 0;
 };
 #endif
