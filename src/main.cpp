@@ -71,7 +71,7 @@ int main()
 
 
 
-
+	vao.Bind();
 	boub.Bind();
     // Upload camera position as a uniform to the shader program.
     glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), viewport.Position.x, viewport.Position.y, viewport.Position.z);
