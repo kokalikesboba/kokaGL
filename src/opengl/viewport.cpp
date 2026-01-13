@@ -22,9 +22,11 @@ void Viewport::updateMatrix(float FOVdeg, float nearPlane, float farPlane)
 	cameraMatrix = projection * view; 
 }
 
-void Viewport::Matrix(Shader& shader, const char* uniform) {
-	glUniformMatrix4fv(glGetUniformLocation(shader.ID, uniform), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
+void Viewport::linkMatrix(const Shader &shader, const char *uniform) const
+{
+	glUniformMatrix4fv(glGetUniformLocation(shader.getID(), uniform), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
 }
+
 // TODO: Input should be handled with it's own class. 
 void Viewport::Inputs(GLFWwindow* window)
 {

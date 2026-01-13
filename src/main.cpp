@@ -35,12 +35,11 @@ int main()
     Shader shaderProgram("assets/shaders/default.vert", "assets/shaders/default.frag");
 	shaderProgram.Activate();
 
-	Texture boub(textureType::Diffuse, 0);
-	boub.stbLoad("assets/images/pixelvap.png");
-	boub.genTexture();
-	boub.linkUni(shaderProgram,"diffuse0");
 	std::vector<Texture> textures;
-	textures.push_back(boub);
+	textures.emplace_back(textureType::Diffuse, 0);
+	textures[0].stbLoad("assets/images/pixelvap.png");
+	textures[0].genTexture();
+	textures[0].linkUni(shaderProgram,"diffuse0");
 
 	Mesh mesh(vertices, indices, textures);
 
@@ -57,7 +56,7 @@ int main()
 		viewport.Inputs(window.getWindowPtr());
 		viewport.updateMatrix(45.f, 0.1f, 100.0f);
 
-
+		textures[0].Bind();
 
 		window.measureTitleBarFPS(true);
 		window.swapBuffers();
