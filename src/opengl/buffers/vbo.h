@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <glad/glad.h>
 
-#include "format.h"
+#include "opengl/format.h"
 
 #include <vector>
 #include <iostream>
