@@ -1,408 +1,209 @@
 {
-	"asset":{
-		"generator":"Khronos glTF Blender I/O v5.0.21",
-		"version":"2.0"
-	},
-	"extensionsUsed":[
-		"KHR_materials_emissive_strength"
-	],
-	"scene":0,
-	"scenes":[
-		{
-			"name":"Scene",
-			"nodes":[
-				0,
-				1,
-				2,
-				3,
-				4,
-				5,
-				6,
-				7
-			]
-		}
-	],
-	"nodes":[
-		{
-			"name":"pupil.L",
-			"scale":[
-				0.010940324515104294,
-				0.01751726120710373,
-				0.010436678305268288
-			],
-			"translation":[
-				0.0428135022521019,
-				1.5896234512329102,
-				0.08272753655910492
-			]
-		},
-		{
-			"name":"fluff base",
-			"translation":[
-				3.280677080154419,
-				1.532076358795166,
-				0.11182443052530289
-			]
-		},
-		{
-			"name":"fluff shape",
-			"translation":[
-				4.153984546661377,
-				1.532076358795166,
-				0.11182443052530289
-			]
-		},
-		{
-			"mesh":0,
-			"name":"facemesh BEFORE COMBO",
-			"scale":[
-				0.11148994415998459,
-				0.11148994415998459,
-				0.11148994415998459
-			],
-			"translation":[
-				0,
-				1.578499674797058,
-				0
-			]
-		},
-		{
-			"mesh":1,
-			"name":"teethbase BACKUP",
-			"scale":[
-				0.11148994415998459,
-				0.11148994415998459,
-				0.11148994415998459
-			],
-			"translation":[
-				0,
-				1.578499674797058,
-				0
-			]
-		},
-		{
-			"mesh":2,
-			"name":"WIP pupil",
-			"rotation":[
-				0.6772274971008301,
-				0.14285950362682343,
-				-0.14902304112911224,
-				0.7062197923660278
-			],
-			"scale":[
-				0.06402364373207092,
-				0.0553826168179512,
-				0.09056326746940613
-			],
-			"translation":[
-				0.01994258165359497,
-				1.5892781019210815,
-				0.031424276530742645
-			]
-		},
-		{
-			"name":"pupil.R",
-			"scale":[
-				0.010940324515104294,
-				0.01751726120710373,
-				0.010436678305268288
-			],
-			"translation":[
-				-0.04281400144100189,
-				1.5896234512329102,
-				0.08272753655910492
-			]
-		},
-		{
-			"name":"EyeCutoff",
-			"scale":[
-				0.04761709272861481,
-				0.03083248808979988,
-				0.06546009331941605
-			],
-			"translation":[
-				0,
-				1.5418039560317993,
-				0.035305000841617584
-			]
-		}
-	],
-	"materials":[
-		{
-			"doubleSided":true,
-			"emissiveFactor":[
-				0.9349764585494995,
-				0.7738905549049377,
-				1
-			],
-			"extensions":{
-				"KHR_materials_emissive_strength":{
-					"emissiveStrength":2
-				}
-			},
-			"name":"WIP teeth",
-			"pbrMetallicRoughness":{
-				"baseColorFactor":[
-					0,
-					0,
-					0,
-					1
-				]
-			}
-		}
-	],
-	"meshes":[
-		{
-			"name":"Plane.009",
-			"primitives":[
-				{
-					"attributes":{
-						"POSITION":0,
-						"NORMAL":1,
-						"TEXCOORD_0":2,
-						"COLOR_0":3
-					},
-					"indices":4
-				}
-			]
-		},
-		{
-			"name":"Plane.007",
-			"primitives":[
-				{
-					"attributes":{
-						"POSITION":5,
-						"NORMAL":6,
-						"TEXCOORD_0":7,
-						"COLOR_0":8
-					},
-					"indices":9
-				}
-			]
-		},
-		{
-			"name":"Sphere.002",
-			"primitives":[
-				{
-					"attributes":{
-						"POSITION":10,
-						"NORMAL":11,
-						"TEXCOORD_0":12
-					},
-					"indices":13,
-					"material":0
-				}
-			]
-		}
-	],
-	"accessors":[
-		{
-			"bufferView":0,
-			"componentType":5126,
-			"count":1447,
-			"max":[
-				0.8439280390739441,
-				0.9837919473648071,
-				1.105102777481079
-			],
-			"min":[
-				-0.0027060117572546005,
-				-1.178221344947815,
-				-0.8085873126983643
-			],
-			"type":"VEC3"
-		},
-		{
-			"bufferView":1,
-			"componentType":5126,
-			"count":1447,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":2,
-			"componentType":5126,
-			"count":1447,
-			"type":"VEC2"
-		},
-		{
-			"bufferView":3,
-			"componentType":5123,
-			"count":1447,
-			"normalized":true,
-			"type":"VEC4"
-		},
-		{
-			"bufferView":4,
-			"componentType":5123,
-			"count":2139,
-			"type":"SCALAR"
-		},
-		{
-			"bufferView":5,
-			"componentType":5126,
-			"count":108,
-			"max":[
-				0.33709344267845154,
-				-0.3100627064704895,
-				1.5406277179718018
-			],
-			"min":[
-				0,
-				-0.3952198028564453,
-				1.2296438217163086
-			],
-			"type":"VEC3"
-		},
-		{
-			"bufferView":6,
-			"componentType":5126,
-			"count":108,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":7,
-			"componentType":5126,
-			"count":108,
-			"type":"VEC2"
-		},
-		{
-			"bufferView":8,
-			"componentType":5123,
-			"count":108,
-			"normalized":true,
-			"type":"VEC4"
-		},
-		{
-			"bufferView":9,
-			"componentType":5123,
-			"count":204,
-			"type":"SCALAR"
-		},
-		{
-			"bufferView":10,
-			"componentType":5126,
-			"count":96,
-			"max":[
-				0.18393944203853607,
-				1.0288197994232178,
-				0.20233537256717682
-			],
-			"min":[
-				-0.2062409669160843,
-				1.009605050086975,
-				-0.187844917178154
-			],
-			"type":"VEC3"
-		},
-		{
-			"bufferView":11,
-			"componentType":5126,
-			"count":96,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":12,
-			"componentType":5126,
-			"count":96,
-			"type":"VEC2"
-		},
-		{
-			"bufferView":13,
-			"componentType":5123,
-			"count":96,
-			"type":"SCALAR"
-		}
-	],
-	"bufferViews":[
-		{
-			"buffer":0,
-			"byteLength":17364,
-			"byteOffset":0,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":17364,
-			"byteOffset":17364,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":11576,
-			"byteOffset":34728,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":11576,
-			"byteOffset":46304,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":4278,
-			"byteOffset":57880,
-			"target":34963
-		},
-		{
-			"buffer":0,
-			"byteLength":1296,
-			"byteOffset":62160,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":1296,
-			"byteOffset":63456,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":864,
-			"byteOffset":64752,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":864,
-			"byteOffset":65616,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":408,
-			"byteOffset":66480,
-			"target":34963
-		},
-		{
-			"buffer":0,
-			"byteLength":1152,
-			"byteOffset":66888,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":1152,
-			"byteOffset":68040,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":768,
-			"byteOffset":69192,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":192,
-			"byteOffset":69960,
-			"target":34963
-		}
-	],
-	"buffers":[
-		{
-			"byteLength":70152,
-			"uri":"laika.bin"
-		}
-	]
+  "asset": {
+    "generator": "glTF-Transform v4.2.1",
+    "version": "2.0"
+  },
+  "accessors": [
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 1775664,
+      "max": [
+        0.8013169765472412,
+        2.017538070678711,
+        0.16233199834823608
+      ],
+      "min": [
+        -0.8013169765472412,
+        0.0083619998767972,
+        -0.37699800729751587
+      ],
+      "bufferView": 0,
+      "byteOffset": 0
+    },
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 1775664,
+      "bufferView": 0,
+      "byteOffset": 12
+    },
+    {
+      "type": "VEC2",
+      "componentType": 5126,
+      "count": 1775664,
+      "bufferView": 0,
+      "byteOffset": 24
+    },
+    {
+      "type": "SCALAR",
+      "componentType": 5125,
+      "count": 457968,
+      "bufferView": 1,
+      "byteOffset": 0
+    },
+    {
+      "type": "SCALAR",
+      "componentType": 5125,
+      "count": 23808,
+      "bufferView": 1,
+      "byteOffset": 1831872
+    },
+    {
+      "type": "SCALAR",
+      "componentType": 5125,
+      "count": 23808,
+      "bufferView": 1,
+      "byteOffset": 1927104
+    },
+    {
+      "type": "SCALAR",
+      "componentType": 5125,
+      "count": 1114560,
+      "bufferView": 1,
+      "byteOffset": 2022336
+    },
+    {
+      "type": "SCALAR",
+      "componentType": 5125,
+      "count": 155520,
+      "bufferView": 1,
+      "byteOffset": 6480576
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 56821248,
+      "byteStride": 32,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 56821248,
+      "byteLength": 7102656,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "buffer.bin",
+      "byteLength": 63923904
+    }
+  ],
+  "materials": [
+    {
+      "name": "WIP_body",
+      "doubleSided": true,
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0
+      }
+    },
+    {
+      "name": "eye.L",
+      "doubleSided": true,
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0
+      }
+    },
+    {
+      "name": "eye.R",
+      "doubleSided": true,
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0
+      }
+    },
+    {
+      "name": "WIP_Fluff_no_AO",
+      "doubleSided": true,
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0
+      }
+    },
+    {
+      "name": "WIP_clothing",
+      "doubleSided": true,
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "mode": 4,
+          "material": 0,
+          "indices": 3
+        },
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "mode": 4,
+          "material": 1,
+          "indices": 4
+        },
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "mode": 4,
+          "material": 2,
+          "indices": 5
+        },
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "mode": 4,
+          "material": 3,
+          "indices": 6
+        },
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "mode": 4,
+          "material": 4,
+          "indices": 7
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "empty_2",
+      "children": [
+        1
+      ]
+    },
+    {
+      "name": "o bodymesh",
+      "mesh": 0
+    }
+  ],
+  "scenes": [
+    {
+      "name": "empty_1",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "scene": 0
 }

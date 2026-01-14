@@ -1,19 +1,5 @@
 #include "opengl/renderer/mesh.h"
-
-// Define the 4 corners of a square
-const std::vector<Vertex> vertices = {
-    // Position             // Normal (Up)         // Color (White)      // UVs
-    {glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0,0,1), glm::vec3(1,1,1), glm::vec2(0,0)}, // Bottom Left
-    {glm::vec3( 0.5f, -0.5f, 0.0f), glm::vec3(0,0,1), glm::vec3(1,1,1), glm::vec2(1,0)}, // Bottom Right
-    {glm::vec3( 0.5f,  0.5f, 0.0f), glm::vec3(0,0,1), glm::vec3(1,1,1), glm::vec2(1,1)}, // Top Right
-    {glm::vec3(-0.5f,  0.5f, 0.0f), glm::vec3(0,0,1), glm::vec3(1,1,1), glm::vec2(0,1)}  // Top Left
-};
-
-// Indices to form two triangles from the 4 vertices
-const std::vector<GLuint> indices = {
-    0, 1, 2, // First Triangle
-    0, 2, 3  // Second Triangle
-};
+#include "parsers/gltfAssimp.h"
 
 int main()
 { 
@@ -37,13 +23,15 @@ int main()
 	std::vector<Texture> textures;
 	textures.reserve(2);
 	textures.emplace_back(textureType::Diffuse, 0);
-	textures[0].stbLoad("assets/images/wood.jpg");
+	textures[0].stbLoad("assets/models/laika/textures/LaikaDiffuse_baseColor.png");
 	textures.emplace_back(textureType::Specular, 1);
 	textures[1].stbLoad("assets/speculars/spec.png");
 
-	Mesh mesh(shaderProgram,
-		std::move(vertices),
-		std::move(indices),
+	MeshData data = loadModelData("assets/models/laika/laika.gltf");
+	Mesh mesh(
+		shaderProgram,
+		std::move(data.vertices),
+		std::move(data.indices),
 		std::move(textures)
 	);
 

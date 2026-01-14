@@ -4,14 +4,10 @@
 #include "glad/glad.h"
 #include "stb/stb_img.h"
 
-#include "shader.h"
+#include "opengl/pipeline/shader.h"
+#include "opengl/format.h"
 
 #include <iostream>
-
-enum class textureType {
-    Diffuse,
-    Specular,
-};
 
 class Texture
 {

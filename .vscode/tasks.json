@@ -34,7 +34,8 @@
                 
                 "-lglfw",
                 "-lGL",
-                "-ldl"
+                "-ldl",
+                "-lassimp"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
