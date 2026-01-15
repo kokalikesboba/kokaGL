@@ -1,6 +1,55 @@
 #include "opengl/renderer/mesh.h"
 #include "parsers/gltfAssimp.h"
 
+std::vector<Vertex> defaultCubeVertices = {
+    // Positions          // Normals           // Colors           // UVs
+    // Front face
+    {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 1.0f},  {1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}},
+    {{ 0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 1.0f},  {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
+    {{ 0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 1.0f},  {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}},
+    {{-0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 1.0f},  {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}},
+
+    // Back face
+    {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
+    {{-0.5f,  0.5f, -0.5f}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}},
+    {{ 0.5f,  0.5f, -0.5f}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}},
+    {{ 0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}},
+
+    // Top face
+    {{-0.5f,  0.5f, -0.5f}, {0.0f, 1.0f, 0.0f},  {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}},
+    {{-0.5f,  0.5f,  0.5f}, {0.0f, 1.0f, 0.0f},  {1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}},
+    {{ 0.5f,  0.5f,  0.5f}, {0.0f, 1.0f, 0.0f},  {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
+    {{ 0.5f,  0.5f, -0.5f}, {0.0f, 1.0f, 0.0f},  {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}},
+
+    // Bottom face
+    {{-0.5f, -0.5f, -0.5f}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}},
+    {{ 0.5f, -0.5f, -0.5f}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}},
+    {{ 0.5f, -0.5f,  0.5f}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}},
+    {{-0.5f, -0.5f,  0.5f}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
+
+    // Right face
+    {{ 0.5f, -0.5f, -0.5f}, {1.0f, 0.0f, 0.0f},  {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
+    {{ 0.5f,  0.5f, -0.5f}, {1.0f, 0.0f, 0.0f},  {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}},
+    {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f, 0.0f},  {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}},
+    {{ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f, 0.0f},  {1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}},
+
+    // Left face
+    {{-0.5f, -0.5f, -0.5f}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}},
+    {{-0.5f, -0.5f,  0.5f}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
+    {{-0.5f,  0.5f,  0.5f}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}},
+    {{-0.5f,  0.5f, -0.5f}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}}
+};
+ std::vector<GLuint> defaultCubeIndices = {
+    0, 1, 2, 2, 3, 0,       // Front
+    4, 5, 6, 6, 7, 4,       // Back
+    8, 9, 10, 10, 11, 8,    // Top
+    12, 13, 14, 14, 15, 12, // Bottom
+    16, 17, 18, 18, 19, 16, // Right
+    20, 21, 22, 22, 23, 20  // Left
+};
+
+std::vector<Texture> defaultTexture;
+
 
 int main()
 { 
@@ -20,19 +69,24 @@ int main()
 
 	// Create and link the shader program from source files
     Shader shaderProgram("assets/shaders/default.vert", "assets/shaders/default.frag");
-
 	std::vector<Texture> textures;
-	textures.reserve(2);
+	textures.reserve(1);
 	textures.emplace_back(textureType::Diffuse, 0);
 	textures[0].stbLoad("assets/models/laika/textures/LaikaDiffuse_baseColor.png");
-	textures.emplace_back(textureType::Specular, 1);
-	textures[1].stbLoad("assets/speculars/spec.png");
 
 	MeshData data = loadModelData("assets/models/sword");
 	Mesh mesh(
 		std::move(data.vertices),
 		std::move(data.indices),
 		std::move(textures)
+	);
+
+	Shader lightShader("assets/shaders/light.vert", "assets/shaders/light.frag");
+	defaultTexture.emplace_back(textureType::Diffuse, 0);
+	Mesh light(
+		std::move(defaultCubeVertices),
+		std::move(defaultCubeIndices),
+		std::move(defaultTexture)
 	);
 
     // Main render loop
@@ -50,10 +104,13 @@ int main()
 
 		viewport.linkCameraPos(shaderProgram, "camPos");
     	viewport.linkCameraMatrix(shaderProgram, "camMatrix");
+
+		light.Draw(
+			shaderProgram
+		);
 		
 		mesh.Draw(
 			shaderProgram,
-			viewport,
 			{0.f, 0.f, 0.f},
 			{1.f, 0.f, 0.f, 0.f},
 			{1.f, 1.f, 1.f}
