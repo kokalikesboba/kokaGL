@@ -1,8 +1,8 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include "glad/glad.h"
-#include "stb/stb_img.h"
+#include <glad/glad.h>
+#include <stb/stb_img.h>
 
 #include "opengl/pipeline/shader.h"
 #include "opengl/format.h"
