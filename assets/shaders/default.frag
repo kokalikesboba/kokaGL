@@ -102,8 +102,9 @@ vec4 spotLight()
 
 void main()
 {
-    vec4 diffuse = texture(diffuse0, texCoord);
-    vec4 specular = texture(specular0, texCoord);
+    // Choice A: Use a specific light type
+    // FragColor = pointLight();
 
-    FragColor = diffuse - specular * 0.5;
+    // Choice B: Combine multiple (e.g., a Sun + a Flashlight)
+    FragColor = direcLight() + spotLight();
 }

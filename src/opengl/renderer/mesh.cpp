@@ -38,7 +38,6 @@ Mesh::Mesh(
 
 void Mesh::Draw(
     const Shader& shader,
-    const Viewport& viewport,
     const glm::vec3& translation,
     const glm::quat& rotation,
     const glm::vec3& scale)
