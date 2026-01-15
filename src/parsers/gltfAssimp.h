@@ -4,7 +4,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <vector>
+
 #include "opengl/format.h" 
 
 // Use a struct to return both at once
@@ -15,7 +15,8 @@ struct MeshData {
 
 inline MeshData loadModelData(const char* path) {
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, 
+    const aiScene* scene = importer.ReadFile(
+        (std::string(path) + ("/scene.gltf")), 
         aiProcess_Triangulate | 
         aiProcess_JoinIdenticalVertices |
         aiProcess_FlipUVs

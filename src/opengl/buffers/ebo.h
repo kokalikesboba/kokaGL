@@ -2,8 +2,8 @@
 #define EBO_H
 
 #include <glad/glad.h>
-#include <vector>
 
+#include <vector>
 #include <iostream>
 
 class EBO
