@@ -12,7 +12,7 @@ class UBO
 {
 public:
 	// Constructs a VBO. This buffer will not remain bound after execution.
-	UBO(const std::vector<float>& data, unsigned int blockIndex);
+	UBO(const std::vector<float>& data, unsigned int slot);
 	// Links Uniform
 	void LinkUni(const Shader& shader,const char* uniform) const;
 	// Binds the VBO

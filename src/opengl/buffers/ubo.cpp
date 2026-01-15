@@ -1,6 +1,6 @@
 #include "ubo.h"
 
-UBO::UBO(const std::vector<float>& data, unsigned int )
+UBO::UBO(const std::vector<float>& data, unsigned int slot)
 {	
 	glGenBuffers(1, &ID);
 	Bind();

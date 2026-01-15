@@ -46,9 +46,18 @@ int main()
 
 		// TODO: Decouple input management from viewport class.
 		viewport.Inputs(window.getWindowPtr());
-		viewport.updateMatrix(45.f, 0.1f, 100.0f);
+		viewport.updateCameraMatrix(45.f, 0.1f, 100.0f);
 
-		mesh.Draw(shaderProgram, viewport);
+		viewport.linkCameraPos(shaderProgram, "camPos");
+    	viewport.linkCameraMatrix(shaderProgram, "camMatrix");
+		
+		mesh.Draw(
+			shaderProgram,
+			viewport,
+			{0.f, 0.f, 0.f},
+			{1.f, 0.f, 0.f, 0.f},
+			{1.f, 1.f, 1.f}
+		);
 
 		window.measureTitleBarFPS(true);
 		window.swapBuffers();
