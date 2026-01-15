@@ -33,10 +33,9 @@ inline MeshData loadModelData(const char* path) {
 
     for (unsigned int m = 0; m < scene->mNumMeshes; ++m) {
         aiMesh* mesh = scene->mMeshes[m];
-
         // 1. Extract UNIQUE vertices
         for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
-
+            const char* name;
             Vertex v{};
             v.position = { 
                 mesh->mVertices[i].x,
@@ -56,7 +55,11 @@ inline MeshData loadModelData(const char* path) {
                     mesh->mTextureCoords[0][i].y
                 };
             }
-            
+
+            v.color.r = 0.f;
+            v.color.g = 0.f;
+            v.color.b = 0.f;
+
             data.vertices.push_back(v);
         }
 
@@ -66,6 +69,14 @@ inline MeshData loadModelData(const char* path) {
             for (unsigned int j = 0; j < face.mNumIndices; ++j) {
                 data.indices.push_back(face.mIndices[j] + vertexOffset);
             }
+        }
+
+        aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+        aiString path;
+        
+        if(material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
+            std::string texturePath = path.C_Str();
+            std::cout << "Texture path: " << texturePath << std::endl;
         }
 
         vertexOffset += mesh->mNumVertices;
