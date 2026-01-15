@@ -75,33 +75,31 @@ void Mesh::Draw(
         << "   " << numSpecular << " specular\n";
     }
 
-    // Upload camera position as a uniform for lighting
-    // Uploades the texture uniform for fragment shaders. 
-    glUniform3f(
-        glGetUniformLocation(shader.getID(), "camPos"),
-        viewport.Position.x,
-        viewport.Position.y,
-        viewport.Position.z
-    );
-
-    viewport.linkMatrix(shader, "camMatrix");
-    
-    glm::mat4 trans = glm::mat4(1.0f);
-    glm::mat4 rot = glm::mat4(1.0f);
-    glm::mat4  sca = glm::mat4(1.0f);
-    trans = glm::translate(trans, translation);
-    rot = glm::mat4_cast(rotation);
-    sca = glm::scale(sca, scale);
-    glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "translation"), 1, GL_FALSE, glm::value_ptr(trans));
-    glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "rotation"), 1, GL_FALSE, glm::value_ptr(rot));
-    glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "scale"), 1, GL_FALSE, glm::value_ptr(sca));
-
     for (int i = 0; i < textures.size(); ++i) {
         textures[i].Bind();
     }
 
+    glm::mat4 translationMatrix = glm::mat4(1.0f);
+    translationMatrix = glm::translate(translationMatrix, translation);
+
+    glm::mat4 rotationMatrix = glm::mat4(1.0f);
+    rotationMatrix = glm::mat4_cast(rotation);
+    
+    glm::mat4  scalingMatrix = glm::mat4(1.0f);
+    scalingMatrix = glm::scale(scalingMatrix, scale);
+
+    glm::mat4 modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+
+    glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));  
+
+    // Draw
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,0);
+
+    // Cleanup for state safety
     vao.Unbind();
+    for (int i = 0; i < textures.size(); ++i) {
+        textures[i].Unbind();
+    }
 }
 
 Mesh::~Mesh()

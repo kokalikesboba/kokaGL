@@ -12,11 +12,13 @@
 class Mesh {
 
 public:
+    // Mesh constructor, must use std::move()
     Mesh(
         std::vector<Vertex> vertices,
         std::vector<GLuint> indices,
         std::vector<Texture> textures
     );
+    // 
     void Draw(
         const Shader& shader,
         const Viewport& viewport,
@@ -28,15 +30,19 @@ public:
     ~Mesh();
 
 private: 
+    // Member variables for owning the data.
     std::vector <Vertex> vertices;
     std::vector <GLuint> indices;
     std::vector <Texture> textures;
+
+    // OpenGL objects
     VAO vao; 
     VBO vbo;
     EBO ebo;
+
+    GLuint shaderID;
     int numDiffuse = 0;
     int numSpecular = 0;
-    GLuint shaderID;
 
 };
 
