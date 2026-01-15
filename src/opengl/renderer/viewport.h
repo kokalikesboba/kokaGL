@@ -12,6 +12,8 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/vector_angle.hpp>
 
+#include "opengl/buffers/ubo.h"
+
 class Viewport
 {
 public:

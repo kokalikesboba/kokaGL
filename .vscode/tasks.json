@@ -20,6 +20,7 @@
                 "src/opengl/buffers/vao.cpp",
                 "src/opengl/buffers/vbo.cpp",
                 "src/opengl/buffers/ebo.cpp",
+                "src/opengl/buffers/ubo.cpp",
                 "src/opengl/pipeline/texture.cpp",
                 "src/opengl/pipeline/shader.cpp",
                 "src/opengl/renderer/viewport.cpp",
@@ -35,7 +36,9 @@
                 "-lglfw",
                 "-lGL",
                 "-ldl",
-                "-lassimp"
+                "-lassimp",
+                "-limgui", 
+                "-lstb", 
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

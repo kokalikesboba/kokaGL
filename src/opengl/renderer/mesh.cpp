@@ -9,38 +9,10 @@ std::string getTextureTypePrefix(textureType type) {
 }
 
 Mesh::Mesh(
-    const Shader& shader,
     std::vector<Vertex> vertices,
     std::vector<GLuint> indices,
     std::vector<Texture> textures
 ) : 
-    /*
-    These constructor parameters (vertices, indices, textures) are passed
-    by VALUE into the Mesh constructor. That means this constructor already
-    owns its own local copies of the data, independent of the caller.
-
-    At the call site:
-        - lvalues are copied into these parameters
-        - rvalues (or std::move'd lvalues) are moved into these parameters
-
-    Inside the constructor, we now want Mesh to become the final owner of
-    that data. To do that efficiently, we MOVE the parameter objects into
-    the Mesh member variables instead of copying them again.
-
-    std::move DOES NOT move data by itself.
-    It simply casts the parameter to an rvalue, which allows the std::vector
-    move constructor to run. The move constructor then "steals" the internal
-    buffer (pointer, size, capacity) instead of copying all elements.
-
-    After std::move:
-        - Mesh member variables own the data
-        - The parameter objects are left in a valid but unspecified state
-        - The parameters will be destroyed immediately after construction,
-          so it is safe to steal from them
-
-    This pattern ("pass by value, then std::move into members") cleanly
-    expresses ownership transfer while avoiding unnecessary copies.
-    */
     vertices(std::move(vertices)),
     indices(std::move(indices)),
     textures(std::move(textures)),
@@ -48,6 +20,7 @@ Mesh::Mesh(
     vbo(this->vertices), 
     ebo(this->indices)
 {
+    shaderID = 0;
     vao.Bind();
     ebo.Bind();
 	vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, position));
@@ -57,32 +30,10 @@ Mesh::Mesh(
     vao.Unbind();
 	ebo.Unbind();   
 
-    shader.Activate();
-    // Uploades the texture uniform for fragment shaders. 
     for (int i = 0; i < this->textures.size(); ++i) {
         this->textures[i].genTexture();
-        if (this->textures[i].getType() == textureType::Diffuse) {
-            
-            this->textures[i].linkUni(
-                shader,
-                (getTextureTypePrefix(this->textures[i].getType()) + std::to_string(numDiffuse)).c_str()
-            );
-            numDiffuse++;
-
-        } else if (this->textures[i].getType() == textureType::Specular) {
-            
-            this->textures[i].linkUni(
-                shader,
-                (getTextureTypePrefix(this->textures[i].getType()) + std::to_string(numSpecular)).c_str()
-            );
-            numSpecular++;
-        }
     }
-    
-    std::cout 
-    << "Mesh has\n"  
-    << "   " << numDiffuse << " diffuse\n" 
-    << "   " << numSpecular << " specular\n";
+
 }
 
 void Mesh::Draw(
@@ -90,18 +41,51 @@ void Mesh::Draw(
     const Viewport& viewport,
     const glm::vec3& translation,
     const glm::quat& rotation,
-    const glm::vec3& scale) const
+    const glm::vec3& scale)
 {   
     vao.Bind();
     shader.Activate();
+
+    // Uploads texture uniform once, if draw is called with new shader, reupload.
+    if (shaderID != shader.getID()) {
+        shaderID = shader.getID();
+        numDiffuse = 0;
+        numSpecular = 0;
+        for (int i = 0; i < textures.size(); ++i) {
+            if (textures[i].getType() == textureType::Diffuse) {
+                textures[i].linkUni(
+                    shader,
+                    (getTextureTypePrefix(textures[i].getType()) + std::to_string(numDiffuse)).c_str()
+                    
+                );
+                numDiffuse++;
+            } else if (textures[i].getType() == textureType::Specular) {
+                
+                textures[i].linkUni(
+                    shader,
+                    (getTextureTypePrefix(textures[i].getType()) + std::to_string(numSpecular)).c_str()
+                    
+                );
+                numSpecular++;
+            }
+        }
+        std::cout 
+        << "Mesh has\n"  
+        << "   " << numDiffuse << " diffuse\n" 
+        << "   " << numSpecular << " specular\n";
+    }
+
     // Upload camera position as a uniform for lighting
+    // Uploades the texture uniform for fragment shaders. 
     glUniform3f(
         glGetUniformLocation(shader.getID(), "camPos"),
         viewport.Position.x,
         viewport.Position.y,
         viewport.Position.z
     );
+
     viewport.linkMatrix(shader, "camMatrix");
+    
     glm::mat4 trans = glm::mat4(1.0f);
     glm::mat4 rot = glm::mat4(1.0f);
     glm::mat4  sca = glm::mat4(1.0f);

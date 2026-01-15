@@ -1,5 +1,6 @@
 #include "opengl/renderer/mesh.h"
 #include "parsers/gltfAssimp.h"
+#include "opengl/buffers/ubo.h"
 
 int main()
 { 
@@ -27,9 +28,8 @@ int main()
 	textures.emplace_back(textureType::Specular, 1);
 	textures[1].stbLoad("assets/speculars/spec.png");
 
-	MeshData data = loadModelData("assets/models/laika/laika.gltf");
+	MeshData data = loadModelData("assets/models/sword/scene.gltf");
 	Mesh mesh(
-		shaderProgram,
 		std::move(data.vertices),
 		std::move(data.indices),
 		std::move(textures)
