@@ -16,7 +16,7 @@ public:
     Texture(textureType type, GLuint slot);
     // Loads a texture from a directory into texture data buffer. 
     // TODO: Do NOT load a texture twice
-    void stbLoad(const char* image);
+    void stbLoad(std::string fileName);
     // Buffers texture data into OpenGL
     void genTexture();
     // Links texture to uniform
@@ -41,7 +41,7 @@ private:
     GLuint ID = 0;
     GLuint unit = 0;
 
-    const char* fileName;
+    std::string fileName;
     int colorChannels = 0;
     int imgWidth = 0;
     int imgHeight = 0;

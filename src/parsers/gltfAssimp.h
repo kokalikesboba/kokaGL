@@ -7,6 +7,10 @@
 
 #include "opengl/format.h" 
 
+#include "glad/glad.h"
+#include <stdexcept>
+#include <iostream>
+
 // Use a struct to return both at once
 struct returnedData {
     std::vector<Vertex> vertices;
@@ -15,10 +19,20 @@ struct returnedData {
     std::vector<textureType> texTypeIndex;
 };
 
-inline returnedData loadModelData(const char* path) {
+inline returnedData loadModelData(std::string path) {
+
+    // get last directory name
+    size_t pos = path.find_last_of("/\\");
+    std::string name = (pos == std::string::npos)
+        ? path
+        : path.substr(pos + 1);
+
+    std::cout << "PARSING: " + path << std::endl; 
+
     Assimp::Importer importer;
+
     const aiScene* scene = importer.ReadFile(
-        path, 
+        path +  "/" + name + ".glb", 
         aiProcess_Triangulate | 
         aiProcess_JoinIdenticalVertices |
         aiProcess_FlipUVs
@@ -26,8 +40,8 @@ inline returnedData loadModelData(const char* path) {
 
     if (!scene) {
         // Print to standard error before throwing
-        std::cerr << "Assimp could not read file at: " << path << std::endl;
-        std::cerr << "Reason: " << importer.GetErrorString() << std::endl;
+        std::cerr << "   ASSIMP could not read file at: " << path << std::endl;
+        std::cerr << "   Reason: " << importer.GetErrorString() << std::endl;
         throw std::runtime_error(importer.GetErrorString());
     }
 
@@ -76,21 +90,23 @@ inline returnedData loadModelData(const char* path) {
 
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
         aiString path;
-        
+
         if(material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
             std::string texturePath = path.C_Str();
             data.texPath.push_back(texturePath);
             data.texTypeIndex.push_back(textureType::Diffuse);
-            std::cout << "Diffuse path: " << texturePath << std::endl;
+            std::cout << " - Diffuse path: " << texturePath << std::endl;
+        } else {
+            std::cout << " - No diffuse found" << std::endl;
         }
 
         if(material->GetTexture(aiTextureType_DIFFUSE_ROUGHNESS, 0, &path) == AI_SUCCESS) {
             std::string texturePath = path.C_Str();
             data.texPath.push_back(texturePath);
             data.texTypeIndex.push_back(textureType::Specular);
-            std::cout << "Specular path: " << texturePath << std::endl;
+            std::cout << " - Specular path: " << texturePath << std::endl;
         } else {
-            std::cout << "No specular found" << std::endl;
+            std::cout << " - No specular found" << std::endl;
         }
 
         vertexOffset += mesh->mNumVertices;
