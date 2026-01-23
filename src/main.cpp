@@ -23,17 +23,10 @@ int main() {
 	// Create and link the shader program from source file6s
     Shader defaultShader("assets/shaders/default.vert", "assets/shaders/default.frag");
 
+	Model cube("assets/models/cube");
+	Model laika("assets/models/laika");
 	Model sword("assets/models/sword");
 	Model plane("assets/models/woodPlane");
-
-	/* Shader lightShader("assets/shaders/light.vert", "assets/shaders/light.frag");
-	std::vector<Texture> defaultTexture;
-	defaultTexture.emplace_back(textureType::Diffuse, 0);
-	Mesh light(
-		std::move(defaultCubeVertices),	
-		std::move(defaultCubeIndices),
-		std::move(defaultTexture)
-	); */
 
     // Main render loop
 	while (!window.shouldClose())
@@ -52,9 +45,9 @@ int main() {
 		viewport.linkCameraPos(defaultShader, "camPos");
 
     	viewport.linkCameraMatrix(defaultShader, "camMatrix");
-		// viewport.linkCameraMatrix(lightShader, "camMatrix");
-		// light.Draw(lightShader);
 
+		cube.Draw(defaultShader);
+		laika.Draw(defaultShader);
 		sword.Draw(defaultShader);
 		plane.Draw(defaultShader);
 
