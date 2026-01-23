@@ -68,10 +68,6 @@ void Mesh::Draw(
                 numSpecular++;
             }
         }
-        std::cout 
-        << "Mesh has\n"  
-        << "   " << numDiffuse << " diffuse\n" 
-        << "   " << numSpecular << " specular\n";
     }
 
     for (int i = 0; i < textures.size(); ++i) {

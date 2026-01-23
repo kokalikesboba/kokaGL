@@ -106,5 +106,5 @@ void main()
     // FragColor = pointLight();
 
     // Choice B: Combine multiple (e.g., a Sun + a Flashlight)
-    FragColor = texture(diffuse0,texCoord) - texture(specular0, texCoord);
+    FragColor = texture(diffuse0,texCoord) - 0.5  * texture(specular0, texCoord);
 }

@@ -4,13 +4,15 @@
 #include "opengl/renderer/mesh.h"
 #include "parsers/gltfAssimp.h"
 
+#include <memory>
+
 class Model
 {
 public:
-    Model();
+    Model(const char* modelDir);
     void Draw(const Shader& shader) const;
 
 private:
-	std::vector<Mesh> mesh;
+    std::unique_ptr<Mesh> mesh;
 };
 #endif

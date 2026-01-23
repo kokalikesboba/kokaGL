@@ -1,6 +1,7 @@
 #include "opengl/defaultcube.h"
 #include "opengl/renderer/mesh.h"
-#include "parsers/gltfAssimp.h"
+
+#include "entities/model.h"
 
 int main() {
 	
@@ -19,35 +20,20 @@ int main() {
 
 	Viewport viewport(window.getWidth(), window.getHeight(), glm::vec3(0.f,0.f,-2.f));
 
-	// Create and link the shader program from source files
-    Shader defaultProgram("assets/shaders/default.vert", "assets/shaders/default.frag");
+	// Create and link the shader program from source file6s
+    Shader defaultShader("assets/shaders/default.vert", "assets/shaders/default.frag");
 
-	returnedData parsed = loadModelData("assets/models/woodCube/woodCube.glb");
+	Model sword("assets/models/sword");
+	Model plane("assets/models/woodPlane");
 
-	std::vector<Texture> textures;
-	textures.reserve(parsed.texTypeIndex.size());
-	for (unsigned int i = 0; i < parsed.texTypeIndex.size(); ++i) {
-		textures.emplace_back(parsed.texTypeIndex[i], i);
-		std::string filename = parsed.texPath[i]; 
-		std::string fullPath = "assets/models/woodCube/" + filename;
-		
-		textures[i].stbLoad(fullPath.c_str()); 
-	}
-
-	Mesh mesh(
-		std::move(parsed.vertices),
-		std::move(parsed.indices),
-		std::move(textures)
-	);
-
-	Shader lightShader("assets/shaders/light.vert", "assets/shaders/light.frag");
+	/* Shader lightShader("assets/shaders/light.vert", "assets/shaders/light.frag");
 	std::vector<Texture> defaultTexture;
 	defaultTexture.emplace_back(textureType::Diffuse, 0);
 	Mesh light(
-		std::move(defaultCubeVertices),
+		std::move(defaultCubeVertices),	
 		std::move(defaultCubeIndices),
 		std::move(defaultTexture)
-	);
+	); */
 
     // Main render loop
 	while (!window.shouldClose())
@@ -63,20 +49,14 @@ int main() {
 		viewport.Inputs(window.getWindowPtr());
 		viewport.updateCameraMatrix(45.f, 0.1f, 100.0f);
 
-		viewport.linkCameraPos(defaultProgram, "camPos");
-    	viewport.linkCameraMatrix(defaultProgram, "camMatrix");
+		viewport.linkCameraPos(defaultShader, "camPos");
 
-		light.Draw(
-			lightShader
-		);
-		glUniform4f(glGetUniformLocation(lightShader.getID(), "lightColor"), 1.f, 0.f, 0.f, 1.f);
+    	viewport.linkCameraMatrix(defaultShader, "camMatrix");
+		// viewport.linkCameraMatrix(lightShader, "camMatrix");
+		// light.Draw(lightShader);
 
-		mesh.Draw(
-			defaultProgram,
-			{0.f, 0.f, 0.f},
-			{1.f, 0.f, 0.f, 0.f},
-			{1.f, 1.f, 1.f}
-		);
+		sword.Draw(defaultShader);
+		plane.Draw(defaultShader);
 
 		window.measureTitleBarFPS(true);
 		window.swapBuffers();
@@ -85,7 +65,7 @@ int main() {
 	}
 
     // Manually release OpenGL resources
-    defaultProgram.Delete();
+    defaultShader.Delete();
 
     return 0;
 }
