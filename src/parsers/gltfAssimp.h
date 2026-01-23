@@ -8,15 +8,17 @@
 #include "opengl/format.h" 
 
 // Use a struct to return both at once
-struct MeshData {
+struct returnedData {
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
+    std::vector<std::string> texPath;
+    std::vector<textureType> texTypeIndex;
 };
 
-inline MeshData loadModelData(const char* path) {
+inline returnedData loadModelData(const char* path) {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(
-        (std::string(path) + ("/scene.gltf")), 
+        path, 
         aiProcess_Triangulate | 
         aiProcess_JoinIdenticalVertices |
         aiProcess_FlipUVs
@@ -24,15 +26,15 @@ inline MeshData loadModelData(const char* path) {
 
     if (!scene) {
         // Print to standard error before throwing
-        std::cerr << "CRITICAL: Assimp could not read file at: " << path << std::endl;
+        std::cerr << "Assimp could not read file at: " << path << std::endl;
         std::cerr << "Reason: " << importer.GetErrorString() << std::endl;
         throw std::runtime_error(importer.GetErrorString());
     }
 
-    MeshData data;
+    returnedData data;
     unsigned int vertexOffset = 0;
 
-    for (unsigned int m = 0; m < scene->mNumMeshes; ++m) {
+    for (unsigned int m = 0; m < 1; ++m) {
         aiMesh* mesh = scene->mMeshes[m];
         // 1. Extract UNIQUE vertices
         for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
@@ -77,7 +79,18 @@ inline MeshData loadModelData(const char* path) {
         
         if(material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
             std::string texturePath = path.C_Str();
-            std::cout << "Texture path: " << texturePath << std::endl;
+            data.texPath.push_back(texturePath);
+            data.texTypeIndex.push_back(textureType::Diffuse);
+            std::cout << "Diffuse path: " << texturePath << std::endl;
+        }
+
+        if(material->GetTexture(aiTextureType_DIFFUSE_ROUGHNESS, 0, &path) == AI_SUCCESS) {
+            std::string texturePath = path.C_Str();
+            data.texPath.push_back(texturePath);
+            data.texTypeIndex.push_back(textureType::Specular);
+            std::cout << "Specular path: " << texturePath << std::endl;
+        } else {
+            std::cout << "No specular found" << std::endl;
         }
 
         vertexOffset += mesh->mNumVertices;
