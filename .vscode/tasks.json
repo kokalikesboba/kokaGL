@@ -14,9 +14,8 @@
 
                 "libs/glad/glad.c",
                 "libs/stb/stb.cpp",
-                
-                "src/window/window.cpp",
 
+                "src/window/window.cpp",
                 "src/opengl/buffers/vao.cpp",
                 "src/opengl/buffers/vbo.cpp",
                 "src/opengl/buffers/ebo.cpp",
@@ -36,7 +35,9 @@
                 "-lglfw",
                 "-lGL",
                 "-ldl",
+
                 "-lassimp",
+
                 "-limgui", 
                 "-lstb", 
             ],
