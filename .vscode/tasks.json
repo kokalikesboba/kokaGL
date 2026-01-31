@@ -26,6 +26,7 @@
                 "src/opengl/renderer/mesh.cpp",
 
                 "src/entities/model.cpp",
+                "src/entities/light.cpp",
 
                 "src/main.cpp",
 

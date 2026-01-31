@@ -1,7 +1,5 @@
-#include "opengl/defaultcube.h"
-#include "opengl/renderer/mesh.h"
-
 #include "entities/model.h"
+#include "entities/light.h"
 
 int main() {
 	
@@ -29,6 +27,8 @@ int main() {
 	Model plane("assets/models/woodPlane");
 	Model sphere("assets/models/sphere");
 
+	Light light({1.f,1.f,1.f});
+
     // Main render loop
 	while (!window.shouldClose())
 	{
@@ -50,6 +50,21 @@ int main() {
 		sword.Draw(defaultShader);
 		plane.Draw(defaultShader);
 		sphere.Draw(defaultShader);
+
+		light.DrawGizmo(defaultShader);
+
+		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_I) == GLFW_PRESS) {
+			light.gizmo.Translate({0.f, 0.1f, 0.f});
+		}
+		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_K) == GLFW_PRESS) {
+			light.gizmo.Translate({0.f, -0.1f, 0.f});
+		}
+		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_J) == GLFW_PRESS) {
+			light.gizmo.Translate({-0.1f, 0.f, 0.0f});
+		}
+		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_L) == GLFW_PRESS) {
+			light.gizmo.Translate({0.1f, 0.f, 0.0f});
+		}
 
 		window.measureTitleBarFPS(true);
 		window.swapBuffers();

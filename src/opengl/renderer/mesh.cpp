@@ -41,7 +41,7 @@ void Mesh::Draw(
     const glm::vec3& translation,
     const glm::quat& rotation,
     const glm::vec3& scale)
-{   
+{
     vao.Bind();
     shader.Activate();
 

@@ -56,29 +56,37 @@ void Viewport::Inputs(GLFWwindow* window)
 	{
 		position += speed * up;
 	}
-	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 	{
 		position += speed * -up;
 	}
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
 	{
 		speed = 0.4f;
 	}
-	else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
+	else if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_RELEASE)
 	{
 		speed = 0.1f;
 	}
 
-
-	// Handles mouse inputs
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
 		fbWidth += 5.f; 
 	}
-		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 	{
 		fbWidth -= 5.f; 
 	}
+
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	{
+		fbHeight += 5.f; 
+	}
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	{
+		fbHeight -= 5.f; 
+	}
+
 
 
 	// Handles mouse inputs

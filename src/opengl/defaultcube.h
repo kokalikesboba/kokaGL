@@ -1,3 +1,4 @@
+#pragma once
 #include "format.h"
 
 std::vector<Vertex> defaultCubeVertices = {

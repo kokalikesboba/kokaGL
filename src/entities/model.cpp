@@ -1,6 +1,11 @@
 #include "model.h"
 
 Model::Model(const char* modelDir) {
+    
+    position = {0.f, 0.f, 0.f};
+    rotation = {0.f, 0.f, 0.f};
+    scale = {1.f, 1.f, 1.f};
+
     returnedData parsed = loadModelData(modelDir);
     std::vector<Texture> textures;
 
@@ -26,5 +31,25 @@ Model::Model(const char* modelDir) {
 
 void Model::Draw(const Shader &shader) const
 {
-    mesh->Draw(shader);
+    mesh->Draw(shader, position, rotation, scale);
+}
+
+void Model::SetPosition(glm::vec3 position)
+{
+    this->position = position;
+}
+
+void Model::Translate(glm::vec3 translate)
+{
+    this->position += translate;
+}
+
+void Model::SetOrientation(glm::vec3 rotation)
+{
+    this->rotation = rotation;
+}
+
+void Model::Rotate(glm::vec3 rotation)
+{
+    this->rotation = rotation;
 }
