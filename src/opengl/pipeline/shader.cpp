@@ -89,7 +89,9 @@ void Shader::compileErrors(unsigned int shader, const char* type)
 		{
 			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
 			std::cout << "SHADER_COMPILATION_ERROR for:" << type << "\n" << infoLog << std::endl;
+			throw std::runtime_error("Shader comp failed"); 
 		}
+
 	}
 	else
 	{
@@ -98,6 +100,7 @@ void Shader::compileErrors(unsigned int shader, const char* type)
 		{
 			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
 			std::cout << "SHADER_LINKING_ERROR for:" << type << "\n" << infoLog << std::endl;
+			throw std::runtime_error("Shader link failed"); 
 		}
 	}
 }

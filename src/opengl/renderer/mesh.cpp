@@ -85,7 +85,7 @@ void Mesh::Draw(
 
     glm::mat4 modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
 
-    glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));  
+    glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));  
 
     // Draw
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,0);

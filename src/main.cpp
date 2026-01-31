@@ -6,7 +6,7 @@
 int main() {
 	
     GlfwContext glfw;
-    Window window(800, 800 , "kokaGL");
+    Window window(1000, 1000, "kokaGL");
     window.makeContextCurrent();
 	
     // Load OpenGL function pointers via GLAD
@@ -27,11 +27,11 @@ int main() {
 	Model laika("assets/models/laika");
 	Model sword("assets/models/sword");
 	Model plane("assets/models/woodPlane");
+	Model sphere("assets/models/sphere");
 
     // Main render loop
 	while (!window.shouldClose())
 	{
-
 		window.pollEvents();
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -42,19 +42,18 @@ int main() {
 		viewport.Inputs(window.getWindowPtr());
 		viewport.updateCameraMatrix(45.f, 0.1f, 100.0f);
 
-		viewport.linkCameraPos(defaultShader, "camPos");
-
-    	viewport.linkCameraMatrix(defaultShader, "camMatrix");
+    	viewport.linkCameraMatrix(defaultShader, "cameraMatrix");
+		viewport.linkCameraPos(defaultShader, "cameraPos");
 
 		cube.Draw(defaultShader);
 		laika.Draw(defaultShader);
 		sword.Draw(defaultShader);
 		plane.Draw(defaultShader);
+		sphere.Draw(defaultShader);
 
 		window.measureTitleBarFPS(true);
 		window.swapBuffers();
 		window.measureTitleBarFPS(false);
-
 	}
 
     // Manually release OpenGL resources
