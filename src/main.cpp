@@ -22,14 +22,17 @@ int main() {
     Shader defaultShader("assets/shaders/default.vert", "assets/shaders/default.frag");
 	Shader lightShader("assets/shaders/light.vert", "assets/shaders/light.frag");
 
-	Model woodPlane("assets/models/woodPlane");
-	woodPlane.SetPosition({0.f,-1.f,0.f});
+	Model gridPlane("assets/models/gridPlane");
+	gridPlane.SetPosition({0.f,0.f,0.f});
+
 	Model sphere("assets/models/sphere");
-	sphere.SetPosition({1.f,0.5f,1.1f});
+	sphere.SetPosition({2.f,2.f,2.f});
+
 	Model cubeStack("assets/models/cubeStack");
-	cubeStack.SetPosition({-1.0f,0.f,-1.0f});
-	Model laika("assets/models/laika");
+	cubeStack.SetPosition({-2.0f,0.1f,-2.0f});
+	
 	Model sword("assets/models/sword");
+	sword.SetPosition({2.0f,1.f,-2.0f});
 
 	Light light({1.f,0.5f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
@@ -55,10 +58,9 @@ int main() {
 		viewport.linkCameraMatrix(lightShader, "cameraMatrix");
 		light.LinkColor(lightShader, "lightColor");
 
-		woodPlane.Draw(defaultShader);
+		gridPlane.Draw(defaultShader);
 		sphere.Draw(defaultShader);
 		cubeStack.Draw(defaultShader);
-		laika.Draw(defaultShader);
 		sword.Draw(defaultShader);
 
 		light.DrawGizmo(lightShader);
