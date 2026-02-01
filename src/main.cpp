@@ -16,18 +16,23 @@ int main() {
 	// One time global parameters
 	glEnable(GL_DEPTH_TEST);
 
-	Viewport viewport(window.getWidth(), window.getHeight(), glm::vec3(0.f,0.f,-2.f));
+	Viewport viewport(window.getWidth(), window.getHeight(), {-9.f,5.f,9.f}, {0.7f, -0.2f, -0.7f});
 
 	// Create and link the shader program from source file6s
     Shader defaultShader("assets/shaders/default.vert", "assets/shaders/default.frag");
+	Shader lightShader("assets/shaders/light.vert", "assets/shaders/light.frag");
 
-	Model cube("assets/models/cube");
+	Model woodPlane("assets/models/woodPlane");
+	woodPlane.SetPosition({0.f,-1.f,0.f});
+	Model sphere("assets/models/sphere");
+	sphere.SetPosition({1.f,0.5f,1.1f});
+	Model cubeStack("assets/models/cubeStack");
+	cubeStack.SetPosition({-1.0f,0.f,-1.0f});
 	Model laika("assets/models/laika");
 	Model sword("assets/models/sword");
-	Model plane("assets/models/woodPlane");
-	Model sphere("assets/models/sphere");
 
-	Light light({1.f,1.f,1.f});
+	Light light({1.f,0.5f,1.f});
+	light.SetPosition({0.f,5.f,0.f});
 
     // Main render loop
 	while (!window.shouldClose())
@@ -44,35 +49,49 @@ int main() {
 
     	viewport.linkCameraMatrix(defaultShader, "cameraMatrix");
 		viewport.linkCameraPos(defaultShader, "cameraPos");
+		light.LinkColor(defaultShader, "lightColor");
+		light.LinkRotation(defaultShader, "lightRotation");
 
-		cube.Draw(defaultShader);
+		viewport.linkCameraMatrix(lightShader, "cameraMatrix");
+		light.LinkColor(lightShader, "lightColor");
+
+		woodPlane.Draw(defaultShader);
+		sphere.Draw(defaultShader);
+		cubeStack.Draw(defaultShader);
 		laika.Draw(defaultShader);
 		sword.Draw(defaultShader);
-		plane.Draw(defaultShader);
-		sphere.Draw(defaultShader);
 
-		light.DrawGizmo(defaultShader);
+		light.DrawGizmo(lightShader);
 
 		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_I) == GLFW_PRESS) {
-			light.gizmo.Translate({0.f, 0.1f, 0.f});
+			light.Rotate({0.01f, 0.0f, 0.f});
 		}
 		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_K) == GLFW_PRESS) {
-			light.gizmo.Translate({0.f, -0.1f, 0.f});
+			light.Rotate({-0.01f, 0.0f, 0.f});
 		}
 		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_J) == GLFW_PRESS) {
-			light.gizmo.Translate({-0.1f, 0.f, 0.0f});
+			light.Rotate({0.0f, -0.01f, 0.f});
 		}
 		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_L) == GLFW_PRESS) {
-			light.gizmo.Translate({0.1f, 0.f, 0.0f});
+			light.Rotate({0.0f, 0.01f, 0.f});
+		}
+		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_APOSTROPHE) == GLFW_PRESS) {
+			std::cout << "posx: " << viewport.position.x << std::endl;
+			std::cout << "posy: " << viewport.position.y << std::endl;
+			std::cout << "posz: " << viewport.position.z << std::endl;
+			std::cout << "rotx: " << viewport.orientation.x << std::endl;
+			std::cout << "roty: " << viewport.orientation.y << std::endl;
+			std::cout << "rotz: " << viewport.orientation.z << std::endl;
 		}
 
 		window.measureTitleBarFPS(true);
 		window.swapBuffers();
 		window.measureTitleBarFPS(false);
+
 	}
 
-    // Manually release OpenGL resources
     defaultShader.Delete();
+	lightShader.Delete();
 
     return 0;
 }

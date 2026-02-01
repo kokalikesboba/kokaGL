@@ -8,11 +8,11 @@ in vec2 texCoord;
 uniform sampler2D diffuse0;
 uniform sampler2D specular0;
 uniform vec3 cameraPos;
+uniform vec3 lightColor;
+uniform vec3 lightDirection;
 
 void main()
 {
-    vec3 lightColor   = vec3(1.0, 1.0, 1.0);
-    vec3 lightDirection = vec3(1.0, 1.0, 1.0);
     vec3 ambientLight = vec3(0.4, 0.4, 0.4);
 
     // Base color

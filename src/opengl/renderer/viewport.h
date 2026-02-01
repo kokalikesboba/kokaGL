@@ -18,7 +18,7 @@ class Viewport
 {
 public:
 	// Camera constructor to set up initial values
-	Viewport(int width, int height, glm::vec3 position);
+	Viewport(int width, int height, glm::vec3 position, glm::vec3 orientation);
 	// Updates and exports the camera matrix to the Vertex Shader
 	void updateCameraMatrix(
 		float FOVdeg,
@@ -31,13 +31,15 @@ public:
 
 	void Inputs(GLFWwindow* window);
 
+	glm::vec3 position;
+	glm::vec3 orientation = glm::vec3(0.0f, 0.0f, -1.0f);
+
 private:
 	// Stores the width and height of the window
 	int fbWidth;
 	int fbHeight;
 	// Stores the main vectors of the camera
-	glm::vec3 position;
-	glm::vec3 orientation = glm::vec3(0.0f, 0.0f, -1.0f);
+
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 	glm::mat4 cameraMatrix = glm::mat4(1.f);
 	// Prevents the camera from jumping around when first clicking left click

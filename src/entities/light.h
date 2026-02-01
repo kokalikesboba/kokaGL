@@ -9,10 +9,19 @@ public:
         glm::vec3 color
     );
     const void DrawGizmo(const Shader& shader);
-    Model gizmo;
-    glm::vec3 color;
+    const void LinkRotation(const Shader& shader, const char* uniform);
+    const void LinkColor(const Shader& shader, const char* uniform);
+
+    void SetPosition(glm::vec3 position);
+    void Translate(glm::vec3 translate);
+    void SetOrientation(glm::vec3 rotation);
+    void Rotate(glm::vec3 rotation);
+
 private:
-    
+    glm::vec3 position;
+    glm::vec3 rotation;
+    glm::vec3 color;
+    Model gizmo;
 };
 
 #endif

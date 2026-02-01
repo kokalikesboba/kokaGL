@@ -14,7 +14,6 @@ public:
 
     void SetPosition(glm::vec3 position);
     void Translate(glm::vec3 translate);
-
     void SetOrientation(glm::vec3 rotation);
     void Rotate(glm::vec3 rotation);
 

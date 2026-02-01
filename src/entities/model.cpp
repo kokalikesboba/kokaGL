@@ -51,5 +51,5 @@ void Model::SetOrientation(glm::vec3 rotation)
 
 void Model::Rotate(glm::vec3 rotation)
 {
-    this->rotation = rotation;
+    this->rotation += rotation;
 }
