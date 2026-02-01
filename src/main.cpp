@@ -15,6 +15,7 @@ int main() {
 
 	// One time global parameters
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
 	Viewport viewport(window.getWidth(), window.getHeight(), {-9.f,5.f,9.f}, {0.7f, -0.2f, -0.7f});
 
@@ -34,7 +35,7 @@ int main() {
 	Model sword("assets/models/sword");
 	sword.SetPosition({2.0f,1.f,-2.0f});
 
-	Light light({1.f,0.5f,1.f});
+	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
 
     // Main render loop
@@ -53,7 +54,7 @@ int main() {
     	viewport.linkCameraMatrix(defaultShader, "cameraMatrix");
 		viewport.linkCameraPos(defaultShader, "cameraPos");
 		light.LinkColor(defaultShader, "lightColor");
-		light.LinkRotation(defaultShader, "lightRotation");
+		light.LinkRotation(defaultShader, "lightDirection");
 
 		viewport.linkCameraMatrix(lightShader, "cameraMatrix");
 		light.LinkColor(lightShader, "lightColor");
@@ -66,16 +67,16 @@ int main() {
 		light.DrawGizmo(lightShader);
 
 		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_I) == GLFW_PRESS) {
-			light.Rotate({0.01f, 0.0f, 0.f});
+			light.Rotate({0.0001f, 0.0f, 0.f});
 		}
 		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_K) == GLFW_PRESS) {
-			light.Rotate({-0.01f, 0.0f, 0.f});
+			light.Rotate({-0.0001f, 0.0f, 0.f});
 		}
 		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_J) == GLFW_PRESS) {
-			light.Rotate({0.0f, -0.01f, 0.f});
+			light.Rotate({0.0f, -0.0001f, 0.f});
 		}
 		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_L) == GLFW_PRESS) {
-			light.Rotate({0.0f, 0.01f, 0.f});
+			light.Rotate({0.0f, 0.0001f, 0.f});
 		}
 		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_APOSTROPHE) == GLFW_PRESS) {
 			std::cout << "posx: " << viewport.position.x << std::endl;

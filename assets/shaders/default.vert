@@ -14,7 +14,7 @@ uniform mat4 modelMatrix;
 
 void main()
 {
-    vertexNormal = aNormal;
+    vertexNormal = vec3(modelMatrix * vec4(aNormal, 0.0));
     texCoord = aTex;
 
     // 2. Calculate current world position
