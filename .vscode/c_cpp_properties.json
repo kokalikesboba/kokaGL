@@ -4,8 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/src",
-                "${workspaceFolder}/libs",
-                "${workspaceFolder}/libs/KHR"
+                "${workspaceFolder}/extern",
+                "${workspaceFolder}/extern/KHR"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",
