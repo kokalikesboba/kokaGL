@@ -1,8 +1,12 @@
 #include "entities/model.h"
 #include "entities/light.h"
 
+#include "imgui.h"
+#include "imgui/backends/imgui_impl_glfw.h"
+#include "imgui/backends/imgui_impl_opengl3.h"
+
 int main() {
-	
+
     GlfwContext glfw;
     Window window(1000, 1000, "kokaGL");
     window.makeContextCurrent();
@@ -12,6 +16,16 @@ int main() {
         std::cerr << "Failed to init GLAD\n";
         return -1;
     }
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplGlfw_InitForOpenGL(window.getWindowPtr(), true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+	ImGui_ImplOpenGL3_Init();
 
 	// One time global parameters
 	glEnable(GL_DEPTH_TEST);
@@ -41,6 +55,15 @@ int main() {
     // Main render loop
 	while (!window.shouldClose())
 	{
+
+		// (Your code calls glfwPollEvents())
+		// ...
+		// Start the Dear ImGui frame
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		ImGui::ShowDemoWindow(); // Show demo window! :)
+
 		window.pollEvents();
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -87,11 +110,21 @@ int main() {
 			std::cout << "rotz: " << viewport.orientation.z << std::endl;
 		}
 
+		// Rendering
+		// (Your code clears your framebuffer, renders your other stuff etc.)
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		// (Your code calls glfwSwapBuffers() etc.)
+
 		window.measureTitleBarFPS(true);
 		window.swapBuffers();
 		window.measureTitleBarFPS(false);
 
 	}
+
+ 	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 
     defaultShader.Delete();
 	lightShader.Delete();

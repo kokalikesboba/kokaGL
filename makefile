@@ -21,10 +21,10 @@ CC  = gcc
 # -O2       : enable optimization (still fine for debugging)
 # -std=c++17: use the C++17 standard
 # -I...     : directories to search for #include "..."
-CXXFLAGS = -g -O2 -std=c++17 -I$(EXTERN) -I$(EXTERN)/KHR -Isrc
+CXXFLAGS = -g -O2 -std=c++17 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc
 
 # Flags for compiling C source files (.c)
-CFLAGS   = -g -O2 -I$(EXTERN) -I$(EXTERN)/KHR -Isrc
+CFLAGS   = -g -O2 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc
 
 
 # =======================
@@ -51,6 +51,13 @@ TARGET = kokaGL
 # All C++ source files in the project
 CPP_SRCS = \
 	$(EXTERN)/stb/stb.cpp \
+	$(EXTERN)/imgui/imgui.cpp \
+	$(EXTERN)/imgui/imgui_draw.cpp \
+	$(EXTERN)/imgui/imgui_tables.cpp \
+	$(EXTERN)/imgui/imgui_widgets.cpp \
+	$(EXTERN)/imgui/imgui_demo.cpp \
+	$(EXTERN)/imgui/backends/imgui_impl_glfw.cpp \
+	$(EXTERN)/imgui/backends/imgui_impl_opengl3.cpp \
 	src/window/window.cpp \
 	src/opengl/buffers/vao.cpp \
 	src/opengl/buffers/vbo.cpp \

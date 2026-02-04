@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/extern",
-                "${workspaceFolder}/extern/KHR"
+                "${workspaceFolder}/extern/KHR",
+                "${workspaceFolder}/extern/imgui/"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",
