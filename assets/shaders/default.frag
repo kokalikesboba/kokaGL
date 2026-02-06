@@ -30,6 +30,6 @@ void main()
 
     vec3 combinedColor = ambientComponent + diffuseComponent;
     FragColor = vec4(combinedColor, 1.0);
-    //FragColor = vec4(vertexNormalNormalized * 0.5 + 0.5, 1.0);
+    // FragColor = vec4(vertexNormalNormalized * 0.5 + 0.5, 1.0);
 }
   
