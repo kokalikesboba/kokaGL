@@ -93,45 +93,25 @@ void Viewport::Inputs(GLFWwindow* window)
 
 
 	// Handles mouse inputs
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
-		// Hides mouse cursor
+		double cursorPosX, cursorPosY;
+		if (glfwRawMouseMotionSupported()) {
+			glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+			std::cout << "raw mouse motion enabled" << std::endl;
+			glfwGetCursorPos(window,&cursorPosX, &cursorPosY);
+		}
+		// Hides cursor because Wayland doesn't hide on disable
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+		// Disables required to get raw mouse input
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		std::cout << cursorPosX << " " << cursorPosY << std::endl;
+		glfwSetCursorPos(window,0.f,0.f);
 
-		// Prevents camera from jumping on the first click
-		if (firstClick)
-		{
-			glfwSetCursorPos(window, (fbWidth / 2), (fbHeight / 2));
-			firstClick = false;
-		}
-
-		// Stores the coordinates of the cursor
-		double mouseX;
-		double mouseY;
-		// Fetches the coordinates of the cursor
-		glfwGetCursorPos(window, &mouseX, &mouseY);
-
-		// Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
-		// and then "transforms" them into degrees 
-		float rotX = sensitivity * (float)(mouseY - (fbHeight / 2)) / fbHeight;
-		float rotY = sensitivity * (float)(mouseX - (fbWidth / 2)) / fbWidth;
-
-		// Calculates upcoming vertical change in the Orientation
-		glm::vec3 newOrientation = glm::rotate(orientation, glm::radians(-rotX), glm::normalize(glm::cross(orientation, up)));
-
-		// Decides whether or not the next vertical Orientation is legal or not
-		if (abs(glm::angle(newOrientation, up) - glm::radians(90.0f)) <= glm::radians(85.0f))
-		{
-			orientation = newOrientation;
-		}
-
-		// Rotates the Orientation left and right
-		orientation = glm::rotate(orientation, glm::radians(-rotY), up);
-
-		// Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
-		glfwSetCursorPos(window, (fbWidth / 2), (fbHeight / 2));
+		// TODO: needs method
+		orientation += glm::vec3(cursorPosX * 0.001f, cursorPosY * -0.001f, 0);
 	}
-	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
+	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
 	{
 		// Unhides cursor since camera is not looking around anymore
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
