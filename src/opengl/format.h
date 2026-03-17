@@ -15,6 +15,11 @@ struct Vertex {
 enum class textureType {
     Diffuse,
     Specular,
+
+	BaseColor,
+	Roughness,
+	Metallic,
+	Normal
 };
 
 #endif

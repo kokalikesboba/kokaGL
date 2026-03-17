@@ -6,6 +6,8 @@
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 
+#include "opengl/renderer/framebuffer.h"
+
 int main() {
 
     GlfwContext glfw;
@@ -31,15 +33,15 @@ int main() {
 	ImGui_ImplGlfw_InitForOpenGL(window.getWindowPtr(), true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
 	ImGui_ImplOpenGL3_Init();
 
-	// One time global parameters
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-
 	Viewport viewport(window.getWidth(), window.getHeight(), {-9.f,5.f,9.f}, {0.7f, -0.2f, -0.7f});
 
 	// Create and link the shader program from source file6s
     Shader defaultShader("assets/shaders/default.vert", "assets/shaders/default.frag");
-	Shader lightShader("assets/shaders/light.vert", "assets/shaders/light.frag");
+	Shader gizmoShader("assets/shaders/light.vert", "assets/shaders/light.frag");
+
+	Shader framebufferProgram("assets/shaders/framebuffer.vert", "assets/shaders/framebuffer.frag");
+	framebufferProgram.Activate();
+	glUniform1i(glGetUniformLocation(framebufferProgram.getID(), "screenTexture"), 0);
 
 	Model gridPlane("assets/models/gridPlane");
 	gridPlane.SetPosition({0.f,0.f,0.f});
@@ -57,11 +59,16 @@ int main() {
 	light.SetPosition({0.f,5.f,0.f});
 	light.SetOrientation({glm::radians(155.f), glm::radians(45.f),0});
 
+	Framebuffer fb;
+
     // Main render loop
 	while (!window.shouldClose())
 	{
+		double cursorPosX, cursorPosY;
+		glfwGetCursorPos(window.getWindowPtr(), &cursorPosX, &cursorPosY);
+
 		window.pollEvents();
-		input.Update(viewport,light);
+		input.Update(viewport, light);
 		viewport.updateCameraMatrix(45.f, 0.1f, 100.0f);
 
 		ImGui_ImplOpenGL3_NewFrame();
@@ -81,25 +88,30 @@ int main() {
 			viewport.orientation.y,
 			viewport.orientation.z
 		);
+		ImGui::Separator();
+		ImGui::Text("Cursor Position");
+		ImGui::Text("X: %.2f  Y: %.2f", (float)cursorPosX, (float)cursorPosY);
 		ImGui::End();
 
-		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glClear(GL_DEPTH_BUFFER_BIT);
+		// === RENDER TO FRAMEBUFFER ===
+		fb.RenderToFramebuffer();
 
-    	viewport.linkCameraMatrix(defaultShader, "cameraMatrix");
+		viewport.linkCameraMatrix(defaultShader, "cameraMatrix");
 		viewport.linkCameraPos(defaultShader, "cameraPos");
 		light.LinkColor(defaultShader, "lightColor");
 		light.LinkRotation(defaultShader, "lightDirection");
 
-		viewport.linkCameraMatrix(lightShader, "cameraMatrix");
-		light.LinkColor(lightShader, "lightColor");
+		viewport.linkCameraMatrix(gizmoShader, "cameraMatrix");
+		light.LinkColor(gizmoShader, "lightColor");
 
 		gridPlane.Draw(defaultShader);
 		sphere.Draw(defaultShader);
 		cubeStack.Draw(defaultShader);
 		sword.Draw(defaultShader);
-		light.DrawGizmo(lightShader);
+		light.DrawGizmo(gizmoShader);
+
+		// === RENDER FRAMEBUFFER TO SCREEN ===
+		fb.RenderToScreen();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -107,7 +119,6 @@ int main() {
 		window.measureTitleBarFPS(true);
 		window.swapBuffers();
 		window.measureTitleBarFPS(false);
-
 	}
 
  	ImGui_ImplOpenGL3_Shutdown();
@@ -115,7 +126,7 @@ int main() {
 	ImGui::DestroyContext();
 
     defaultShader.Delete();
-	lightShader.Delete();
+	gizmoShader.Delete();
 
     return 0;
 }

@@ -84,6 +84,7 @@ void Input::Update(Viewport& viewport, Light& light)
 	// Handles mouse inputs
 	if (glfwGetMouseButton(windowPtr, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
+
 		double cursorPosX, cursorPosY;
 
 		if (glfwRawMouseMotionSupported()) {
@@ -93,6 +94,13 @@ void Input::Update(Viewport& viewport, Light& light)
 		// Bizarre Wayland workaround, both need to be enabled.
 		glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 		glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+		if(viewport.firstClick) {
+			glfwSetCursorPos(windowPtr, 0.f, 0.f);
+			cursorPosX = 0.f;
+			cursorPosY = 0.f;
+			viewport.firstClick = false;
+		}
 
 		viewport.yaw += (float)cursorPosX * viewport.sensitivity;
 		viewport.pitch -= (float)cursorPosY * viewport.sensitivity;
