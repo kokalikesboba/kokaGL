@@ -45,7 +45,8 @@ private:
 	
 	float pitch = 0.f;
 	float yaw = -90.f;
-	float sensitivity = 0.05f; // this default value is nice
+	float sensitivity = 0.03f; // this default value is nice
+	bool firstClick = true;
 
 	float speed = 1.0f;
 };

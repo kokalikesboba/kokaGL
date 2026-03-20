@@ -94,18 +94,17 @@ void Viewport::Inputs(GLFWwindow* window)
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
 		double cursorPosX, cursorPosY;
+
 		if (glfwRawMouseMotionSupported()) {
 			glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 			glfwGetCursorPos(window,&cursorPosX, &cursorPosY);
 		}
-		// Hides cursor because Wayland doesn't hide on disable
+		// Bizarre Wayland workaround, both need to be enabled.
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-		// Disables required to get raw mouse input
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		glfwSetCursorPos(window,0.f,0.f);
 
-		yaw += (float)cursorPosX * 0.05f;
-		pitch -= (float)cursorPosY * 0.05f;
+		yaw += (float)cursorPosX * sensitivity;
+		pitch -= (float)cursorPosY * sensitivity;
 		pitch = glm::clamp(pitch, -89.0f, 89.0f);
 
 		// recompute orientation fresh every frame
@@ -115,10 +114,13 @@ void Viewport::Inputs(GLFWwindow* window)
 			sin(glm::radians(yaw)) * cos(glm::radians(pitch))
     	));
 
+		glfwSetCursorPos(window,0.f,0.f);
+
 	}
 	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
 	{
 		// Unhides cursor since camera is not looking around anymore
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		firstClick = true;
 	}
 }
