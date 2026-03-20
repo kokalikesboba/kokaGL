@@ -90,32 +90,35 @@ void Viewport::Inputs(GLFWwindow* window)
 		fbHeight -= 5.f; 
 	}
 
-
-
 	// Handles mouse inputs
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
 		double cursorPosX, cursorPosY;
 		if (glfwRawMouseMotionSupported()) {
 			glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
-			std::cout << "raw mouse motion enabled" << std::endl;
 			glfwGetCursorPos(window,&cursorPosX, &cursorPosY);
 		}
 		// Hides cursor because Wayland doesn't hide on disable
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 		// Disables required to get raw mouse input
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		std::cout << cursorPosX << " " << cursorPosY << std::endl;
 		glfwSetCursorPos(window,0.f,0.f);
 
-		// TODO: needs method
-		orientation += glm::vec3(cursorPosX * 0.001f, cursorPosY * -0.001f, 0);
+		yaw += (float)cursorPosX * 0.05f;
+		pitch -= (float)cursorPosY * 0.05f;
+		pitch = glm::clamp(pitch, -89.0f, 89.0f);
+
+		// recompute orientation fresh every frame
+   		orientation = glm::normalize(glm::vec3(
+			cos(glm::radians(yaw)) * cos(glm::radians(pitch)),
+			sin(glm::radians(pitch)),
+			sin(glm::radians(yaw)) * cos(glm::radians(pitch))
+    	));
+
 	}
 	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
 	{
 		// Unhides cursor since camera is not looking around anymore
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		// Makes sure the next time the camera looks around it doesn't jump
-		firstClick = true;
 	}
 }

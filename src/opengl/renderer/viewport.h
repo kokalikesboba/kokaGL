@@ -42,11 +42,12 @@ private:
 
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 	glm::mat4 cameraMatrix = glm::mat4(1.f);
-	// Prevents the camera from jumping around when first clicking left click
-	bool firstClick = true;
-	// Adjust the speed of the camera and it's sensitivity when looking around
+	
+	float pitch = 0.f;
+	float yaw = -90.f;
+	float sensitivity = 0.05f; // this default value is nice
+
 	float speed = 1.0f;
-	float sensitivity = 1.0f;	
 };
 
 #endif
