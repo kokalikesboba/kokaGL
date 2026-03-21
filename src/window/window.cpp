@@ -95,10 +95,6 @@ void Window::swapBuffers() const
 void Window::pollEvents() const
 {
     glfwPollEvents();
-
-    if (glfwGetKey(windowPtr, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(windowPtr, GLFW_TRUE);
-    }
 }
 
 void Window::resizeViewport() const

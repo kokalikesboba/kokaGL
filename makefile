@@ -6,10 +6,10 @@ EXTERN = extern
 # =======================
 
 # C++ compiler
-CXX = g++
+CXX = clang++
 
 # C compiler (used for glad.c)
-CC  = gcc
+CC  = clang
 
 
 # =======================
@@ -67,8 +67,9 @@ CPP_SRCS = \
 	src/opengl/pipeline/shader.cpp \
 	src/opengl/renderer/viewport.cpp \
 	src/opengl/renderer/mesh.cpp \
-	src/entities/model.cpp \
-	src/entities/light.cpp \
+	src/engine/entities/model.cpp \
+	src/engine/entities/light.cpp \
+	src/engine/input.cpp \
 	src/main.cpp
 
 # All C source files in the project

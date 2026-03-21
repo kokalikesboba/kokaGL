@@ -1,5 +1,6 @@
-#include "entities/model.h"
-#include "entities/light.h"
+#include "engine/input.h"
+#include "engine/entities/model.h"
+#include "engine/entities/light.h"
 
 #include "imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -10,6 +11,8 @@ int main() {
     GlfwContext glfw;
     Window window(1000, 1000, "kokaGL");
     window.makeContextCurrent();
+
+	Input input(window.getWindowPtr());
 	
     // Load OpenGL function pointers via GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -52,28 +55,37 @@ int main() {
 
 	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
+	light.SetOrientation({glm::radians(155.f), glm::radians(45.f),0});
 
     // Main render loop
 	while (!window.shouldClose())
 	{
+		window.pollEvents();
+		input.Update(viewport,light);
+		viewport.updateCameraMatrix(45.f, 0.1f, 100.0f);
 
-		// (Your code calls glfwPollEvents())
-		// ...
-		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		ImGui::ShowDemoWindow(); // Show demo window! :)
-
-		window.pollEvents();
+		ImGui::Begin("Camera");
+		ImGui::Text("Position");
+		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f", 
+			viewport.position.x, 
+			viewport.position.y, 
+			viewport.position.z
+		);
+		ImGui::Separator();
+		ImGui::Text("Orientation");
+		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f",
+			viewport.orientation.x,
+			viewport.orientation.y,
+			viewport.orientation.z
+		);
+		ImGui::End();
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
-
-		// TODO: Decouple input management from viewport class.
-		viewport.Inputs(window.getWindowPtr());
-		viewport.updateCameraMatrix(45.f, 0.1f, 100.0f);
 
     	viewport.linkCameraMatrix(defaultShader, "cameraMatrix");
 		viewport.linkCameraPos(defaultShader, "cameraPos");
@@ -87,35 +99,10 @@ int main() {
 		sphere.Draw(defaultShader);
 		cubeStack.Draw(defaultShader);
 		sword.Draw(defaultShader);
-
 		light.DrawGizmo(lightShader);
 
-		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_I) == GLFW_PRESS) {
-			light.Rotate({0.0001f, 0.0f, 0.f});
-		}
-		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_K) == GLFW_PRESS) {
-			light.Rotate({-0.0001f, 0.0f, 0.f});
-		}
-		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_J) == GLFW_PRESS) {
-			light.Rotate({0.0f, -0.0001f, 0.f});
-		}
-		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_L) == GLFW_PRESS) {
-			light.Rotate({0.0f, 0.0001f, 0.f});
-		}
-		if (glfwGetKey(window.getWindowPtr(), GLFW_KEY_APOSTROPHE) == GLFW_PRESS) {
-			std::cout << "posx: " << viewport.position.x << std::endl;
-			std::cout << "posy: " << viewport.position.y << std::endl;
-			std::cout << "posz: " << viewport.position.z << std::endl;
-			std::cout << "rotx: " << viewport.orientation.x << std::endl;
-			std::cout << "roty: " << viewport.orientation.y << std::endl;
-			std::cout << "rotz: " << viewport.orientation.z << std::endl;
-		}
-
-		// Rendering
-		// (Your code clears your framebuffer, renders your other stuff etc.)
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		// (Your code calls glfwSwapBuffers() etc.)
 
 		window.measureTitleBarFPS(true);
 		window.swapBuffers();

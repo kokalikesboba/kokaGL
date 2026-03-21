@@ -3,7 +3,6 @@
 Model::Model(const char* modelDir) {
     
     position = {0.f, 0.f, 0.f};
-    rotation = {0.f, 0.f, 0.f};
     scale = {1.f, 1.f, 1.f};
 
     returnedData parsed = loadModelData(modelDir);
@@ -49,7 +48,8 @@ void Model::SetOrientation(glm::vec3 rotation)
     this->rotation = rotation;
 }
 
-void Model::Rotate(glm::vec3 rotation)
-{
-    this->rotation += rotation;
+void Model::Rotate(glm::vec3 delta) {
+    glm::quat rotX = glm::angleAxis(delta.x, glm::vec3(1,0,0));
+    glm::quat rotY = glm::angleAxis(delta.y, glm::vec3(0,1,0));
+    rotation = rotY * rotX * rotation;
 }

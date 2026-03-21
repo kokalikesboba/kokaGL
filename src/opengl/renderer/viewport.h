@@ -9,7 +9,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/rotate_vector.hpp>	
 #include <glm/gtx/vector_angle.hpp>
 
 // #include "opengl/buffers/ubo.h"
@@ -29,12 +29,9 @@ public:
 
 	void linkCameraPos(const Shader& shader, const char* uniform) const;
 
-	void Inputs(GLFWwindow* window);
-
 	glm::vec3 position;
 	glm::vec3 orientation = glm::vec3(0.0f, 0.0f, -1.0f);
 
-private:
 	// Stores the width and height of the window
 	int fbWidth;
 	int fbHeight;

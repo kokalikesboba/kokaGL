@@ -19,7 +19,7 @@ public:
 
 private:
     glm::vec3 position;
-    glm::vec3 rotation;
+    glm::quat rotation = glm::quat(1,0,0,0);
     glm::vec3 scale;
 
     std::unique_ptr<Mesh> mesh;
