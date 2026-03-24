@@ -22,6 +22,7 @@ public:
 	void Delete();
 	// ID gettter
 	GLuint getID() const;
+	~Shader();
 
 private:
 	// Reference ID of the Shader Program

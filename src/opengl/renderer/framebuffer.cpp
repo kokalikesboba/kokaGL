@@ -10,8 +10,10 @@ float rectangleVertices[] = {
 	-1.0f, 1.0f, 0.0f, 1.0f
 };
 
-Framebuffer::Framebuffer() 
+Framebuffer::Framebuffer(const double& width, const double& height) 
 {
+	this->width = width;
+	this->height = height;
 	fbo.Bind();
 	vao.Bind();
 	vbo.Bind();
@@ -21,7 +23,7 @@ Framebuffer::Framebuffer()
 
     glGenTextures(1,&frameBufferTextureID);
 	glBindTexture(GL_TEXTURE_2D, frameBufferTextureID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1500, 1500, 0 , GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0 , GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -30,7 +32,7 @@ Framebuffer::Framebuffer()
 
 	glGenRenderbuffers(1, &RBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1500,1500);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 
     auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -42,7 +44,15 @@ Framebuffer::Framebuffer()
 
 }
 
-void Framebuffer::RenderToScreen(const Shader &shader) const
+void Framebuffer::RenderToFramebuffer() const
+{
+    fbo.Bind();
+    glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+}
+
+void Framebuffer::FramebufferToWindow(const Shader &shader) const
 {
 	fbo.Unbind();
     shader.Activate();
@@ -52,10 +62,8 @@ void Framebuffer::RenderToScreen(const Shader &shader) const
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void Framebuffer::RenderToFramebuffer() const
+Framebuffer::~Framebuffer()
 {
-    fbo.Bind();
-    glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
+	glDeleteTextures(1, &frameBufferTextureID);
+	glDeleteBuffers(1, &RBO);
 }

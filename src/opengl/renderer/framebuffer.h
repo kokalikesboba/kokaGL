@@ -8,9 +8,10 @@
 
 class Framebuffer {
     public:
-        Framebuffer();
-        void RenderToScreen(const Shader& shader) const;
+        Framebuffer(const double& width, const double& height);
         void RenderToFramebuffer() const;
+        void FramebufferToWindow(const Shader& shader) const;
+        ~Framebuffer();
     private:
         double width;
         double height;

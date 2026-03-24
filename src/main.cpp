@@ -34,24 +34,13 @@ int main() {
 	ImGui_ImplOpenGL3_Init();
 
 	Viewport viewport(window.getWidth(), window.getHeight(), {0,0,0}, {0,0,0});
-
-	// Create and link the shader program from source file6s
-    Shader defaultShader("assets/shaders/default.vert", "assets/shaders/default.frag");
-	Shader gizmoShader("assets/shaders/light.vert", "assets/shaders/light.frag");
-
-	Shader framebufferProgram("assets/shaders/framebuffer.vert", "assets/shaders/framebuffer.frag");
-	framebufferProgram.Activate();
-	glUniform1i(glGetUniformLocation(framebufferProgram.getID(), "screenTexture"), 0);
-
+	
 	Model gridPlane("assets/models/gridPlane");
 	gridPlane.SetPosition({0.f,0.f,0.f});
-
 	Model sphere("assets/models/sphere");
 	sphere.SetPosition({2.f,2.f,2.f});
-
 	Model cubeStack("assets/models/cubeStack");
 	cubeStack.SetPosition({-2.0f,0.1f,-2.0f});
-	
 	Model sword("assets/models/sword");
 	sword.SetPosition({2.0f,1.f,-2.0f});
 
@@ -59,20 +48,22 @@ int main() {
 	light.SetPosition({0.f,5.f,0.f});
 	light.SetOrientation({glm::radians(155.f), glm::radians(45.f),0});
 
-	// Framebuffer fb;
+	// Create and link the shader program from source file6s
+    Shader defaultShader("assets/shaders/default.vert", "assets/shaders/default.frag");
+	Shader gizmoShader("assets/shaders/light.vert", "assets/shaders/light.frag");
+
+	Framebuffer postProcess(window.getWidth(), window.getHeight());
+	Shader framebufferProgram("assets/shaders/framebuffer.vert", "assets/shaders/framebuffer.frag");
+	framebufferProgram.Activate();
+	glUniform1i(glGetUniformLocation(framebufferProgram.getID(), "screenTexture"), 0);
 
     // Main render loop
 	while (!window.shouldClose())
 	{
-		double cursorPosX, cursorPosY;
-		glfwGetCursorPos(window.getWindowPtr(), &cursorPosX, &cursorPosY);
-
 		window.pollEvents();
 		input.Update(viewport, light);
 		viewport.updateCameraMatrix(45.f, 0.1f, 100.0f);
-
-
-
+		
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -90,6 +81,9 @@ int main() {
 			viewport.orientation.y,
 			viewport.orientation.z
 		);
+
+		double cursorPosX, cursorPosY;
+		glfwGetCursorPos(window.getWindowPtr(), &cursorPosX, &cursorPosY);
 		ImGui::Separator();
 		ImGui::Text("Cursor Position");
 		ImGui::Text("X: %.2f  Y: %.2f", (float)cursorPosX, (float)cursorPosY);
@@ -103,16 +97,15 @@ int main() {
 		viewport.linkCameraMatrix(gizmoShader, "cameraMatrix");
 		light.LinkColor(gizmoShader, "lightColor");
 
+		postProcess.RenderToFramebuffer();
 
-		
 		gridPlane.Draw(defaultShader);
 		sphere.Draw(defaultShader);
 		cubeStack.Draw(defaultShader);
 		sword.Draw(defaultShader);
 		light.DrawGizmo(gizmoShader);
 
-		// === RENDER FRAMEBUFFER TO SCREEN ===
-		// fb.RenderToScreen();
+		postProcess.FramebufferToWindow(framebufferProgram);
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -125,9 +118,6 @@ int main() {
  	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-
-    defaultShader.Delete();
-	gizmoShader.Delete();
-
+	
     return 0;
 }

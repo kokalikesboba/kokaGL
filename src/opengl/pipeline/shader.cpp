@@ -75,6 +75,11 @@ GLuint Shader::getID() const
     return ID;
 }
 
+Shader::~Shader()
+{
+	Delete();
+}
+
 // Checks if the different Shaders have compiled properly
 void Shader::compileErrors(unsigned int shader, const char* type)
 {
