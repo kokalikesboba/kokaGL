@@ -12,7 +12,8 @@ class VAO {
 		// Construct a VAO.
 		VAO();
 		// Links a VBO to a VAO. 
-		void LinkAttrib(const VBO& VBO,
+		void LinkAttrib(
+			const VBO& VBO,
 			const GLuint& layout,
 			const GLuint& numComponents,
 			const GLenum& type,

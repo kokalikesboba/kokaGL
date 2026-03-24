@@ -6,10 +6,10 @@ EXTERN = extern
 # =======================
 
 # C++ compiler
-CXX = g++
+CXX = clang++
 
 # C compiler (used for glad.c)
-CC  = gcc
+CC  = clang
 
 
 # =======================

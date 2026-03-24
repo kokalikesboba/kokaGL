@@ -33,7 +33,7 @@ int main() {
 	ImGui_ImplGlfw_InitForOpenGL(window.getWindowPtr(), true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
 	ImGui_ImplOpenGL3_Init();
 
-	Viewport viewport(window.getWidth(), window.getHeight(), {-9.f,5.f,9.f}, {0.7f, -0.2f, -0.7f});
+	Viewport viewport(window.getWidth(), window.getHeight(), {0,0,0}, {0,0,0});
 
 	// Create and link the shader program from source file6s
     Shader defaultShader("assets/shaders/default.vert", "assets/shaders/default.frag");
@@ -59,7 +59,7 @@ int main() {
 	light.SetPosition({0.f,5.f,0.f});
 	light.SetOrientation({glm::radians(155.f), glm::radians(45.f),0});
 
-	Framebuffer fb;
+	// Framebuffer fb;
 
     // Main render loop
 	while (!window.shouldClose())
@@ -70,6 +70,8 @@ int main() {
 		window.pollEvents();
 		input.Update(viewport, light);
 		viewport.updateCameraMatrix(45.f, 0.1f, 100.0f);
+
+
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -93,9 +95,6 @@ int main() {
 		ImGui::Text("X: %.2f  Y: %.2f", (float)cursorPosX, (float)cursorPosY);
 		ImGui::End();
 
-		// === RENDER TO FRAMEBUFFER ===
-		fb.RenderToFramebuffer();
-
 		viewport.linkCameraMatrix(defaultShader, "cameraMatrix");
 		viewport.linkCameraPos(defaultShader, "cameraPos");
 		light.LinkColor(defaultShader, "lightColor");
@@ -104,6 +103,8 @@ int main() {
 		viewport.linkCameraMatrix(gizmoShader, "cameraMatrix");
 		light.LinkColor(gizmoShader, "lightColor");
 
+
+		
 		gridPlane.Draw(defaultShader);
 		sphere.Draw(defaultShader);
 		cubeStack.Draw(defaultShader);
@@ -111,7 +112,7 @@ int main() {
 		light.DrawGizmo(gizmoShader);
 
 		// === RENDER FRAMEBUFFER TO SCREEN ===
-		fb.RenderToScreen();
+		// fb.RenderToScreen();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -12,6 +12,7 @@
 class VBO
 {
 public:
+	VBO();
 	// Constructs a VBO. This buffer will not remain bound after execution.
 	VBO(const std::vector <Vertex>& vertices);
 	// Binds the VBO

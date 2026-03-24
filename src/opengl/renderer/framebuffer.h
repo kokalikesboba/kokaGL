@@ -1,18 +1,24 @@
 #ifndef FRAMEBUFFER_H
 #define FRAMEBUFFER_H
 
+#include <opengl/buffers/vao.h>
+#include <opengl/buffers/vbo.h>
 #include <opengl/buffers/fbo.h>
+#include <opengl/pipeline/shader.h>
 
 class Framebuffer {
     public:
         Framebuffer();
-        void RenderToScreen();
-        void RenderToFramebuffer();
+        void RenderToScreen(const Shader& shader) const;
+        void RenderToFramebuffer() const;
     private:
-        unsigned int rectVAO, rectVBO;
+        double width;
+        double height;
+        VAO vao;
+        VBO vbo;
         FBO fbo;
-        GLuint texture = 0;
-        GLuint framebufferTexture = 0;
+        GLuint frameBufferTextureID;
+        GLuint RBO;
 };
 
 #endif

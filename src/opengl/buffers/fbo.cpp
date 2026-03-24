@@ -18,7 +18,7 @@ void FBO::Unbind() const
 void FBO::Delete()
 {
     if (ID != 0) {
-		glDeleteVertexArrays(1, &ID);
+		glDeleteFramebuffers(1, &ID);
 		ID = 0;
 	} else {
 		std::cout << "FBO already empty or deleted" << std::endl;
