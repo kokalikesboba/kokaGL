@@ -18,6 +18,7 @@ class Framebuffer {
         VAO vao;
         VBO vbo;
         FBO fbo;
+        // Implicitly created resources that aren't super relevant for the rest of the pipeline.
         GLuint frameBufferTextureID;
         GLuint RBO;
 };

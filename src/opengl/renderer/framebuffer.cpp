@@ -23,7 +23,7 @@ Framebuffer::Framebuffer(const double& width, const double& height)
 
     glGenTextures(1,&frameBufferTextureID);
 	glBindTexture(GL_TEXTURE_2D, frameBufferTextureID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0 , GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0 , GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -47,17 +47,14 @@ Framebuffer::Framebuffer(const double& width, const double& height)
 void Framebuffer::RenderToFramebuffer() const
 {
     fbo.Bind();
-    glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
 }
 
 void Framebuffer::FramebufferToWindow(const Shader &shader) const
 {
-	fbo.Unbind();
+    fbo.Unbind();
     shader.Activate();
     vao.Bind();
-    glDisable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
     glBindTexture(GL_TEXTURE_2D, frameBufferTextureID);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }

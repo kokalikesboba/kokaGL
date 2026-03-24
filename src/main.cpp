@@ -33,8 +33,11 @@ int main() {
 	ImGui_ImplGlfw_InitForOpenGL(window.getWindowPtr(), true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
 	ImGui_ImplOpenGL3_Init();
 
-	Viewport viewport(window.getWidth(), window.getHeight(), {0,0,0}, {0,0,0});
+	Viewport viewport(window.getWidth(), window.getHeight(), {0,3,10}, {0,0,-1});
 	
+	// Create and link the shader program from source file6s
+    Shader pointLight("assets/shaders/pointLight.vert", "assets/shaders/pointLight.frag");
+
 	Model gridPlane("assets/models/gridPlane");
 	gridPlane.SetPosition({0.f,0.f,0.f});
 	Model sphere("assets/models/sphere");
@@ -48,14 +51,16 @@ int main() {
 	light.SetPosition({0.f,5.f,0.f});
 	light.SetOrientation({glm::radians(155.f), glm::radians(45.f),0});
 
-	// Create and link the shader program from source file6s
-    Shader defaultShader("assets/shaders/default.vert", "assets/shaders/default.frag");
-	Shader gizmoShader("assets/shaders/light.vert", "assets/shaders/light.frag");
-
 	Framebuffer postProcess(window.getWidth(), window.getHeight());
-	Shader framebufferProgram("assets/shaders/framebuffer.vert", "assets/shaders/framebuffer.frag");
-	framebufferProgram.Activate();
-	glUniform1i(glGetUniformLocation(framebufferProgram.getID(), "screenTexture"), 0);
+	Shader pp_edgeDetector("assets/shaders/pp_edgeDetector.vert", "assets/shaders/pp_edgeDetector.frag");
+	pp_edgeDetector.Activate();
+	glUniform1i(glGetUniformLocation(pp_edgeDetector.getID(), "screenTexture"), 0);
+
+	Shader lightGizmo("assets/shaders/lightGizmo.vert", "assets/shaders/lightGizmo.frag");
+	Framebuffer gizmoLayer(window.getWidth(), window.getHeight());
+	Shader pp_default("assets/shaders/pp_default.vert", "assets/shaders/pp_default.frag");
+	pp_default.Activate();
+	glUniform1i(glGetUniformLocation(pp_default.getID(), "screenTexture"), 0);
 
     // Main render loop
 	while (!window.shouldClose())
@@ -89,24 +94,32 @@ int main() {
 		ImGui::Text("X: %.2f  Y: %.2f", (float)cursorPosX, (float)cursorPosY);
 		ImGui::End();
 
-		viewport.linkCameraMatrix(defaultShader, "cameraMatrix");
-		viewport.linkCameraPos(defaultShader, "cameraPos");
-		light.LinkColor(defaultShader, "lightColor");
-		light.LinkRotation(defaultShader, "lightDirection");
+		viewport.linkCameraMatrix(pointLight, "cameraMatrix");
+		viewport.linkCameraPos(pointLight, "cameraPos");
+		light.LinkColor(pointLight, "lightColor");
+		light.LinkRotation(pointLight, "lightDirection");
 
-		viewport.linkCameraMatrix(gizmoShader, "cameraMatrix");
-		light.LinkColor(gizmoShader, "lightColor");
+		viewport.linkCameraMatrix(lightGizmo, "cameraMatrix");
+		light.LinkColor(lightGizmo, "lightColor");
 
 		postProcess.RenderToFramebuffer();
+		glEnable(GL_DEPTH_TEST);
+		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		gridPlane.Draw(pointLight);
+		sphere.Draw(pointLight);
+		cubeStack.Draw(pointLight);
+		sword.Draw(pointLight);
+		postProcess.FramebufferToWindow(pp_default);
 
-		gridPlane.Draw(defaultShader);
-		sphere.Draw(defaultShader);
-		cubeStack.Draw(defaultShader);
-		sword.Draw(defaultShader);
-		light.DrawGizmo(gizmoShader);
+		gizmoLayer.RenderToFramebuffer();
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		light.DrawGizmo(lightGizmo);
+		gizmoLayer.FramebufferToWindow(pp_default);
 
-		postProcess.FramebufferToWindow(framebufferProgram);
-
+		
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
