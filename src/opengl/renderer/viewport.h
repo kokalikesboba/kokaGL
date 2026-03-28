@@ -20,15 +20,15 @@ public:
 	// Camera constructor to set up initial values
 	Viewport(int width, int height, glm::vec3 position, glm::vec3 orientation);
 	// Updates and exports the camera matrix to the Vertex Shader
-	void updateCameraMatrix(
+	void UpdateCameraMatrix(
 		float FOVdeg,
 		float nearPlane,
 		float farPlane
 	);
-	void linkCameraMatrix(const Shader& shader, const char* uniform) const;
-
-	void linkCameraPos(const Shader& shader, const char* uniform) const;
-
+	void LinkCameraMatrix(const Shader& shader, const char* uniform) const;
+	void LinkCameraPos(const Shader& shader, const char* uniform) const;
+	void SetPosition(glm::vec3 position);
+	void SetOrientation(glm::vec3 rotation);
 	glm::vec3 position;
 	glm::vec3 orientation = glm::vec3(0.0f, 0.0f, -1.0f);
 
@@ -44,8 +44,6 @@ public:
 	float yaw = -90.f;
 	float sensitivity = 0.03f; // this default value is nice
 	bool firstClick = true;
-
-	float speed = 1.0f;
 };
 
 #endif

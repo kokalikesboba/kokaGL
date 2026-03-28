@@ -8,7 +8,7 @@ public:
     Light(
         glm::vec3 color
     );
-    void DrawGizmo(const Shader& shader) const;
+    void Draw(const Shader& shader) const;
     void LinkRotation(const Shader& shader, const char* uniform) const;
     void LinkColor(const Shader& shader, const char* uniform) const;
 

@@ -5,9 +5,9 @@ Input::Input(GLFWwindow *windowPtr)
     this->windowPtr = windowPtr;
 }
 
-void Input::Update(Viewport& viewport, Light& light)
+void Input::Update(Viewport &viewport, const float &dt, Light &light)
 {
-    if (glfwGetKey(windowPtr, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+	if (glfwGetKey(windowPtr, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(windowPtr, GLFW_TRUE);
     }
     if (glfwGetKey(windowPtr, GLFW_KEY_I) == GLFW_PRESS) {
@@ -32,35 +32,35 @@ void Input::Update(Viewport& viewport, Light& light)
     }
 	if (glfwGetKey(windowPtr, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		viewport.position += viewport.speed * viewport.orientation;
+		viewport.position += (movementSpeed * dt) * viewport.orientation;
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		viewport.position += viewport.speed * -glm::normalize(glm::cross(viewport.orientation, viewport.up));
+		viewport.position +=(movementSpeed * dt) * -glm::normalize(glm::cross(viewport.orientation, viewport.up));
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		viewport.position += viewport.speed * -viewport.orientation;
+		viewport.position += (movementSpeed * dt) * -viewport.orientation;
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		viewport.position += viewport.speed * glm::normalize(glm::cross(viewport.orientation, viewport.up));
+		viewport.position += (movementSpeed * dt) * glm::normalize(glm::cross(viewport.orientation, viewport.up));
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		viewport.position += viewport.speed * viewport.up;
+		viewport.position += (movementSpeed * dt) * viewport.up;
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 	{
-		viewport.position += viewport.speed * -viewport.up;
+		viewport.position += (movementSpeed * dt) * -viewport.up;
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_TAB) == GLFW_PRESS)
 	{
-		viewport.speed = 0.4f;
+		movementSpeed = 10.0f;
 	}
 	else if (glfwGetKey(windowPtr, GLFW_KEY_TAB) == GLFW_RELEASE)
 	{
-		viewport.speed = 0.1f;
+		movementSpeed = 10.f;
 	}
 
 	if (glfwGetKey(windowPtr, GLFW_KEY_LEFT) == GLFW_PRESS)
@@ -79,6 +79,10 @@ void Input::Update(Viewport& viewport, Light& light)
 		if (glfwGetKey(windowPtr, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
 		viewport.fbHeight -= 5.f; 
+	}
+	if (glfwGetKey(windowPtr, GLFW_KEY_H) == GLFW_PRESS)
+	{
+		viewport.SetPosition({0.f,0.f,0.f});
 	}
 
 	// Handles mouse inputs

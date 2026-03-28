@@ -7,8 +7,9 @@
 class Input {
     public:
         Input(GLFWwindow* windowPtr);
-        void Update(Viewport& viewport, Light& light);
+        void Update(Viewport& viewport, const float& dt, Light& light);
 
     private:
         GLFWwindow* windowPtr;
+        float movementSpeed = 10.f;
 };

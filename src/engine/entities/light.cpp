@@ -6,7 +6,7 @@ Light::Light(glm::vec3 color) : gizmo("assets/models/pointer")
     this->color = color;
 }
 
-void Light::DrawGizmo(const Shader &shader) const
+void Light::Draw(const Shader &shader) const
 {
     gizmo.Draw(shader);
 }
