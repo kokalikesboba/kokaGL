@@ -1,54 +1,33 @@
 EXTERN = extern
-
-
 # =======================
 # COMPILERS
 # =======================
-
-# C++ compiler
 CXX = clang++
-
-# C compiler (used for glad.c)
 CC  = clang
-
-
 # =======================
 # COMPILER FLAGS
 # =======================
-
-# Flags for compiling C++ source files (.cpp)
-# -g        : include debug symbols
-# -O2       : enable optimization (still fine for debugging)
-# -std=c++17: use the C++17 standard
-# -I...     : directories to search for #include "..."
 CXXFLAGS = -g -O2 -std=c++17 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc
-
-# Flags for compiling C source files (.c)
 CFLAGS   = -g -O2 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc
-
-
 # =======================
-# LINKER FLAGS
+# PLATFORMS
 # =======================
-
-# Libraries to link against when creating the final executable
-# These are ONLY used in the final link step
-LDLIBS   = -lglfw -lGL -ldl -lassimp
-
-
+UNAME := $(shell uname)
+ifeq ($(UNAME), Darwin)
+    CXXFLAGS += -I/opt/homebrew/include
+    CFLAGS   += -I/opt/homebrew/include
+    LDLIBS    = -lglfw -lassimp -framework OpenGL
+    LDFLAGS  += -L/opt/homebrew/lib
+else
+    LDLIBS    = -lglfw -lGL -ldl -lassimp
+endif
 # =======================
 # OUTPUT
 # =======================
-
-# Name of the final executable
 TARGET = kokaGL
-
-
 # =======================
 # SOURCE FILES
 # =======================
-
-# All C++ source files in the project
 CPP_SRCS = \
 	$(EXTERN)/stb/stb.cpp \
 	$(EXTERN)/imgui/imgui.cpp \
@@ -74,7 +53,6 @@ CPP_SRCS = \
 	src/engine/input.cpp \
 	src/main.cpp
 
-# All C source files in the project
 C_SRCS = \
 	$(EXTERN)/glad/glad.c
 
@@ -112,7 +90,7 @@ all: $(TARGET)
 # The final executable depends on ALL object files
 # If any .o file changes, this rule runs
 $(TARGET): $(OBJS)
-	$(CXX) $(OBJS) -o $(TARGET) $(LDLIBS)
+	$(CXX) $(OBJS) -o $(TARGET) $(LDFLAGS) $(LDLIBS)
 
 
 # =======================

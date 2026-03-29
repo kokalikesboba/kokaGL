@@ -69,8 +69,8 @@ int main() {
 	pp_default.Activate();
 	glUniform1i(glGetUniformLocation(pp_default.getID(), "screenTexture"), 0);
 
-	window.verticalSync(true);
-	bool limitFPS = (false);
+	window.verticalSync(false);
+	bool limitFPS = (false);	
 	auto frametimeTarget = std::chrono::duration<float, std::milli>(1000.0f / 120.0f);
 	float deltatime = 1.f;
 

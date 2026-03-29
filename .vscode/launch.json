@@ -1,7 +1,17 @@
 {
     "configurations": [
         {
-            "name": "C/C++: g++ build and debug active file",
+            "name": "Debug (Mac)",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/kokaGL",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "build with make",
+            "stopOnEntry": false,
+        },
+        {
+            "name": "Debug (Linux)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/kokaGL",
@@ -11,20 +21,8 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                },
-                {
-                    "description": "Set Disassembly Flavor to Intel",
-                    "text": "-gdb-set disassembly-flavor intel",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "C/C++: g++ build active file",
-            "miDebuggerPath": "/usr/bin/gdb"
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "build with make"
         }
     ],
     "version": "2.0.0"

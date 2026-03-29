@@ -86,7 +86,7 @@ void Input::Update(Viewport &viewport, const float &dt, Light &light)
 	}
 
 	// Handles mouse inputs
-	if (glfwGetMouseButton(windowPtr, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	if (glfwGetMouseButton(windowPtr, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
 
 		double cursorPosX, cursorPosY;

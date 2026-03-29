@@ -1,6 +1,20 @@
 {
     "configurations": [
         {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/extern",
+                "${workspaceFolder}/extern/KHR",
+                "${workspaceFolder}/extern/imgui/",
+                "/opt/homebrew/include"
+            ],
+            "compilerPath": "/usr/bin/clang++",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "macos-clang-arm64"
+        },
+        {
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/src",
@@ -8,8 +22,7 @@
                 "${workspaceFolder}/extern/KHR",
                 "${workspaceFolder}/extern/imgui/"
             ],
-            "defines": [],
-            "compilerPath": "/usr/bin/g++",
+            "compilerPath": "/usr/bin/clang++",
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "linux-clang-x64"
