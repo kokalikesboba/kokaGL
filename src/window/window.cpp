@@ -1,9 +1,7 @@
 #include "window.h"
-#include "stb/stb_img.h"
 
 GlfwContext::GlfwContext()
 {
-    // Initialize GLFW library
     if (!glfwInit()) {
         throw std::runtime_error("Failed to init GLFW");
     }
@@ -11,8 +9,12 @@ GlfwContext::GlfwContext()
 
 GlfwContext::~GlfwContext()
 {
-    // Shut down GLFW and destroy the window/context
     glfwTerminate();
+}
+
+void error_callback(int error, const char* description)
+{
+    fprintf(stderr, "GLFW Error (%d): %s\n", error, description);
 }
 
 Window::Window(unsigned int width, unsigned int height, const char *title) 
@@ -20,7 +22,7 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
     windowPtr = nullptr;
     desiredTitle = std::string(title);
 
-    // Request an OpenGL 3.3 core profile context
+        // Request an OpenGL 3.3 core profile context
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -29,19 +31,25 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
     if (!windowPtr) {
         throw std::runtime_error("Failed to create a GLFW window");
     }
-    GLFWimage icon;
-    unsigned char* imgPixels =
-        stbi_load("assets/images/marz_boudle.png",
-                &icon.width,
-                &icon.height,
-                nullptr,
-                4);
-    icon.pixels = imgPixels;
-    if (!icon.pixels) {
-        throw std::runtime_error("Failed to load window icon");
-    }
-    glfwSetWindowIcon(windowPtr, 1, &icon);
-    stbi_image_free(imgPixels);
+
+    // glfwSetErrorCallback(error_callback);
+    #if defined(__linux__) || defined(_WIN32)
+        // Code to include if EITHER OPTION_A or OPTION_B is defined
+        
+        GLFWimage icon;
+        unsigned char* imgPixels =
+            stbi_load("assets/images/marz_boudle.png",
+                    &icon.width,
+                    &icon.height,
+                    nullptr,
+                    4);
+        icon.pixels = imgPixels;
+        if (!icon.pixels) {
+            throw std::runtime_error("Failed to load window icon");
+        }
+        glfwSetWindowIcon(windowPtr, 1, &icon);
+        stbi_image_free(imgPixels);
+    #endif
 }
 
 Window::~Window()
@@ -112,23 +120,6 @@ void Window::renameWindow(const char* title) const
 void Window::verticalSync(bool state) const
 {
     glfwSwapInterval(state);
-}
-
-void Window::measureTitleBarFPS(bool state)
-{
-    using clock = std::chrono::high_resolution_clock;
-
-    if (state == true) { 
-        frameTimeStart = clock::now();
-    } else {
-        frameTimeEnd = clock::now();
-		std::chrono::duration<float> elapsed = frameTimeEnd - frameTimeStart;
-		frameTimeStart = frameTimeEnd;
-		float fps = 1.f / elapsed.count();
-		std::string secondsAsString = std::to_string(fps);
-		std::string title = desiredTitle + std::string(" - ") + secondsAsString + std::string(" FPS");
-		renameWindow(title.c_str());
-    }
 }
 
 bool Window::shouldClose() const

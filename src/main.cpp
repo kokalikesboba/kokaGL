@@ -1,3 +1,7 @@
+#ifdef __APPLE__
+	#include <mach-o/dyld.h>  // macOS specific
+#endif
+
 #include "engine/input.h"
 #include "engine/entities/model.h"
 #include "engine/entities/light.h"
@@ -7,17 +11,24 @@
 #include "imgui/backends/imgui_impl_opengl3.h"
 
 #include "opengl/renderer/framebuffer.h"
-
 #include "opengl/utils.h"
 
 #include <chrono>
 #include <thread>
 
-
 int main() {
 
+	#ifdef __APPLE__
+		uint32_t size = PATH_MAX;
+		char exePath[PATH_MAX];
+		_NSGetExecutablePath(exePath, &size);
+
+		std::filesystem::path dir = std::filesystem::path(exePath).parent_path();
+		std::filesystem::current_path(dir);
+	#endif
+	
     GlfwContext glfw;
-    Window window(1000, 1000, "kokaGL");
+    Window window(800, 800, "kokaGL");
     window.makeContextCurrent();
 
 	Input input(window.getWindowPtr());
@@ -28,7 +39,7 @@ int main() {
         return -1;
     }
 
-	printGPUSpecs();
+	// printGPUSpecs();
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -70,8 +81,8 @@ int main() {
 	glUniform1i(glGetUniformLocation(pp_default.getID(), "screenTexture"), 0);
 
 	window.verticalSync(false);
-	bool limitFPS = (false);	
-	auto frametimeTarget = std::chrono::duration<float, std::milli>(1000.0f / 120.0f);
+	bool limitFPS = (true);	
+	int fpsTarget = 60;
 	float deltatime = 1.f;
 
 	auto fpsSampleBegin = std::chrono::steady_clock::now();
@@ -83,12 +94,14 @@ int main() {
     // Main render loop
 	while (!window.shouldClose())
 	{
+		auto frametimeTarget = std::chrono::duration<float, std::milli>(1000.0f / fpsTarget);
 		auto frametimeStart = std::chrono::steady_clock::now();
+
 		window.pollEvents();
 		input.Update(viewport, deltatime, light);
 		viewport.UpdateCameraMatrix(45.f, 0.1f, 100.0f);
 		
-		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		ImGui::Begin("Camera");
@@ -105,16 +118,21 @@ int main() {
 			viewport.orientation.y,
 			viewport.orientation.z
 		);
-		ImGui::Separator();
-		ImGui::Text("FPS: %.2f",
-			avgFPS
-		);
-
-		double cursorPosX, cursorPosY;
+				double cursorPosX, cursorPosY;
 		glfwGetCursorPos(window.getWindowPtr(), &cursorPosX, &cursorPosY);
 		ImGui::Separator();
 		ImGui::Text("Cursor Position");
 		ImGui::Text("X: %.2f  Y: %.2f", (float)cursorPosX, (float)cursorPosY);
+		ImGui::Separator();
+		ImGui::Text("FPS: %.2f",
+			avgFPS
+		);
+		ImGui::InputInt("FPS Target", &fpsTarget);
+		if (ImGui::Button("Vsync On")) {
+			window.verticalSync(true);
+		}
+		
+		ImGui::SameLine();
 		ImGui::End();
 
 		viewport.LinkCameraMatrix(pointLight, "cameraMatrix");
