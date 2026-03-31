@@ -3,8 +3,8 @@
 
 #include <opengl/buffers/vao.h>
 #include "opengl/buffers/ebo.h"
-#include "opengl/pipeline/texture.h"
-#include "opengl/renderer/viewport.h"
+#include "opengl/resources/texture.h"
+#include "opengl/resources/viewport.h"
 
 #include <string>
 #include <vector>

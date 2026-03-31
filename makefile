@@ -43,14 +43,15 @@ CPP_SRCS = \
 	src/opengl/buffers/ebo.cpp \
 	src/opengl/buffers/ubo.cpp \
 	src/opengl/buffers/fbo.cpp \
-	src/opengl/pipeline/texture.cpp \
-	src/opengl/pipeline/shader.cpp \
-	src/opengl/renderer/viewport.cpp \
-	src/opengl/renderer/mesh.cpp \
-	src/opengl/renderer/framebuffer.cpp \
+	src/opengl/resources/texture.cpp \
+	src/opengl/resorces/shader.cpp \
+	src/opengl/resources/viewport.cpp \
+	src/opengl/drawable/mesh.cpp \
+	src/opengl/drawable/framebuffer.cpp \
 	src/engine/entities/model.cpp \
 	src/engine/entities/light.cpp \
-	src/engine/input.cpp \
+	src/engine/runtime/input.cpp \
+	src/engine/runtime/framepacer.cpp \
 	src/main.cpp
 
 C_SRCS = \

@@ -2,7 +2,7 @@
 	#include <mach-o/dyld.h>  // macOS specific
 #endif
 
-#include "engine/input.h"
+#include "engine/runtime/input.h"
 #include "engine/entities/model.h"
 #include "engine/entities/light.h"
 
@@ -10,11 +10,10 @@
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 
-#include "opengl/renderer/framebuffer.h"
+#include "opengl/drawable/framebuffer.h"
 #include "opengl/utils.h"
 
-#include <chrono>
-#include <thread>
+#include "engine/runtime/framepacer.h"
 
 int main() {
 
@@ -46,7 +45,6 @@ int main() {
 	ImGuiIO& io = ImGui::GetIO();
 	ImFont* font1 = io.Fonts->AddFontFromFileTTF("assets/fonts/Fredoka.ttf", 13.f);
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
 	// Setup Platform/Renderer backends
 	ImGui_ImplGlfw_InitForOpenGL(window.getWindowPtr(), true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
@@ -54,7 +52,6 @@ int main() {
 
 	Viewport viewport(window.getWidth(), window.getHeight(), {-9.3,3.1,9.3}, {0,-45,0});
 	
-	// Create and link the shader program from source file6s
     Shader pointLight("assets/shaders/pointLight.vert", "assets/shaders/pointLight.frag");
 
 	Model gridPlane("assets/models/gridPlane");
@@ -81,24 +78,14 @@ int main() {
 	glUniform1i(glGetUniformLocation(pp_default.getID(), "screenTexture"), 0);
 
 	window.verticalSync(false);
-	bool limitFPS = (true);	
-	int fpsTarget = 60;
-	float deltatime = 1.f;
 
-	auto fpsSampleBegin = std::chrono::steady_clock::now();
-	auto frametimeSum = std::chrono::nanoseconds(0);
-	int sampleInterval = 1000;
-	float avgFPS = 0;
-	float sampledFrames = 0;
+	Framepacer framepacer;
 
-    // Main render loop
 	while (!window.shouldClose())
 	{
-		auto frametimeTarget = std::chrono::duration<float, std::milli>(1000.0f / fpsTarget);
-		auto frametimeStart = std::chrono::steady_clock::now();
-
+		framepacer.Start();
 		window.pollEvents();
-		input.Update(viewport, deltatime, light);
+		input.Update(viewport, framepacer.getDeltatime(), light);
 		viewport.UpdateCameraMatrix(45.f, 0.1f, 100.0f);
 		
 		ImGui_ImplOpenGL3_NewFrame(); 
@@ -123,7 +110,7 @@ int main() {
 		ImGui::Separator();
 		ImGui::Text("Cursor Position");
 		ImGui::Text("X: %.2f  Y: %.2f", (float)cursorPosX, (float)cursorPosY);
-		ImGui::Separator();
+		/* ImGui::Separator();
 		ImGui::Text("FPS: %.2f",
 			avgFPS
 		);
@@ -131,8 +118,7 @@ int main() {
 		if (ImGui::Button("Vsync On")) {
 			window.verticalSync(true);
 		}
-		
-		ImGui::SameLine();
+		ImGui::SameLine();*/
 		ImGui::End();
 
 		viewport.LinkCameraMatrix(pointLight, "cameraMatrix");
@@ -143,9 +129,9 @@ int main() {
 		viewport.LinkCameraMatrix(lightGizmo, "cameraMatrix");
 		light.LinkColor(lightGizmo, "lightColor");
 
-		postProcess.RenderToFramebuffer();
-		glEnable(GL_DEPTH_TEST);
+		postProcess.RenderToFramebuffer();	
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		gridPlane.Draw(pointLight);
@@ -157,27 +143,9 @@ int main() {
 		
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 		window.swapBuffers();
 
-		auto frametimeEnd = std::chrono::steady_clock::now();
-		auto frametimeElapsed = frametimeEnd - frametimeStart;
-
-		if (limitFPS && frametimeElapsed < frametimeTarget) {
-			std::this_thread::sleep_for(frametimeTarget - (frametimeElapsed));
-		}
-
-		auto frametimeActual = std::chrono::steady_clock::now() - frametimeStart;
-		deltatime = std::chrono::duration<float>(frametimeActual).count();
-
-		frametimeSum += frametimeActual;
-		sampledFrames += 1.f;
-		if ((fpsSampleBegin + std::chrono::milliseconds(sampleInterval)) < std::chrono::steady_clock::now()) {
-			avgFPS = 1000.f / (std::chrono::duration<float, std::milli>(frametimeSum).count() / sampledFrames); 
-			fpsSampleBegin = std::chrono::steady_clock::now();
-			frametimeSum = std::chrono::milliseconds(0);
-			sampledFrames = 0;
-		};
+		framepacer.End();
 	}
 
  	ImGui_ImplOpenGL3_Shutdown();

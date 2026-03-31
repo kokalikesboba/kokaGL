@@ -1,5 +1,10 @@
 #include "window.h"
 
+void error_callback(int error, const char* description)
+{
+    fprintf(stderr, "GLFW Error (%d): %s\n", error, description);
+}
+
 GlfwContext::GlfwContext()
 {
     if (!glfwInit()) {
@@ -12,17 +17,12 @@ GlfwContext::~GlfwContext()
     glfwTerminate();
 }
 
-void error_callback(int error, const char* description)
-{
-    fprintf(stderr, "GLFW Error (%d): %s\n", error, description);
-}
-
 Window::Window(unsigned int width, unsigned int height, const char *title) 
 {
     windowPtr = nullptr;
     desiredTitle = std::string(title);
 
-        // Request an OpenGL 3.3 core profile context
+    // Request an OpenGL 3.3 core profile context
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -103,13 +103,6 @@ void Window::swapBuffers() const
 void Window::pollEvents() const
 {
     glfwPollEvents();
-}
-
-void Window::resizeViewport() const
-{
-    int width, height;
-    glfwGetFramebufferSize(windowPtr, &width, &height);
-    glViewport(0, 0, width, height);
 }
 
 void Window::renameWindow(const char* title) const

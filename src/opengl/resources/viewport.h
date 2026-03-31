@@ -1,7 +1,7 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
 
-#include <opengl/pipeline/shader.h>
+#include <opengl/resources/shader.h>
 
 #include <glad/glad.h>
 #include <window/window.h>

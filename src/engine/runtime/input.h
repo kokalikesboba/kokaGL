@@ -1,4 +1,4 @@
-#include "opengl/renderer/viewport.h"
+#include "opengl/resources/viewport.h"
 
 #include "window/window.h"
 

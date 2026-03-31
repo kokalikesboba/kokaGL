@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 
-#include "opengl/pipeline/shader.h"
+#include "opengl/resources/shader.h"
 
 #include <vector>
 #include <iostream>

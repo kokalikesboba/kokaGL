@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 #include <stb/stb_img.h>
 
-#include "opengl/pipeline/shader.h"
+#include "opengl/resources/shader.h"
 #include "opengl/format.h"
 
 #include <iostream>

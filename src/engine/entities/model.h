@@ -1,7 +1,7 @@
 #ifndef MODEL_CLASS_H
 #define MODEL_CLASS_H
 
-#include "opengl/renderer/mesh.h"
+#include "opengl/drawable/mesh.h"
 #include "parsers/gltfAssimp.h"
 
 #include <memory>

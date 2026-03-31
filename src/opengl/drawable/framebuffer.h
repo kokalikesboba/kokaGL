@@ -4,7 +4,7 @@
 #include <opengl/buffers/vao.h>
 #include <opengl/buffers/vbo.h>
 #include <opengl/buffers/fbo.h>
-#include <opengl/pipeline/shader.h>
+#include <opengl/resources/shader.h>
 
 class Framebuffer {
     public:
