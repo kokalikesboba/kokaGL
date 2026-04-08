@@ -1,7 +1,7 @@
 # KokaGL 
 This project supersedes [koka3d](https://github.com/kokalikesboba/koka3D) in spirit. It is my first hardware accelerated renderer and it uses the OpenGL API. 
 
-[](meta/readme_img1.png)
+<img src="meta/readme_img1.png" width="250"/>
 
 KokaGL is a work-in-progress with features like PBR and a deferred rendering pipeline still planned
 
