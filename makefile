@@ -44,7 +44,7 @@ CPP_SRCS = \
 	src/opengl/buffers/ubo.cpp \
 	src/opengl/buffers/fbo.cpp \
 	src/opengl/resources/texture.cpp \
-	src/opengl/resorces/shader.cpp \
+	src/opengl/resources/shader.cpp \
 	src/opengl/resources/viewport.cpp \
 	src/opengl/drawable/mesh.cpp \
 	src/opengl/drawable/framebuffer.cpp \

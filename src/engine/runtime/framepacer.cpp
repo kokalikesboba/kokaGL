@@ -1,46 +1,37 @@
 #include "framepacer.h"
 
-Framepacer::Framepacer()
-{
+void Framepacer::Start() { 
+    frameTimeStart = std::chrono::steady_clock::now();
+}
+
+void Framepacer::End() {
+    frameTimeEnd = std::chrono::steady_clock::now();
+    frametimeDuration = std::chrono::duration_cast<std::chrono::microseconds>(frameTimeEnd - frameTimeStart);
+    deltatime = frametimeDuration.count() / 1000000.f;
+
+    if (fpsTarget != 0 && frametimeDuration < frametimeTarget) {
+        std::this_thread::sleep_for(frametimeTarget - frametimeDuration);
+        // By definition, setting a frametarget fixes deltatime
+        deltatime = frametimeTarget.count() / 1000000.f;
+        
+        // purely for avgFPS counter
+        frametimeDuration = frametimeTarget;
+    }
+
+    avgSum += frametimeDuration;
+    ++avgFramesSampled;
+    if ((avgSampleStart + avgSampleInterval) < std::chrono::steady_clock::now()) {
+
+        avgFPS = 1000000.f / (avgSum.count() / (float)avgFramesSampled);
+
+        avgSampleStart = std::chrono::steady_clock::now();
+        avgSum = std::chrono::microseconds(0);
+        avgFramesSampled = 0;
+    }
 
 }
 
-void Framepacer::Start()
-{   
-    frameTimeStart = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+void Framepacer::targetFramerate(unsigned int fpsTarget) {
+    this->fpsTarget = fpsTarget;
+    frametimeTarget = std::chrono::microseconds(1000000 / fpsTarget);
 }
-
-void Framepacer::End()
-{
-    frameTimeEnd = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
-    deltatime = std::chrono::duration<float>(frameTimeEnd - frameTimeStart).count();
-}
-
-float Framepacer::getDeltatime()
-{
-    return deltatime;
-}
-
-/* void Renderer::fpsStatsStart()
-{
-    auto frametimeTarget = std::chrono::duration<float, std::milli>(1000.0f / fpsTarget);
-}
-
-void Renderer::fpsStatsEnd()
-{
-    frametimeSum += frametimeActual;
-    sampledFrames += 1.f;
-    if ((fpsSampleBegin + std::chrono::milliseconds(sampleInterval)) < std::chrono::steady_clock::now()) {
-        avgFPS = 1000.f / (std::chrono::duration<float, std::milli>(frametimeSum).count() / sampledFrames); 
-        fpsSampleBegin = std::chrono::steady_clock::now();
-        frametimeSum = std::chrono::milliseconds(0);
-        sampledFrames = 0;
-    };
-}
-
-auto frametimeEnd = std::chrono::steady_clock::now();
-auto frametimeElapsed = frametimeEnd - frametimeStart;
-
-if (limitFPS && frametimeElapsed < frametimeTarget) {
-    std::this_thread::sleep_for(frametimeTarget - (frametimeElapsed));
-}*/

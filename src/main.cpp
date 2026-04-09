@@ -27,8 +27,11 @@ int main() {
 	#endif
 	
     GlfwContext glfw;
+
     Window window(800, 800, "kokaGL");
     window.makeContextCurrent();
+
+	Framepacer framepacer;
 
 	Input input(window.getWindowPtr());
 
@@ -38,7 +41,7 @@ int main() {
         return -1;
     }
 
-	// printGPUSpecs();
+	printGPUSpecs();
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -51,6 +54,7 @@ int main() {
 	ImGui_ImplOpenGL3_Init();
 
 	Viewport viewport(window.getWidth(), window.getHeight(), {-9.3,3.1,9.3}, {0,-45,0});
+
 	
     Shader pointLight("assets/shaders/pointLight.vert", "assets/shaders/pointLight.frag");
 
@@ -77,21 +81,40 @@ int main() {
 	pp_default.Activate();
 	glUniform1i(glGetUniformLocation(pp_default.getID(), "screenTexture"), 0);
 
-	window.verticalSync(false);
-
-	Framepacer framepacer;
-
+	bool desired_vsync = true;
+	int desired_fps = 0;
+	
 	while (!window.shouldClose())
 	{
 		framepacer.Start();
 		window.pollEvents();
-		input.Update(viewport, framepacer.getDeltatime(), light);
+		input.Update(viewport, framepacer.deltatime, light);
 		viewport.UpdateCameraMatrix(45.f, 0.1f, 100.0f);
 		
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		ImGui::Begin("Camera");
+		ImGui::Begin("Debug");
+
+		ImGui::Text("FPS: %.2f",
+			framepacer.avgFPS
+		);
+		ImGui::InputInt("Input FPS", &desired_fps);
+		if (ImGui::Button("Apply FPS")) {
+			    framepacer.targetFramerate(desired_fps);
+		};
+		ImGui::SameLine();
+		ImGui::Checkbox("Wait for Vsync", &desired_vsync);
+		if (desired_vsync) window.verticalSync(true);
+		else window.verticalSync(false);
+		ImGui::Separator();
+
+		double cursorPosX, cursorPosY;
+		glfwGetCursorPos(window.getWindowPtr(), &cursorPosX, &cursorPosY);
+		ImGui::Text("Cursor Position");
+		ImGui::Text("X: %.2f  Y: %.2f", (float)cursorPosX, (float)cursorPosY);
+		ImGui::Separator();
+
 		ImGui::Text("Position");
 		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f", 
 			viewport.position.x, 
@@ -99,26 +122,15 @@ int main() {
 			viewport.position.z
 		);
 		ImGui::Separator();
+		
 		ImGui::Text("Orientation");
 		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f",
 			viewport.orientation.x,
 			viewport.orientation.y,
 			viewport.orientation.z
 		);
-				double cursorPosX, cursorPosY;
-		glfwGetCursorPos(window.getWindowPtr(), &cursorPosX, &cursorPosY);
 		ImGui::Separator();
-		ImGui::Text("Cursor Position");
-		ImGui::Text("X: %.2f  Y: %.2f", (float)cursorPosX, (float)cursorPosY);
-		/* ImGui::Separator();
-		ImGui::Text("FPS: %.2f",
-			avgFPS
-		);
-		ImGui::InputInt("FPS Target", &fpsTarget);
-		if (ImGui::Button("Vsync On")) {
-			window.verticalSync(true);
-		}
-		ImGui::SameLine();*/
+
 		ImGui::End();
 
 		viewport.LinkCameraMatrix(pointLight, "cameraMatrix");
