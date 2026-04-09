@@ -2,7 +2,9 @@
 	#include <mach-o/dyld.h>  // macOS specific
 #endif
 
+#include "engine/runtime/framepacer.h"
 #include "engine/runtime/input.h"
+
 #include "engine/entities/model.h"
 #include "engine/entities/light.h"
 
@@ -13,7 +15,6 @@
 #include "opengl/drawable/framebuffer.h"
 #include "opengl/utils.h"
 
-#include "engine/runtime/framepacer.h"
 
 int main() {
 
@@ -94,7 +95,7 @@ int main() {
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		ImGui::Begin("Debug");
+		ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_NoMove);
 
 		ImGui::Text("FPS: %.2f",
 			framepacer.avgFPS
@@ -115,7 +116,7 @@ int main() {
 		ImGui::Text("X: %.2f  Y: %.2f", (float)cursorPosX, (float)cursorPosY);
 		ImGui::Separator();
 
-		ImGui::Text("Position");
+		ImGui::Text("Viewport Position");
 		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f", 
 			viewport.position.x, 
 			viewport.position.y, 
@@ -123,7 +124,7 @@ int main() {
 		);
 		ImGui::Separator();
 		
-		ImGui::Text("Orientation");
+		ImGui::Text("Viewport Orientation");
 		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f",
 			viewport.orientation.x,
 			viewport.orientation.y,
