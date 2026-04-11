@@ -35,7 +35,7 @@ void Texture::stbLoad(std::string fileName)
 		imgHeight = 2;
 		colorChannels = 4;
 		data = fallbackPixels;
-		std::cout << "STB: " + std::string(fileName) + " not found." << std::endl;
+		if (verboseOutput) std::cout << "STB: " + std::string(fileName) + " not found." << std::endl;
 	} else {
 		stbiLoaded = true;
 	}
@@ -66,7 +66,7 @@ void Texture::genTexture()
 				GL_UNSIGNED_BYTE,
 				data
 			);
-			std::cout << "TEX: " + fileName + " loaded with 4 channels" << std::endl;
+			if (verboseOutput) std::cout << "TEX: " + fileName + " loaded with 4 channels" << std::endl;
 		} else if (colorChannels == 3) {
 			glTexImage2D (
 				GL_TEXTURE_2D,
@@ -79,7 +79,7 @@ void Texture::genTexture()
 				GL_UNSIGNED_BYTE,
 				data
 			);
-			std::cout << "TEX: " + fileName + " loaded with 3 channels" << std::endl;
+			if (verboseOutput) std::cout << "TEX: " + fileName + " loaded with 3 channels" << std::endl;
 		} else if (colorChannels == 1) {
 			glTexImage2D (
 				GL_TEXTURE_2D,
@@ -92,7 +92,7 @@ void Texture::genTexture()
 				GL_UNSIGNED_BYTE,
 				data
 			);
-			std::cout << "TEX: " + fileName + " loaded with 1 channels" << std::endl;
+			if (verboseOutput) std::cout << "TEX: " + fileName + " loaded with 1 channels" << std::endl;
 		} else {
 			throw std::invalid_argument("Automatic Texture type recognition failed");
 		}
@@ -109,7 +109,7 @@ void Texture::genTexture()
 		GL_UNSIGNED_BYTE,
 		data
 	);
-	std::cout << "TEX: Using fallback for " + fileName << std::endl;
+	if (verboseOutput) std::cout << "TEX: Using fallback for " + fileName << std::endl;
 }
 
 	// Generates MipMaps

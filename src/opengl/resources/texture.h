@@ -47,6 +47,9 @@ private:
     int imgHeight = 0;
     unsigned char* data = nullptr;
     bool stbiLoaded = false;
+
+    // TODO: make this toggleable.
+    bool verboseOutput = false;
 };
 
 #endif

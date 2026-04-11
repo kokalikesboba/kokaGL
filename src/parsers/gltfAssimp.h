@@ -27,7 +27,7 @@ inline returnedData loadModelData(std::string path) {
         ? path
         : path.substr(pos + 1);
 
-    std::cout << "PARSING: " + path << std::endl; 
+    // std::cout << "PARSING: " + path << std::endl; 
 
     Assimp::Importer importer;
 
@@ -95,9 +95,9 @@ inline returnedData loadModelData(std::string path) {
             std::string texturePath = path.C_Str();
             data.texPath.push_back(texturePath);
             data.texTypeIndex.push_back(textureType::Diffuse);
-            std::cout << " - Diffuse path: " << texturePath << std::endl;
+            // std::cout << " - Diffuse path: " << texturePath << std::endl;
         } else {
-            std::cout << " - No diffuse found" << std::endl;
+            // std::cout << " - No diffuse found" << std::endl;
         }
 
         if(material->GetTexture(aiTextureType_DIFFUSE_ROUGHNESS, 0, &path) == AI_SUCCESS) {
@@ -106,7 +106,7 @@ inline returnedData loadModelData(std::string path) {
             data.texTypeIndex.push_back(textureType::Specular);
             std::cout << " - Specular path: " << texturePath << std::endl;
         } else {
-            std::cout << " - No specular found" << std::endl;
+            // std::cout << " - No specular found" << std::endl;
         }
 
         vertexOffset += mesh->mNumVertices;
