@@ -54,9 +54,10 @@ int main() {
 	ImGui_ImplGlfw_InitForOpenGL(window.getWindowPtr(), true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
 	ImGui_ImplOpenGL3_Init();
 
-	Viewport viewport(window.getWidth(), window.getHeight(), {-9.3,3.1,9.3}, {0,-45,0});
+	Viewport viewport(window.getFbWidth(), window.getFbHeight());
+	viewport.SetPosition({-9.3,3.1,9.3});
+	viewport.SetOrientation({0,-45,0});
 
-	
     Shader pointLight("assets/shaders/pointLight.vert", "assets/shaders/pointLight.frag");
 
 	Model gridPlane("assets/models/gridPlane");
@@ -71,13 +72,13 @@ int main() {
 	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
 
-	Framebuffer postProcess(window.getWidth(), window.getHeight());
+	Framebuffer postProcess(window.getFbWidth(), window.getFbHeight());
 	Shader pp_edgeDetector("assets/shaders/pp_edgeDetector.vert", "assets/shaders/pp_edgeDetector.frag");
 	pp_edgeDetector.Activate();
 	glUniform1i(glGetUniformLocation(pp_edgeDetector.getID(), "screenTexture"), 0);
 
 	Shader lightGizmo("assets/shaders/lightGizmo.vert", "assets/shaders/lightGizmo.frag");
-	Framebuffer gizmoLayer(window.getWidth(), window.getHeight());
+	Framebuffer gizmoLayer(window.getFbWidth(), window.getFbHeight());
 	Shader pp_default("assets/shaders/pp_default.vert", "assets/shaders/pp_default.frag");
 	pp_default.Activate();
 	glUniform1i(glGetUniformLocation(pp_default.getID(), "screenTexture"), 0);
@@ -88,6 +89,7 @@ int main() {
 	while (!window.shouldClose())
 	{
 		framepacer.Start();
+		
 		window.pollEvents();
 		input.Update(viewport, framepacer.deltatime, light);
 		viewport.UpdateCameraMatrix(45.f, 0.1f, 100.0f);
@@ -96,6 +98,11 @@ int main() {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_NoMove);
+
+		ImGui::Text("Window width / height");
+		ImGui::Text("Logical: %i, /  %i", (int)window.getWidth(),(int)window.getHeight());
+		ImGui::Text("Framebuffer: %i, / %i", (int)window.getFbWidth(), (int)window.getFbHeight());
+		ImGui::Separator();
 
 		ImGui::Text("FPS: %.2f",
 			framepacer.avgFPS

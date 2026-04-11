@@ -17,10 +17,14 @@ GlfwContext::~GlfwContext()
     glfwTerminate();
 }
 
+
 Window::Window(unsigned int width, unsigned int height, const char *title) 
 {
     windowPtr = nullptr;
-    desiredTitle = std::string(title);
+
+    this->width = width; 
+    this->height = height;
+    windowTitle = std::string(title);
 
     // Request an OpenGL 3.3 core profile context
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -31,10 +35,10 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
     if (!windowPtr) {
         throw std::runtime_error("Failed to create a GLFW window");
     }
+    glfwGetFramebufferSize(windowPtr, &this->fbWidth, &this->fbHeight);
 
     // glfwSetErrorCallback(error_callback);
     #if defined(__linux__) || defined(_WIN32)
-        // Code to include if EITHER OPTION_A or OPTION_B is defined
         
         GLFWimage icon;
         unsigned char* imgPixels =
@@ -60,28 +64,24 @@ Window::~Window()
     }
 }
 
-float Window::getWidth()
+int Window::getWidth()
 {
-    int width;
-    if (windowPtr) {
-        glfwGetFramebufferSize(windowPtr, &width, nullptr);
-        return width;
-    } else {
-        throw std::runtime_error("windowPtr is null");
-        return -1.f;
-    }     
+    return width;
 }
 
-float Window::getHeight()
+int Window::getHeight()
 {
-    int height;
-    if (windowPtr) {
-        glfwGetFramebufferSize(windowPtr, &height, nullptr);
-        return height;
-    } else {
-        throw std::runtime_error("windowPtr is null");
-        return -1.f;
-    }  
+    return height;
+}
+
+int Window::getFbWidth()
+{
+    return fbWidth;
+}
+
+int Window::getFbHeight()
+{
+    return fbHeight;
 }
 
 GLFWwindow *Window::getWindowPtr()

@@ -27,21 +27,27 @@ public:
     void pollEvents() const;
 
     // Getters
-    float getWidth();
-    float getHeight();
+    int getWidth();
+    int getHeight();
+    int getFbWidth();
+    int getFbHeight();
     GLFWwindow* getWindowPtr();
 
+    // Fun stuff
     void verticalSync(bool state) const;
+    void renameWindow(const char* title) const;
 
 private:
 
-    // TODO: Make windowPtr non-copyable. 
+    // TODO: Make windowPtr non-copyable.
     GLFWwindow* windowPtr;
-    std::string desiredTitle;
+
+    int width = 100;
+    int height = 100;
+    int fbWidth = 100;
+    int fbHeight = 100;
+    std::string windowTitle;
     bool vSync = true;
-
-    void renameWindow(const char* title) const;
-
 };
 
 #endif      

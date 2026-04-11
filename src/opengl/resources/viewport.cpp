@@ -1,11 +1,9 @@
 #include "viewport.h"
 
-Viewport::Viewport(int width, int height, glm::vec3 position, glm::vec3 orientation)
+Viewport::Viewport(int fbWidth, int fbHeight)
 {
-	fbWidth = width;
-	fbHeight = height; 
-	SetPosition(position);
-	SetOrientation(orientation);
+	this->fbWidth = fbWidth;
+	this->fbHeight = fbHeight;
 	glViewport(0,0,fbWidth,fbHeight);
 }
 
@@ -21,7 +19,7 @@ void Viewport::UpdateCameraMatrix(float FOVdeg, float nearPlane, float farPlane)
 	projectionMatrix = glm::perspective(glm::radians(FOVdeg), (float)fbWidth / fbHeight, nearPlane, farPlane);
 
 	cameraMatrix = projectionMatrix * viewMatrix; 
-}
+}	
 
 void Viewport::LinkCameraMatrix(const Shader &shader, const char *uniform) const
 {
