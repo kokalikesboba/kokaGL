@@ -18,6 +18,7 @@ void Framepacer::End() {
         frametimeDuration = frametimeTarget;
     }
 
+    // FPS stat handling
     avgSum += frametimeDuration;
     ++avgFramesSampled;
     if ((avgSampleStart + avgSampleInterval) < std::chrono::steady_clock::now()) {
@@ -33,5 +34,7 @@ void Framepacer::End() {
 
 void Framepacer::targetFramerate(unsigned int fpsTarget) {
     this->fpsTarget = fpsTarget;
-    frametimeTarget = std::chrono::microseconds(1000000 / fpsTarget);
+    if (fpsTarget) {
+        frametimeTarget = std::chrono::microseconds(1000000 / fpsTarget);
+    }
 }
