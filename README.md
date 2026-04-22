@@ -3,8 +3,6 @@ This project supersedes [koka3d](https://github.com/kokalikesboba/koka3D) in spi
 
 <img src="meta/readme_img1.png" width="250"/>
 
-KokaGL is a work-in-progress with features like PBR and a deferred rendering pipeline still planned
-
 # Features:
 - GLTF File Parsing and loading.
 - Viewport manipulation.
