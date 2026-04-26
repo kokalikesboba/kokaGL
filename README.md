@@ -25,24 +25,6 @@ Included are Visual Studio Code profiles that work on Ubuntu 25.04 and MacOS Tah
 
 Use `brew` or `apt` for them.
 
-Additionally, if you wish you use the VSCode profiles, you must  install `CodeLLDB` extension since this is the expected debugger.
+Additionally, if you wish you use the VSCode profiles, you must  install the `CodeLLDB` extension since this is the expected debugger.
 
 Other dependencies such as GLAD, glm, stb, ImGUI, are already included in this repository under the `extern/` directory and require no further installation.
-
-# Documentation / Personal Notes
-
-### Libraries 
-
-This was the first project taught me a lot more about how to integrate external libraries into my project. I had a habit of trying to make my own matrix or parser libraries, but quickly learned that this was a distraction from actually learning the graphics pipeline.
-
- - Since windowing is specific to platforms, GLFW3 is an external dependency. 
-
- - Since AssImp is a rather large library, it is an external dependency.
-
-### Implementation
-
-- I encountered ownership and lifetime issues- This is the first project where implementing class destructors actually made sense given OpenGL's global state. Many classes in this project are just OpenGL managed objects wrapped up for convenience.
-
-### Platforms
-
-- Porting this project to MacOS was pretty straightforward, I mainly just had to switch to cross-platform available tooling and create another VSCode profile.
