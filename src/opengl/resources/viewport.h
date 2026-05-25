@@ -26,6 +26,7 @@ public:
 	glm::mat4 GetPositionInverseMatrix() const;
 
 	void SetRotation(glm::vec3 eulerRotation);
+	void SetRawRotation(glm::quat orientation);
 	void AddRotation(glm::vec3 eulerRotation);
 	glm::quat GetRotation() const;
 	glm::mat4 GetRotationInverseMatrix() const;

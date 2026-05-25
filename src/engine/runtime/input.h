@@ -4,13 +4,21 @@
 
 #include "engine/entities/light.h"
 
+#include <deque>
+#include <utility>
+
 class Input {
     public:
         Input(GLFWwindow* windowPtr);
         void Update(Viewport& viewport, const float& dt, Light& light);
-
     private:
         GLFWwindow* windowPtr;
+
         float movementSpeed = 10.f;
-        bool mouseRightHeld = false;
+        double sensitivity = 0.001f; 
+
+        glm::dvec2 cursorPos = {0.f, 0.f};
+        std::deque<glm::dvec2>cursorHistory;
+        size_t maxHistory = 2;
+        bool firstClick = true;
 };

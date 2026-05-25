@@ -37,6 +37,11 @@ void Viewport::SetRotation(glm::vec3 eulerRotation)
     orientation = qYaw * qPitch * qRoll;
 }
 
+void Viewport::SetRawRotation(glm::quat orientation)
+{
+	this->orientation = orientation;
+}
+
 void Viewport::AddRotation(glm::vec3 eulerRotation)
 {
 	glm::quat qPitch = glm::angleAxis(glm::radians(eulerRotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
