@@ -21,4 +21,7 @@ class Input {
         std::deque<glm::dvec2>cursorHistory;
         size_t maxHistory = 2;
         bool firstClick = true;
+
+        bool trackpadMode = false;
+        float scrollX = 0.f;
 };

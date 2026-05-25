@@ -7,6 +7,13 @@ Input::Input(GLFWwindow *windowPtr)
 
 void Input::Update(Viewport &viewport, const float &dt, Light &light)
 {
+
+	glfwSetWindowUserPointer(windowPtr, this);
+	glfwSetScrollCallback(windowPtr, [](GLFWwindow* w, double x, double y) {
+		Input* input = static_cast<Input*>(glfwGetWindowUserPointer(w));
+		input->scrollX = x;
+	});
+
 	// Closes the window
 	if (glfwGetKey(windowPtr, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(windowPtr, GLFW_TRUE);
@@ -77,7 +84,13 @@ void Input::Update(Viewport &viewport, const float &dt, Light &light)
 		viewport.SetRotation({0,315,0});
 	}
 
-	// Mouse input	
+	if (scrollX != 0.0) {
+		std::cout << "Trackpad input detected! :D" << std::endl;
+		trackpadMode = true;
+		scrollX = 0.0f;
+	}
+
+		// Mouse input	
 	if (glfwGetMouseButton(windowPtr, GLFW_MOUSE_BUTTON_RIGHT)) {
 		// If you don't add this for Wayland, it doesn't hide the cursor most of the time.
 		glfwFocusWindow(windowPtr);
@@ -107,4 +120,5 @@ void Input::Update(Viewport &viewport, const float &dt, Light &light)
 		glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		firstClick = true;
 	}
+
 }
