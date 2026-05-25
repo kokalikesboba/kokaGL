@@ -4,46 +4,92 @@ Viewport::Viewport(int fbWidth, int fbHeight)
 {
 	this->fbWidth = fbWidth;
 	this->fbHeight = fbHeight;
+
 	glViewport(0,0,fbWidth,fbHeight);
 }
 
-void Viewport::UpdateCameraMatrix(float FOVdeg, float nearPlane, float farPlane)
+void Viewport::SetPosition(glm::vec3 position)
 {
-	// Initializes matrices since otherwise they will be the null matrix
-	glm::mat4 viewMatrix = glm::mat4(1.0f);
-	glm::mat4 projectionMatrix = glm::mat4(1.0f);
-
-	// Makes camera look in the right direction from the right position
-	viewMatrix = glm::lookAt(position, position + orientation, up);
-	// Adds perspective to the scene
-	projectionMatrix = glm::perspective(glm::radians(FOVdeg), (float)fbWidth / fbHeight, nearPlane, farPlane);
-
-	cameraMatrix = projectionMatrix * viewMatrix; 
-}	
-
-void Viewport::LinkCameraMatrix(const Shader &shader, const char *uniform) const
-{
-	shader.Activate();
-	glUniformMatrix4fv(glGetUniformLocation(shader.getID(), uniform), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
+	this->position = position;
 }
 
-void Viewport::LinkCameraPos(const Shader &shader, const char *uniform) const
+void Viewport::AddPosition(glm::vec3 position)
+{
+	this->position += position;
+}
+
+glm::vec3 Viewport::GetPosition() const
+{
+    return position;
+}
+
+glm::mat4 Viewport::GetPositionInverseMatrix() const
+{
+    glm::mat4 inversePos = glm::translate(glm::mat4(1.0f),-position);
+	return inversePos;
+}
+
+void Viewport::SetRotation(glm::vec3 eulerRotation)
+{
+    glm::quat qPitch = glm::angleAxis(glm::radians(eulerRotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::quat qYaw = glm::angleAxis(glm::radians(eulerRotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::quat qRoll = glm::angleAxis(glm::radians(eulerRotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    orientation = qYaw * qPitch * qRoll;
+}
+
+void Viewport::AddRotation(glm::vec3 eulerRotation)
+{
+	glm::quat qPitch = glm::angleAxis(glm::radians(eulerRotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::quat qYaw = glm::angleAxis(glm::radians(eulerRotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::quat qRoll = glm::angleAxis(glm::radians(eulerRotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::quat delta = qYaw * qPitch * qRoll;
+	orientation *=  delta;
+}
+
+glm::quat Viewport::GetRotation() const
+{
+    return orientation;
+}
+
+glm::mat4 Viewport::GetRotationInverseMatrix() const
+{
+	glm::mat4 inverseRotation = glm::mat4_cast(glm::conjugate(orientation));
+    return inverseRotation;
+}
+
+glm::mat4 Viewport::GetViewMatrix() const
+{
+	glm::mat4 viewMatrix = GetRotationInverseMatrix() * GetPositionInverseMatrix();
+	return viewMatrix;
+}
+
+glm::mat4 Viewport::GetProjectionMatrix() const
+{
+	glm::mat4 projectionMatrix = glm::perspective(glm::radians(eulerFOV), fbWidth/fbHeight, nearPlane, farPlane);
+	return projectionMatrix;
+}
+
+glm::mat4 Viewport::GetViewportMatrix() const
+{
+	glm::mat4 viewportMatrix = GetProjectionMatrix() * GetViewMatrix();
+    return viewportMatrix;
+}
+
+glm::vec3 Viewport::GetLocalAxis(glm::vec3 axis)
+{
+    return orientation * glm::normalize(axis);
+}
+
+void Viewport::LinkViewportMatrix(const Shader &shader, const char *uniform) const
+{
+	shader.Activate();
+	glm::mat4 viewportMatrix = GetViewportMatrix();
+	glUniformMatrix4fv(glGetUniformLocation(shader.getID(), uniform), 1, GL_FALSE, glm::value_ptr(viewportMatrix));
+}
+
+void Viewport::LinkViewportPos(const Shader &shader, const char *uniform) const
 {
 	shader.Activate();
 	glUniform3f(glGetUniformLocation(shader.getID(), uniform), position.x, position.y, position.z);
 }
 
-void Viewport::SetPosition(glm::vec3 position)
-{
-	this->position += position;
-}
-
-void Viewport::SetOrientation(glm::vec3 rotation)
-{
-    glm::quat qPitch = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    glm::quat qYaw = glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::quat qRoll = glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-    
-    glm::quat combined = qYaw * qPitch * qRoll;
-    orientation = glm::normalize(glm::vec3(combined * glm::vec4(0.0f, 0.0f, -1.0f, 1.0f)));
-}

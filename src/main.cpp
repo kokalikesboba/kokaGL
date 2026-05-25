@@ -42,7 +42,7 @@ int main() {
         return -1;
     }
 
-	printGPUSpecs();
+	// printGPUSpecs();
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -51,12 +51,10 @@ int main() {
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 
 	// Setup Platform/Renderer backends
-	ImGui_ImplGlfw_InitForOpenGL(window.getWindowPtr(), true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+	ImGui_ImplGlfw_InitForOpenGL(window.getWindowPtr(), true); // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
 	ImGui_ImplOpenGL3_Init();
 
 	Viewport viewport(window.getFbWidth(), window.getFbHeight());
-	viewport.SetPosition({-9.3,3.1,9.3});
-	viewport.SetOrientation({0,-45,0});
 
     Shader pointLight("assets/shaders/pointLight.vert", "assets/shaders/pointLight.frag");
 
@@ -83,6 +81,7 @@ int main() {
 	pp_default.Activate();
 	glUniform1i(glGetUniformLocation(pp_default.getID(), "screenTexture"), 0);
 
+	// For the UI
 	bool desired_vsync = true;
 	int desired_fps = 0;
 	
@@ -92,7 +91,26 @@ int main() {
 		
 		window.pollEvents();
 		input.Update(viewport, framepacer.deltatime, light);
-		viewport.UpdateCameraMatrix(45.f, 0.1f, 100.0f);
+		
+		viewport.LinkViewportMatrix(pointLight, "cameraMatrix");
+		viewport.LinkViewportPos(pointLight, "cameraPos");
+		light.LinkColor(pointLight, "lightColor");
+		light.LinkRotation(pointLight, "lightDirection");
+
+		viewport.LinkViewportMatrix(lightGizmo, "cameraMatrix");
+		light.LinkColor(lightGizmo, "lightColor");
+
+		postProcess.RenderToFramebuffer();	
+		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+		glEnable(GL_DEPTH_TEST);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		gridPlane.Draw(pointLight);
+		sphere.Draw(pointLight);
+		cubeStack.Draw(pointLight);
+		sword.Draw(pointLight);
+		light.Draw(lightGizmo);
+		postProcess.FramebufferToWindow(pp_default);
 		
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
@@ -125,42 +143,22 @@ int main() {
 
 		ImGui::Text("Viewport Position");
 		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f", 
-			viewport.position.x, 
-			viewport.position.y, 
-			viewport.position.z
+			viewport.GetPosition().x, 
+			viewport.GetPosition().y, 
+			viewport.GetPosition().z
 		);
 		ImGui::Separator();
 		
-		ImGui::Text("Viewport Orientation");
+		ImGui::Text("Viewport Rotation");
 		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f",
-			viewport.orientation.x,
-			viewport.orientation.y,
-			viewport.orientation.z
+			glm::eulerAngles(viewport.GetRotation()).x,
+			glm::eulerAngles(viewport.GetRotation()).y,
+			glm::eulerAngles(viewport.GetRotation()).z
 		);
 		ImGui::Separator();
 
 		ImGui::End();
 
-		viewport.LinkCameraMatrix(pointLight, "cameraMatrix");
-		viewport.LinkCameraPos(pointLight, "cameraPos");
-		light.LinkColor(pointLight, "lightColor");
-		light.LinkRotation(pointLight, "lightDirection");
-
-		viewport.LinkCameraMatrix(lightGizmo, "cameraMatrix");
-		light.LinkColor(lightGizmo, "lightColor");
-
-		postProcess.RenderToFramebuffer();	
-		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-		glEnable(GL_DEPTH_TEST);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glClear(GL_DEPTH_BUFFER_BIT);
-		gridPlane.Draw(pointLight);
-		sphere.Draw(pointLight);
-		cubeStack.Draw(pointLight);
-		sword.Draw(pointLight);
-		light.Draw(lightGizmo);
-		postProcess.FramebufferToWindow(pp_default);
-		
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		window.swapBuffers();

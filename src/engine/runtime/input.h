@@ -12,4 +12,5 @@ class Input {
     private:
         GLFWwindow* windowPtr;
         float movementSpeed = 10.f;
+        bool mouseRightHeld = false;
 };
