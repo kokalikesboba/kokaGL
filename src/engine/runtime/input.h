@@ -23,5 +23,7 @@ class Input {
         bool firstClick = true;
 
         bool trackpadMode = false;
-        float scrollX = 0.f;
+        double trackpadSensitivity = 0.025f;
+        double scrollX = 0.f;
+        double scrollY = 0.f;
 };

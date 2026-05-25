@@ -52,7 +52,7 @@ private:
 
 	float nearPlane = 0.1f;
 	float farPlane = 100.f;
-	float eulerFOV = 90.f;
+	float eulerFOV = 70.f;
 };
 
 #endif

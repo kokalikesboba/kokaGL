@@ -55,6 +55,8 @@ int main() {
 	ImGui_ImplOpenGL3_Init();
 
 	Viewport viewport(window.getFbWidth(), window.getFbHeight());
+	viewport.SetRotation({0.f,315.f,0.f});
+	viewport.SetPosition({-6.5f, 3.f, 6.5f});
 
     Shader pointLight("assets/shaders/pointLight.vert", "assets/shaders/pointLight.frag");
 
@@ -69,7 +71,7 @@ int main() {
 
 	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
-
+	
 	Framebuffer postProcess(window.getFbWidth(), window.getFbHeight());
 	Shader pp_edgeDetector("assets/shaders/pp_edgeDetector.vert", "assets/shaders/pp_edgeDetector.frag");
 	pp_edgeDetector.Activate();
