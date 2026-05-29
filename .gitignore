@@ -1,3 +1,7 @@
 /kokaGL
 /build
+/docs
+/assets
 .DS_Store
+.clang-uml
+compile_commands.json

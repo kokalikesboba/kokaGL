@@ -58,7 +58,7 @@ int main() {
 	viewport.SetRotation({0.f,315.f,0.f});
 	viewport.SetPosition({-6.5f, 3.f, 6.5f});
 
-    Shader pointLight("assets/shaders/pointLight.vert", "assets/shaders/pointLight.frag");
+    Shader pointLight("shaders/pointLight.vert", "shaders/pointLight.frag");
 
 	Model gridPlane("assets/models/gridPlane");
 	gridPlane.SetPosition({0.f,0.f,0.f});
@@ -73,13 +73,13 @@ int main() {
 	light.SetPosition({0.f,5.f,0.f});
 	
 	Framebuffer postProcess(window.getFbWidth(), window.getFbHeight());
-	Shader pp_edgeDetector("assets/shaders/pp_edgeDetector.vert", "assets/shaders/pp_edgeDetector.frag");
+	Shader pp_edgeDetector("shaders/pp_edgeDetector.vert", "shaders/pp_edgeDetector.frag");
 	pp_edgeDetector.Activate();
 	glUniform1i(glGetUniformLocation(pp_edgeDetector.getID(), "screenTexture"), 0);
 
-	Shader lightGizmo("assets/shaders/lightGizmo.vert", "assets/shaders/lightGizmo.frag");
+	Shader lightGizmo("shaders/lightGizmo.vert", "shaders/lightGizmo.frag");
 	Framebuffer gizmoLayer(window.getFbWidth(), window.getFbHeight());
-	Shader pp_default("assets/shaders/pp_default.vert", "assets/shaders/pp_default.frag");
+	Shader pp_default("shaders/pp_default.vert", "shaders/pp_default.frag");
 	pp_default.Activate();
 	glUniform1i(glGetUniformLocation(pp_default.getID(), "screenTexture"), 0);
 
