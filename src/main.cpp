@@ -15,6 +15,7 @@
 #include "opengl/drawable/framebuffer.h"
 #include "opengl/utils.h"
 
+#include "filesystem"
 
 int main() {
 
@@ -27,6 +28,13 @@ int main() {
 		std::filesystem::current_path(dir);
 	#endif
 	
+	if (!std::filesystem::exists("assets")) {
+		std::cerr << "Error: assets directory not found.\n"
+				<< "Did you forget --recurse-submodules?\n"
+				<< "Try: git submodule update --init\n";
+		return -1;
+	}
+
     GlfwContext glfw;
 
     Window window(800, 800, "kokaGL");
