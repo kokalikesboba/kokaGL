@@ -23,7 +23,7 @@ void Input::Update(Viewport &viewport, const float &dt, Light &light)
 		float pitch = -scrollY * trackpadSensitivity;
 		glm::quat qYaw = glm::angleAxis((float)yaw, glm::vec3(0.f,1.f,0.f));
 		glm::quat qPitch = glm::angleAxis((float)pitch, glm::vec3(1.f,0.f,0.f));
-		viewport.SetRawRotation(qYaw * viewport.GetRotation() * qPitch);
+		viewport.SetOrientation(qYaw * viewport.GetOrientation() * qPitch);
 		scrollX = 0.f;
 		scrollY = 0.f;
 	}	
@@ -50,7 +50,7 @@ void Input::Update(Viewport &viewport, const float &dt, Light &light)
 		float pitch = cursorDelta.y * sensitivity;
 		glm::quat qYaw = glm::angleAxis((float)yaw, glm::vec3(0.f,1.f,0.f));
 		glm::quat qPitch = glm::angleAxis((float)pitch, glm::vec3(1.f,0.f,0.f));
-		viewport.SetRawRotation(qYaw * viewport.GetRotation() * qPitch);
+		viewport.SetOrientation(qYaw * viewport.GetOrientation() * qPitch);
 	} else {
 		glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		firstClick = true;
@@ -93,36 +93,36 @@ void Input::Update(Viewport &viewport, const float &dt, Light &light)
 	// Rotation
 	if (glfwGetKey(windowPtr, GLFW_KEY_I) == GLFW_PRESS)
 	{
-		viewport.AddRotation({movementSpeed * dt, 0.0f, 0.0f}); // pitch up
+		viewport.AddEulerRotation({movementSpeed * dt, 0.0f, 0.0f}); // pitch up
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_K) == GLFW_PRESS)
 	{
-		viewport.AddRotation({-movementSpeed * dt, 0.0f, 0.0f}); // pitch down
+		viewport.AddEulerRotation({-movementSpeed * dt, 0.0f, 0.0f}); // pitch down
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_J) == GLFW_PRESS)
 	{
-		viewport.AddRotation({0.0f, movementSpeed * dt, 0.0f}); // yaw left
+		viewport.AddEulerRotation({0.0f, movementSpeed * dt, 0.0f}); // yaw left
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_L) == GLFW_PRESS)
 	{
-		viewport.AddRotation({0.0f, -movementSpeed * dt, 0.0f}); // yaw right
+		viewport.AddEulerRotation({0.0f, -movementSpeed * dt, 0.0f}); // yaw right
 	}
 		if (glfwGetKey(windowPtr, GLFW_KEY_U) == GLFW_PRESS)
 	{
-		viewport.AddRotation({0.0f, 0.0f, movementSpeed * dt}); // yaw left
+		viewport.AddEulerRotation({0.0f, 0.0f, movementSpeed * dt}); // yaw left
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_O) == GLFW_PRESS)
 	{
-		viewport.AddRotation({0.0f, 0.0f, -movementSpeed * dt}); // yaw right
+		viewport.AddEulerRotation({0.0f, 0.0f, -movementSpeed * dt}); // yaw right
 	}
 
 	// Resetters
 	if (glfwGetKey(windowPtr, GLFW_KEY_H) == GLFW_PRESS)
 	{
-		viewport.SetPosition({0,0,0});
+		viewport.SetEulerRotation({0,0,0});
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_G) == GLFW_PRESS)
 	{
-		viewport.SetRotation({0,0,0});
+		viewport.SetEulerRotation({0,0,0});
 	}
 }

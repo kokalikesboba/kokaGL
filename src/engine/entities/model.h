@@ -21,20 +21,24 @@ public:
     void Draw(const Shader& shader) const;
 
     void SetPosition(glm::vec3 position);
-    void Translate(glm::vec3 translate);
-    void SetOrientation(glm::vec3 rotation);
+    void AddPosition(glm::vec3 position);
+    glm::vec3 GetPosition() const;
+
+    void SetEulerRotation(glm::vec3 rotation);
+    void AddEulerRotation(glm::vec3 rotation);
+    void SetOrientation(glm::quat orientation);
     void Rotate(glm::vec3 rotation);
 
 private:
-    glm::vec3 position;
-    glm::quat rotation = glm::quat(1,0,0,0);
-    glm::vec3 scale;
+    std::unique_ptr<Mesh> mesh;
+
+    glm::vec3 position = {0.f, 0.f, 0.f};
+    glm::quat orientation = {1.f, 0.f, 0.f, 0.f};
+    glm::vec3 scale = {1.f, 1.f, 1.f};
 
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
     std::vector<std::string> texPath;
     std::vector<textureType> texTypeIndex;
-
-    std::unique_ptr<Mesh> mesh;
 };
 #endif

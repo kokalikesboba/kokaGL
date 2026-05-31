@@ -29,29 +29,29 @@ glm::mat4 Viewport::GetPositionInverseMatrix() const
 	return inversePos;
 }
 
-void Viewport::SetRotation(glm::vec3 eulerRotation)
+void Viewport::SetEulerRotation(glm::vec3 rotation)
 {
-    glm::quat qPitch = glm::angleAxis(glm::radians(eulerRotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    glm::quat qYaw = glm::angleAxis(glm::radians(eulerRotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::quat qRoll = glm::angleAxis(glm::radians(eulerRotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    glm::quat qPitch = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::quat qYaw = glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::quat qRoll = glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
     orientation = qYaw * qPitch * qRoll;
 }
 
-void Viewport::SetRawRotation(glm::quat orientation)
+void Viewport::SetOrientation(glm::quat orientation)
 {
 	this->orientation = orientation;
 }
 
-void Viewport::AddRotation(glm::vec3 eulerRotation)
+void Viewport::AddEulerRotation(glm::vec3 rotation)
 {
-	glm::quat qPitch = glm::angleAxis(glm::radians(eulerRotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    glm::quat qYaw = glm::angleAxis(glm::radians(eulerRotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::quat qRoll = glm::angleAxis(glm::radians(eulerRotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::quat qPitch = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::quat qYaw = glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::quat qRoll = glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 	glm::quat delta = qYaw * qPitch * qRoll;
 	orientation *=  delta;
 }
 
-glm::quat Viewport::GetRotation() const
+glm::quat Viewport::GetOrientation() const
 {
     return orientation;
 }

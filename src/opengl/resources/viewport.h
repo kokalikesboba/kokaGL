@@ -25,15 +25,16 @@ public:
 	glm::vec3 GetPosition() const;
 	glm::mat4 GetPositionInverseMatrix() const;
 
-	void SetRotation(glm::vec3 eulerRotation);
-	void SetRawRotation(glm::quat orientation);
-	void AddRotation(glm::vec3 eulerRotation);
-	glm::quat GetRotation() const;
-	glm::mat4 GetRotationInverseMatrix() const;
+	void SetEulerRotation(glm::vec3 rotation);
+	void AddEulerRotation(glm::vec3 rotation);
+	void SetOrientation(glm::quat orientation);
+	glm::quat GetOrientation() const;
 
+	glm::mat4 GetRotationInverseMatrix() const;
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetProjectionMatrix() const;
 	glm::mat4 GetViewportMatrix() const;
+
 	glm::vec3 GetLocalAxis(glm::vec3 axis);
 
 	void LinkViewportMatrix(const Shader& shader, const char* uniform) const;

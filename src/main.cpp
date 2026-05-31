@@ -63,7 +63,7 @@ int main() {
 	ImGui_ImplOpenGL3_Init();
 
 	Viewport viewport(window.getFbWidth(), window.getFbHeight());
-	viewport.SetRotation({0.f,315.f,0.f});
+	viewport.SetEulerRotation({0.f,315.f,0.f});
 	viewport.SetPosition({-6.5f, 3.f, 6.5f});
 
     Shader pointLight("shaders/pointLight.vert", "shaders/pointLight.frag");
@@ -163,9 +163,9 @@ int main() {
 		
 		ImGui::Text("Viewport Rotation");
 		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f",
-			glm::eulerAngles(viewport.GetRotation()).x,
-			glm::eulerAngles(viewport.GetRotation()).y,
-			glm::eulerAngles(viewport.GetRotation()).z
+			glm::eulerAngles(viewport.GetOrientation()).x,
+			glm::eulerAngles(viewport.GetOrientation()).y,
+			glm::eulerAngles(viewport.GetOrientation()).z
 		);
 		ImGui::Separator();
 

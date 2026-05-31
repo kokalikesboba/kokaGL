@@ -1,9 +1,6 @@
 #include "model.h"
 
 Model::Model(const char* modelDir) {
-    
-    position = {0.f, 0.f, 0.f};
-    scale = {1.f, 1.f, 1.f};
 
     returnedData parsed = loadModelData(modelDir);
     std::vector<Texture> textures;
@@ -38,18 +35,34 @@ void Model::SetPosition(glm::vec3 position)
     this->position = position;
 }
 
-void Model::Translate(glm::vec3 translate)
+void Model::AddPosition(glm::vec3 position)
 {
-    this->position += translate;
+    this->position += position;
 }
 
-void Model::SetOrientation(glm::vec3 rotation)
+glm::vec3 Model::GetPosition() const
 {
-    this->rotation = rotation;
+    return position;
 }
 
-void Model::Rotate(glm::vec3 delta) {
-    glm::quat rotX = glm::angleAxis(delta.x, glm::vec3(1,0,0));
-    glm::quat rotY = glm::angleAxis(delta.y, glm::vec3(0,1,0));
-    rotation = rotY * rotX * rotation;
+void Model::SetEulerRotation(glm::vec3 rotation)
+{
+    glm::quat qPitch = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::quat qYaw = glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::quat qRoll = glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    orientation = qYaw * qPitch * qRoll;
+}
+
+void Model::AddEulerRotation(glm::vec3 rotation)
+{
+    glm::quat qPitch = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::quat qYaw = glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::quat qRoll = glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    glm::quat delta = qYaw * qPitch * qRoll;
+    orientation *= delta;
+}
+
+void Model::SetOrientation(glm::quat orientation)
+{
+    this->orientation = orientation;
 }
