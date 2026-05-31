@@ -68,6 +68,7 @@ int main() {
 
     Shader pointLight("shaders/pointLight.vert", "shaders/pointLight.frag");
 
+	/*
 	Model gridPlane("assets/models/gridPlane");
 	gridPlane.SetPosition({0.f,0.f,0.f});
 	Model sphere("assets/models/sphere");
@@ -76,6 +77,7 @@ int main() {
 	cubeStack.SetPosition({-2.0f,0.1f,-2.0f});
 	Model sword("assets/models/sword");
 	sword.SetPosition({2.0f,1.f,-2.0f});
+	*/
 
 	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
@@ -115,10 +117,10 @@ int main() {
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
-		gridPlane.Draw(pointLight);
-		sphere.Draw(pointLight);
-		cubeStack.Draw(pointLight);
-		sword.Draw(pointLight);
+		// gridPlane.Draw(pointLight);
+		// sphere.Draw(pointLight);
+		// cubeStack.Draw(pointLight);
+		// sword.Draw(pointLight);
 		light.Draw(lightGizmo);
 		postProcess.FramebufferToWindow(pp_default);
 		

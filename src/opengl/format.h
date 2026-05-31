@@ -13,13 +13,12 @@ struct Vertex {
 };
 
 enum class textureType {
-    Diffuse,
-    Specular,
-
-	BaseColor,
+    BaseColor,
+	Occlusion,
 	Roughness,
 	Metallic,
-	Normal
+	Normal,
+	Emissive
 };
 
 #endif

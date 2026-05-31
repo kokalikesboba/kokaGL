@@ -1,9 +1,17 @@
 #ifndef MODEL_CLASS_H
 #define MODEL_CLASS_H
 
-#include "opengl/drawable/mesh.h"
-#include "parsers/gltfAssimp.h"
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
+#include "opengl/drawable/mesh.h"
+#include "opengl/format.h"
+
+#include "glad/glad.h"
+
+#include <stdexcept>
+#include <iostream>
 #include <memory>
 
 class Model
@@ -21,6 +29,11 @@ private:
     glm::vec3 position;
     glm::quat rotation = glm::quat(1,0,0,0);
     glm::vec3 scale;
+
+    std::vector<Vertex> vertices;
+    std::vector<GLuint> indices;
+    std::vector<std::string> texPath;
+    std::vector<textureType> texTypeIndex;
 
     std::unique_ptr<Mesh> mesh;
 };

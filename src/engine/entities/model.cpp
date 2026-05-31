@@ -10,7 +10,7 @@ Model::Model(const char* modelDir) {
 
     if (parsed.texTypeIndex.empty()) {
         // Create EXACTLY one texture with default settings (Missing Texture)
-        textures.emplace_back(textureType::Diffuse, 0); 
+        textures.emplace_back(textureType::BaseColor, 0); 
     } else {
         textures.reserve(parsed.texTypeIndex.size());
         for (unsigned int i = 0; i < parsed.texTypeIndex.size(); ++i) {
