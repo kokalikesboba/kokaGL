@@ -33,7 +33,7 @@ void Light::SetPosition(glm::vec3 position)
 void Light::Translate(glm::vec3 translate)
 {
     this->position += translate;
-    gizmo.Translate(translate);
+    gizmo.SetPosition(translate);
 }
 
 void Light::SetOrientation(glm::vec3 euler)
@@ -48,5 +48,5 @@ void Light::Rotate(glm::vec3 delta) {
     glm::quat rotX = glm::angleAxis(delta.x, glm::vec3(1,0,0));
     glm::quat rotY = glm::angleAxis(delta.y, glm::vec3(0,1,0));
     rotation = rotY * rotX * rotation;
-    gizmo.Rotate(delta);
+    gizmo.SetOrientation(delta);
 }

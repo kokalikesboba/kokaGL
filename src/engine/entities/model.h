@@ -1,10 +1,6 @@
 #ifndef MODEL_CLASS_H
 #define MODEL_CLASS_H
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 #include "opengl/drawable/mesh.h"
 #include "opengl/format.h"
 
@@ -17,7 +13,7 @@
 class Model
 {
 public:
-    Model(const char* modelDir);
+    Model(const std::string& modelDir);
     void Draw(const Shader& shader) const;
 
     void SetPosition(glm::vec3 position);
@@ -27,10 +23,10 @@ public:
     void SetEulerRotation(glm::vec3 rotation);
     void AddEulerRotation(glm::vec3 rotation);
     void SetOrientation(glm::quat orientation);
-    void Rotate(glm::vec3 rotation);
+    glm::quat GetOrientation() const;
 
 private:
-    std::unique_ptr<Mesh> mesh;
+    std::vector<std::unique_ptr<Mesh>> mesh;
 
     glm::vec3 position = {0.f, 0.f, 0.f};
     glm::quat orientation = {1.f, 0.f, 0.f, 0.f};

@@ -23,13 +23,13 @@ public:
 	void SetPosition(glm::vec3 position);
 	void AddPosition(glm::vec3 position);
 	glm::vec3 GetPosition() const;
-	glm::mat4 GetPositionInverseMatrix() const;
 
 	void SetEulerRotation(glm::vec3 rotation);
 	void AddEulerRotation(glm::vec3 rotation);
 	void SetOrientation(glm::quat orientation);
 	glm::quat GetOrientation() const;
 
+	glm::mat4 GetPositionInverseMatrix() const;
 	glm::mat4 GetRotationInverseMatrix() const;
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetProjectionMatrix() const;

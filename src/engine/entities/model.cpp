@@ -1,33 +1,31 @@
 #include "model.h"
 
-Model::Model(const char* modelDir) {
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
-    returnedData parsed = loadModelData(modelDir);
-    std::vector<Texture> textures;
+Model::Model(const std::string &modelDir)
+{
+    /* Assimp::Importer importer;
+    const aiScene* scene = importer.ReadFile( modelDir,
+    aiProcess_CalcTangentSpace       |
+    aiProcess_Triangulate            |
+    aiProcess_JoinIdenticalVertices  |
+    aiProcess_SortByPType);
 
-    if (parsed.texTypeIndex.empty()) {
-        // Create EXACTLY one texture with default settings (Missing Texture)
-        textures.emplace_back(textureType::BaseColor, 0); 
-    } else {
-        textures.reserve(parsed.texTypeIndex.size());
-        for (unsigned int i = 0; i < parsed.texTypeIndex.size(); ++i) {
-            textures.emplace_back(parsed.texTypeIndex[i], i);
-            
-            std::string fullPath = std::string(modelDir) + "/" + parsed.texPath[i];
-            textures[i].stbLoad(fullPath); 
-        }
+    for(unsigned int i = 0; i < scene->mNumMeshes; i++) {
+        aiMesh* mesh = scene->mMeshes[i];
     }
+    */
 
-    mesh = std::make_unique<Mesh>(
-        std::move(parsed.vertices),
-        std::move(parsed.indices),
-        std::move(textures)
-    );
+    // Pretending I have a placeholder missing Model
 }
 
 void Model::Draw(const Shader &shader) const
 {
-    mesh->Draw(shader, position, rotation, scale);
+    for (int i = 0; mesh.size(); ++i) {
+        mesh[i]->Draw(shader, position, orientation, scale);
+    }
 }
 
 void Model::SetPosition(glm::vec3 position)
@@ -65,4 +63,9 @@ void Model::AddEulerRotation(glm::vec3 rotation)
 void Model::SetOrientation(glm::quat orientation)
 {
     this->orientation = orientation;
+}
+
+glm::quat Model::GetOrientation() const
+{
+    return orientation;
 }

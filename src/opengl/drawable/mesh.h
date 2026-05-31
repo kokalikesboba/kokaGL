@@ -20,9 +20,9 @@ public:
     );
     void Draw(
         const Shader& shader,
-        const glm::vec3& translation = glm::vec3(0.0f, 0.0f, 0.0f),
-        const glm::quat& rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
-        const glm::vec3& scale = glm::vec3(1.0f, 1.0f, 1.0f)    
+        const glm::vec3& position = {0.f, 0.f, 0.f},
+        const glm::quat& orientation = {1.f, 0.f, 0.f, 0.f},
+        const glm::vec3& scale = {1.f, 1.f, 1.f}
     );
     ~Mesh();
 

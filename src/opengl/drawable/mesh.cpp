@@ -2,8 +2,8 @@
 
 std::string getTextureTypePrefix(textureType type) {
     switch (type) {
-        case textureType::Diffuse: return "diffuse";
-        case textureType::Specular: return "specular";
+        case textureType::BaseColor: return "Base color";
+        case textureType::Roughness: return "Roughness";
         default: return "unknown";
     }
 }
@@ -51,14 +51,14 @@ void Mesh::Draw(
         numDiffuse = 0;
         numSpecular = 0;
         for (int i = 0; i < textures.size(); ++i) {
-            if (textures[i].getType() == textureType::Diffuse) {
+            if (textures[i].getType() == textureType::BaseColor) {
                 textures[i].linkUni(
                     shader,
                     (getTextureTypePrefix(textures[i].getType()) + std::to_string(numDiffuse)).c_str()
                     
                 );
                 numDiffuse++;
-            } else if (textures[i].getType() == textureType::Specular) {
+            } else if (textures[i].getType() == textureType::Roughness) {
                 
                 textures[i].linkUni(
                     shader,
