@@ -4,6 +4,49 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+static const std::vector<Vertex> kErrorVertices = {
+    // position              // normal           // color (magenta)    // uv
+    // Front
+    {{ 0.5f,  0.5f,  0.5f}, { 0.f,  0.f,  1.f}, {1.f, 0.f, 1.f}, {1.f, 1.f}},
+    {{-0.5f,  0.5f,  0.5f}, { 0.f,  0.f,  1.f}, {1.f, 0.f, 1.f}, {0.f, 1.f}},
+    {{-0.5f, -0.5f,  0.5f}, { 0.f,  0.f,  1.f}, {1.f, 0.f, 1.f}, {0.f, 0.f}},
+    {{ 0.5f, -0.5f,  0.5f}, { 0.f,  0.f,  1.f}, {1.f, 0.f, 1.f}, {1.f, 0.f}},
+    // Back
+    {{ 0.5f,  0.5f, -0.5f}, { 0.f,  0.f, -1.f}, {1.f, 0.f, 1.f}, {0.f, 1.f}},
+    {{-0.5f,  0.5f, -0.5f}, { 0.f,  0.f, -1.f}, {1.f, 0.f, 1.f}, {1.f, 1.f}},
+    {{-0.5f, -0.5f, -0.5f}, { 0.f,  0.f, -1.f}, {1.f, 0.f, 1.f}, {1.f, 0.f}},
+    {{ 0.5f, -0.5f, -0.5f}, { 0.f,  0.f, -1.f}, {1.f, 0.f, 1.f}, {0.f, 0.f}},
+    // Left
+    {{-0.5f,  0.5f,  0.5f}, {-1.f,  0.f,  0.f}, {1.f, 0.f, 1.f}, {1.f, 1.f}},
+    {{-0.5f,  0.5f, -0.5f}, {-1.f,  0.f,  0.f}, {1.f, 0.f, 1.f}, {0.f, 1.f}},
+    {{-0.5f, -0.5f, -0.5f}, {-1.f,  0.f,  0.f}, {1.f, 0.f, 1.f}, {0.f, 0.f}},
+    {{-0.5f, -0.5f,  0.5f}, {-1.f,  0.f,  0.f}, {1.f, 0.f, 1.f}, {1.f, 0.f}},
+    // Right
+    {{ 0.5f,  0.5f,  0.5f}, { 1.f,  0.f,  0.f}, {1.f, 0.f, 1.f}, {0.f, 1.f}},
+    {{ 0.5f,  0.5f, -0.5f}, { 1.f,  0.f,  0.f}, {1.f, 0.f, 1.f}, {1.f, 1.f}},
+    {{ 0.5f, -0.5f, -0.5f}, { 1.f,  0.f,  0.f}, {1.f, 0.f, 1.f}, {1.f, 0.f}},
+    {{ 0.5f, -0.5f,  0.5f}, { 1.f,  0.f,  0.f}, {1.f, 0.f, 1.f}, {0.f, 0.f}},
+    // Top
+    {{ 0.5f,  0.5f, -0.5f}, { 0.f,  1.f,  0.f}, {1.f, 0.f, 1.f}, {1.f, 1.f}},
+    {{-0.5f,  0.5f, -0.5f}, { 0.f,  1.f,  0.f}, {1.f, 0.f, 1.f}, {0.f, 1.f}},
+    {{-0.5f,  0.5f,  0.5f}, { 0.f,  1.f,  0.f}, {1.f, 0.f, 1.f}, {0.f, 0.f}},
+    {{ 0.5f,  0.5f,  0.5f}, { 0.f,  1.f,  0.f}, {1.f, 0.f, 1.f}, {1.f, 0.f}},
+    // Bottom
+    {{ 0.5f, -0.5f, -0.5f}, { 0.f, -1.f,  0.f}, {1.f, 0.f, 1.f}, {1.f, 0.f}},
+    {{-0.5f, -0.5f, -0.5f}, { 0.f, -1.f,  0.f}, {1.f, 0.f, 1.f}, {0.f, 0.f}},
+    {{-0.5f, -0.5f,  0.5f}, { 0.f, -1.f,  0.f}, {1.f, 0.f, 1.f}, {0.f, 1.f}},
+    {{ 0.5f, -0.5f,  0.5f}, { 0.f, -1.f,  0.f}, {1.f, 0.f, 1.f}, {1.f, 1.f}},
+};
+
+static const std::vector<GLuint> kErrorIndices = {
+    0,  1,  2,   0,  2,  3,  // front
+    4,  6,  5,   4,  7,  6,  // back
+    8,  9,  10,  8,  10, 11, // left
+    12, 14, 13,  12, 15, 14, // right
+    16, 17, 18,  16, 18, 19, // top
+    20, 22, 21,  20, 23, 22, // bottom
+};
+
 Model::Model(const std::string &modelDir)
 {
     /* Assimp::Importer importer;
@@ -18,12 +61,17 @@ Model::Model(const std::string &modelDir)
     }
     */
 
-    // Pretending I have a placeholder missing Model
+    std::vector<Texture> texturePool;
+    texturePool.emplace_back(textureType::BaseColor,0);
+    // If model size is zero, emplace back one mesh with the placeholder vertices, indices and ONE empty texture.
+    if (mesh.empty()) {
+        mesh.emplace_back(std::make_unique<Mesh>(kErrorVertices,  kErrorIndices, texturePool));
+    }
 }
 
 void Model::Draw(const Shader &shader) const
 {
-    for (int i = 0; mesh.size(); ++i) {
+    for (int i = 0; i < mesh.size(); ++i) {
         mesh[i]->Draw(shader, position, orientation, scale);
     }
 }

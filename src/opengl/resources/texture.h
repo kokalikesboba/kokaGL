@@ -40,7 +40,6 @@ private:
     textureType type;
     GLuint ID = 0;
     GLuint unit = 0;
-
     std::string fileName;
     int colorChannels = 0;
     int imgWidth = 0;
@@ -49,7 +48,7 @@ private:
     bool stbiLoaded = false;
 
     // TODO: make this toggleable.
-    bool verboseOutput = false;
+    bool verboseOutput = true;
 };
 
 #endif

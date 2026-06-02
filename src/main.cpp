@@ -79,6 +79,8 @@ int main() {
 	sword.SetPosition({2.0f,1.f,-2.0f});
 	*/
 
+	Model missing("lala");
+
 	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
 	
@@ -122,6 +124,7 @@ int main() {
 		// cubeStack.Draw(pointLight);
 		// sword.Draw(pointLight);
 		light.Draw(lightGizmo);
+		missing.Draw(pointLight);
 		postProcess.FramebufferToWindow(pp_default);
 		
 		ImGui_ImplOpenGL3_NewFrame(); 

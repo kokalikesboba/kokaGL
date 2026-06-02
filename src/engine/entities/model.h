@@ -34,6 +34,7 @@ private:
 
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
+
     std::vector<std::string> texPath;
     std::vector<textureType> texTypeIndex;
 };
