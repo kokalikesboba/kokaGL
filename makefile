@@ -53,6 +53,8 @@ CPP_SRCS = \
 	src/engine/runtime/input.cpp \
 	src/engine/runtime/framepacer.cpp \
 	src/main.cpp
+	## src/engine/runtime/texturepool.cpp \
+
 
 C_SRCS = \
 	$(EXTERN)/glad/glad.c
@@ -101,12 +103,7 @@ $(TARGET): $(OBJS)
 # Pattern rule:
 #   build/anything.o depends on anything.cpp
 build/%.o: %.cpp
-	# Create the output directory if it doesn't exist
 	@mkdir -p $(dir $@)
-
-	# Compile ONE .cpp file into ONE .o file
-	# $< = input source file
-	# $@ = output object file
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 

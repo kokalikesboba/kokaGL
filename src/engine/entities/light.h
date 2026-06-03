@@ -18,10 +18,10 @@ public:
     void Rotate(glm::vec3 rotation);
 
 private:
-    glm::vec3 position;
-    glm::quat rotation = glm::quat(1,0,0,0);
+    glm::vec3 position = {0.f, 0.f, 0.f};
+    glm::quat rotation = {1.f, 0.f, 0.f, 0.f};
     
-    glm::vec3 color;
+    glm::vec3 color = {1.f, 1.f, 1.f};
     Model gizmo;
 };
 

@@ -2,53 +2,42 @@
 #define TEXTURE_H
 
 #include <glad/glad.h>
-#include <stb/stb_img.h>
 
 #include "opengl/resources/shader.h"
 #include "opengl/format.h"
 
 #include <iostream>
 
+static  unsigned char fallbackPixels[] = {
+    255, 0, 255, 255,  0, 0, 0, 255,    // Row 1: Pink, Black
+    0, 0, 0, 255,     255, 0, 255,255     // Row 2: Black, Pink
+};
+
 class Texture
 {
 public:
-     // Construct a texture object, it takes a texture unit (0-15).
-    Texture(textureType type, GLuint slot);
-    // Loads a texture from a directory into texture data buffer. 
-    // TODO: Do NOT load a texture twice
-    void stbLoad(std::string fileName);
-    // Buffers texture data into OpenGL
-    void genTexture();
-    // Links texture to uniform
-    void linkUni(const Shader& shader, const char* uniformName) const;
-    // Binds
-    void Bind() const;
-    // Unbinds
-    void Unbind() const;
-    // Type getter
+    Texture(textureType type);
     textureType getType() const;
-    // Cleans up texture on OpenGL's side.
+
+    void Bind(GLuint texUnit) const;
+    void Unbind() const;
+    void linkUni(const Shader& shader, const char* uniformName, GLuint texUnit) const;
+    void genRGBATexture(unsigned char* data);
+
     void Delete();
     ~Texture();
-
-    // Make non-copyable
-    /*Texture(const Texture&) = delete;
+    Texture(const Texture&) = delete;
     Texture& operator=(const Texture&) = delete;
-    */
 
 private:
-    textureType type;
     GLuint ID = 0;
-    GLuint unit = 0;
-    std::string fileName;
-    int colorChannels = 0;
-    int imgWidth = 0;
-    int imgHeight = 0;
-    unsigned char* data = nullptr;
-    bool stbiLoaded = false;
+    textureType type;
+    
+    int colorChannels = 4;
+    int imgWidth = 2;
+    int imgHeight = 2;
+    unsigned char* data = fallbackPixels;
 
-    // TODO: make this toggleable.
-    bool verboseOutput = true;
 };
 
 #endif

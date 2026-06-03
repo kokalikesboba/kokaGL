@@ -14,9 +14,7 @@ struct Vertex {
 
 enum class textureType {
     BaseColor,
-	Occlusion,
-	Roughness,
-	Metallic,
+	OcclusionRoughnessMetallic,
 	Normal,
 	Emissive
 };

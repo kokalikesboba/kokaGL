@@ -2,7 +2,6 @@
 
 Light::Light(glm::vec3 color) : gizmo("assets/models/pointer")
 {
-    position = {0,0,0};
     this->color = color;
 }
 

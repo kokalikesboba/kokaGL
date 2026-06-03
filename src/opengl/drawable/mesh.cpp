@@ -1,13 +1,5 @@
 #include "mesh.h"
 
-std::string getTextureTypePrefix(textureType type) {
-    switch (type) {
-        case textureType::BaseColor: return "Base color";
-        case textureType::Roughness: return "Roughness";
-        default: return "unknown";
-    }
-}
-
 Mesh::Mesh(
     std::vector<Vertex> vertices,
     std::vector<GLuint> indices,
@@ -20,18 +12,15 @@ Mesh::Mesh(
     vbo(this->vertices), 
     ebo(this->indices)
 {
-    shaderID = 0;
     vao.Bind();
     ebo.Bind();
 	vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, position));
     vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
     vao.LinkAttrib(vbo, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, color));
     vao.LinkAttrib(vbo, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texUV));
-    vao.Unbind();
-	ebo.Unbind();   
 
     for (int i = 0; i < this->textures.size(); ++i) {
-        this->textures[i].genTexture();
+        this->textures[i].genRGBATexture(nullptr);
     }
 
 }
@@ -45,33 +34,13 @@ void Mesh::Draw(
     vao.Bind();
     shader.Activate();
 
-    // Uploads texture uniform once, if draw is called with new shader, reupload.
-    if (shaderID != shader.getID()) {
-        shaderID = shader.getID();
-        numDiffuse = 0;
-        numSpecular = 0;
-        for (int i = 0; i < textures.size(); ++i) {
-            if (textures[i].getType() == textureType::BaseColor) {
-                textures[i].linkUni(
-                    shader,
-                    (getTextureTypePrefix(textures[i].getType()) + std::to_string(numDiffuse)).c_str()
-                    
-                );
-                numDiffuse++;
-            } else if (textures[i].getType() == textureType::Roughness) {
-                
-                textures[i].linkUni(
-                    shader,
-                    (getTextureTypePrefix(textures[i].getType()) + std::to_string(numSpecular)).c_str()
-                    
-                );
-                numSpecular++;
-            }
-        }
-    }
-
     for (int i = 0; i < textures.size(); ++i) {
-        textures[i].Bind();
+        switch (textures[i].getType()) {
+            case textureType::BaseColor: textures[i].Bind(0); break;
+            case textureType::OcclusionRoughnessMetallic: textures[i].Bind(1); break;
+            case textureType::Normal: textures[i].Bind(2); break;
+            case textureType::Emissive: textures[i].Bind(3); break;
+        }
     }
 
     glm::mat4 translationMatrix = glm::mat4(1.0f);
@@ -89,15 +58,9 @@ void Mesh::Draw(
 
     // Draw
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,0);
-
-    // Cleanup for state safety
-    vao.Unbind();
-    for (int i = 0; i < textures.size(); ++i) {
-        textures[i].Unbind();
-    }
 }
 
 Mesh::~Mesh()
 {
-    // Should be empty!
+    // Intentionally left blank.
 }
