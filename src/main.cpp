@@ -123,8 +123,8 @@ int main() {
 		// sphere.Draw(pointLight);
 		// cubeStack.Draw(pointLight);
 		// sword.Draw(pointLight);
-		light.Draw(lightGizmo);
-		// missing.Draw(lightGizmo);
+		light.Draw(pointLight);
+		missing.Draw(lightGizmo);
 		postProcess.FramebufferToWindow(pp_default);
 		
 		ImGui_ImplOpenGL3_NewFrame(); 

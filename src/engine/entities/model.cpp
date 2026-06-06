@@ -6,8 +6,8 @@
 
 Model::Model(const std::string &modelDir)
 {
-    std::vector<Texture> textures;
-    textures.emplace_back(textureType::BaseColor);
+    std::vector<std::shared_ptr<Texture>> textures;
+    textures.emplace_back(std::make_shared<Texture>(textureType::BaseColor));
     // If model size is zero, emplace back one mesh with the placeholder vertices, indices and ONE empty texture.
     mesh.emplace_back(std::make_unique<Mesh>(kErrorVertices,  kErrorIndices, textures));
 }

@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 class Mesh {
 
@@ -15,7 +16,7 @@ public:
     Mesh(
         std::vector<Vertex> vertices,
         std::vector<GLuint> indices,
-        std::vector<Texture> textures
+        std::vector <std::shared_ptr<Texture>> textures
     );
     void Draw(
         const Shader& shader,
@@ -28,7 +29,7 @@ public:
 private: 
     std::vector <Vertex> vertices;
     std::vector <GLuint> indices;
-    std::vector <Texture> textures;
+    std::vector <std::shared_ptr<Texture>> textures;
 
     VAO vao; 
     VBO vbo;
