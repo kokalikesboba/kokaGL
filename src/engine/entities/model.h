@@ -1,5 +1,5 @@
-#ifndef MODEL_CLASS_H
-#define MODEL_CLASS_H
+#ifndef MODEL_H
+#define MODEL_H
 
 #include "opengl/drawable/mesh.h"
 #include "opengl/format.h"
@@ -34,7 +34,6 @@ private:
 
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
-
-    std::vector<std::string> texPath;
 };
+ 
 #endif

@@ -4,13 +4,19 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-
-
 Model::Model(const std::string &modelDir)
 {
+    Assimp::Importer importer;
+    const aiScene* scene = importer.ReadFile(
+        modelDir,
+        aiProcess_CalcTangentSpace |
+        aiProcess_Triangulate |
+        aiProcess_JoinIdenticalVertices |
+        aiProcess_SortByPType 
+    );
 
     #include "engine/entities/placeholders.h"
-
+    
     std::vector<std::shared_ptr<Texture>> textures;
     textures.emplace_back(std::make_shared<Texture>(textureType::BaseColor));
     textures[0]->genRGBATexture(fallbackPixels, 2, 2);

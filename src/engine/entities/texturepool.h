@@ -8,11 +8,6 @@
 #include <vector>
 #include <unordered_map>
 
-struct texEntry {
-    Texture texture;
-    int instances;
-};
-
 class TexturePool
 {
 public:

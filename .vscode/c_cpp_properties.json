@@ -20,7 +20,8 @@
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/extern",
                 "${workspaceFolder}/extern/KHR",
-                "${workspaceFolder}/extern/imgui/"
+                "${workspaceFolder}/extern/imgui/",
+                "/usr/include/"
             ],
             "compilerPath": "/usr/bin/clang++",
             "cStandard": "c17",
