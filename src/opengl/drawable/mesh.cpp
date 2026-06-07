@@ -8,7 +8,7 @@
         vertices(std::move(vertices)),
         indices(std::move(indices)),
         textures(std::move(textures)),
-        // Call the constructors on the member variables of Mesh.
+    
         vbo(this->vertices), 
         ebo(this->indices)
     {
@@ -32,6 +32,7 @@
         const glm::vec3& scale)
     {
         vao.Bind();
+        ebo.Bind();
         shader.Activate();
 
         for (int i = 0; i < textures.size(); ++i) {
@@ -56,7 +57,6 @@
 
         glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));  
 
-        // Draw
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,0);
     }
 

@@ -3,9 +3,8 @@
 EBO::EBO(const std::vector<GLuint>& indices)
 {
 	glGenBuffers(1, &ID);
-	Bind();
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
-	Unbind();
 }
 
 void EBO::Bind() const
@@ -24,7 +23,7 @@ void EBO::Delete()
 		glDeleteBuffers(1, &ID);
 		ID = 0;
 	} else {
-		std::cerr << "EBO already deleted or empty" << std::endl;	
+		std::cerr << "Attempted to delete an EBO with ID of 0" << std::endl;	
 	}
 }
 

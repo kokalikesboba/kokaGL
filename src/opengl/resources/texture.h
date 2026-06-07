@@ -34,7 +34,6 @@ private:
     GLuint ID = 0;
     textureType type;
     
-    int colorChannels = 4;
     int imgWidth = 2;
     int imgHeight = 2;
     unsigned char* data = fallbackPixels;

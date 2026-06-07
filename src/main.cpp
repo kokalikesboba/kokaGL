@@ -123,8 +123,10 @@ int main() {
 		// sphere.Draw(pointLight);
 		// cubeStack.Draw(pointLight);
 		// sword.Draw(pointLight);
+		missing.Draw(pointLight);
 		light.Draw(pointLight);
-		// missing.Draw(lightGizmo);
+		GLenum err = glGetError();
+		if (err != GL_NO_ERROR) printf("GL error: %d\n", err);
 		postProcess.FramebufferToWindow(pp_default);
 		
 		ImGui_ImplOpenGL3_NewFrame(); 
