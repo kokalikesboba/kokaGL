@@ -16,7 +16,6 @@ void VAO::LinkAttrib(
 	VBO.Bind();
 	glVertexAttribPointer(layout, numComponents, type, GL_FALSE, stride, offset);
 	glEnableVertexAttribArray(layout);
-	VBO.Unbind();
 }
 
 void VAO::Bind() const
@@ -35,7 +34,7 @@ void VAO::Delete()
 		glDeleteVertexArrays(1, &ID);
 		ID = 0;
 	} else {
-		std::cerr << "Attempted to deleted a VAO with an ID of 0" << std::endl;
+		std::cerr << "Attempted to deleted a VAO with ID of 0" << std::endl;
 	}
 }
 

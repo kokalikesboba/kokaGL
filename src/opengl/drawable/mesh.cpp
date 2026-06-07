@@ -19,10 +19,6 @@
         vao.LinkAttrib(vbo, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, color));
         vao.LinkAttrib(vbo, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texUV));
 
-        for (int i = 0; i < this->textures.size(); ++i) {
-            this->textures[i]->genRGBATexture(nullptr);
-        }
-
     }
 
     void Mesh::Draw(

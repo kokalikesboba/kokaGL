@@ -11,7 +11,6 @@ UBO::UBO(const std::vector<float>& data, unsigned int slot)
 		GL_STATIC_DRAW
 	);
 	glBindBufferBase(GL_UNIFORM_BUFFER, blockIndex, ID);
-	Unbind();
 }
 
 void UBO::LinkUni(const Shader &shader, const char *uniform) const
@@ -37,7 +36,7 @@ void UBO::Delete()
         glDeleteBuffers(1, &ID);
         ID = 0; // Reset to 0 so we don't delete it twice
     } else {
-        std::cerr << "Attempted to delete a UBO with an ID of 0" << std::endl;
+        std::cerr << "Attempted to delete a UBO with ID of 0" << std::endl;
     }
 }
 

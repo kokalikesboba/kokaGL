@@ -28,7 +28,7 @@ void VBO::Delete()
         glDeleteBuffers(1, &ID);
         ID = 0; // Crucial: Reset to 0 so we don't delete it twice
     } else {
-        std::cerr << "Attempted to delete a VBO with an ID of 0" << std::endl;
+        std::cerr << "Attempted to delete a VBO with ID of 0" << std::endl;
     }
 }
 

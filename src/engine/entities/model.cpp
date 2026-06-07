@@ -4,11 +4,17 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+
+
 Model::Model(const std::string &modelDir)
 {
+
+    #include "engine/entities/placeholders.h"
+
     std::vector<std::shared_ptr<Texture>> textures;
     textures.emplace_back(std::make_shared<Texture>(textureType::BaseColor));
-    // If model size is zero, emplace back one mesh with the placeholder vertices, indices and ONE empty texture.
+    textures[0]->genRGBATexture(fallbackPixels, 2, 2);
+
     mesh.emplace_back(std::make_unique<Mesh>(kErrorVertices,  kErrorIndices, textures));
 }
 
