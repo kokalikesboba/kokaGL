@@ -8,9 +8,8 @@ VBO::VBO()
 VBO::VBO(const std::vector<Vertex> &vertices)
 {
 	glGenBuffers(1, &ID);
-	Bind();
+	glBindBuffer(GL_ARRAY_BUFFER, ID);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(),GL_STATIC_DRAW);
-	Unbind();
 }
 
 void VBO::Bind() const
@@ -29,7 +28,7 @@ void VBO::Delete()
         glDeleteBuffers(1, &ID);
         ID = 0; // Crucial: Reset to 0 so we don't delete it twice
     } else {
-        std::cout << "VBO already empty or deleted." << std::endl;
+        std::cerr << "Attempted to delete a VBO with an ID of 0" << std::endl;
     }
 }
 

@@ -35,7 +35,7 @@ void VAO::Delete()
 		glDeleteVertexArrays(1, &ID);
 		ID = 0;
 	} else {
-		std::cout << "VAO already empty or deleted" << std::endl;
+		std::cerr << "Attempted to deleted a VAO with an ID of 0" << std::endl;
 	}
 }
 

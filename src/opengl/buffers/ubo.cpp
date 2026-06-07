@@ -37,7 +37,7 @@ void UBO::Delete()
         glDeleteBuffers(1, &ID);
         ID = 0; // Reset to 0 so we don't delete it twice
     } else {
-        std::cout << "UBO already empty or deleted." << std::endl;
+        std::cerr << "Attempted to delete a UBO with an ID of 0" << std::endl;
     }
 }
 

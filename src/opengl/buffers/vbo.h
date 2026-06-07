@@ -13,13 +13,10 @@ class VBO
 {
 public:
 	VBO();
-	// Constructs a VBO. This buffer will not remain bound after execution.
+	
 	VBO(const std::vector <Vertex>& vertices);
-	// Binds the VBO
 	void Bind() const;
-	// Unbinds the VBO
 	void Unbind() const;
-	// Cleans up VBO on OpenGL's side
 	void Delete();
 	~VBO();
 

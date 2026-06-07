@@ -24,7 +24,7 @@ void EBO::Delete()
 		glDeleteBuffers(1, &ID);
 		ID = 0;
 	} else {
-		std::cout << "EBO already deleted or empty" << std::endl;	
+		std::cerr << "EBO already deleted or empty" << std::endl;	
 	}
 }
 

@@ -19,13 +19,9 @@ class VAO {
 			const GLenum& type,
 			const GLsizeiptr& stride,
 			const void* offset) const;
-		// Binds the VAO
 		void Bind() const;
-		// Unbinds the VAO
 		void Unbind() const;
-		// Cleans up VAO on OpenGL's side
 		void Delete();
-		// Deconstructor
 		~VAO();
 
 		// Makes this class non-copyable

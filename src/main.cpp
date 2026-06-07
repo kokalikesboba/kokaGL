@@ -124,7 +124,7 @@ int main() {
 		// cubeStack.Draw(pointLight);
 		// sword.Draw(pointLight);
 		light.Draw(pointLight);
-		missing.Draw(lightGizmo);
+		// missing.Draw(lightGizmo);
 		postProcess.FramebufferToWindow(pp_default);
 		
 		ImGui_ImplOpenGL3_NewFrame(); 

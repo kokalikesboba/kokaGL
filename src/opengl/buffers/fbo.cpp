@@ -21,7 +21,7 @@ void FBO::Delete()
 		glDeleteFramebuffers(1, &ID);
 		ID = 0;
 	} else {
-		std::cout << "FBO already empty or deleted" << std::endl;
+		std::cerr << "Attempted to delete FBO with an ID of 0" << std::endl;
 	}
 }
 
