@@ -13,16 +13,16 @@ class TexturePool
 public:
     TexturePool();
 
-    void Add(unsigned char& data, unsigned int  hash);
+    void Add(unsigned int hash, textureType textype);
     void Delete(unsigned int hash);
-    bool isCached() 
 
-    std::shared_ptr<Texture> Get(unsigned int hash hash);
+    bool isCached(unsigned int hash); 
+    std::shared_ptr<Texture> Get(unsigned int hash);
     
     ~TexturePool();
 private:
 
-    std::unordered_map<Texture, int> cache;
+    std::unordered_map<unsigned int, std::shared_ptr<Texture>> map;
 
 };
 

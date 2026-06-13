@@ -5,8 +5,15 @@ Model::Model(const std::string &modelDir, TexturePool& texturepool)
 
     Parser parsed(modelDir);
     
-    for (int i = 0; i < parsed.textureHash.size(); ++i) {
-        if ()
+    for (int i = 0; i < parsed.texHash.size(); ++i) {
+        if (texturepool.isCached(parsed.texHash[i])) {
+            std::shared_ptr<Texture> buffer = texturepool.Get(parsed.texHash[i]);
+            textures.push_back(buffer);
+        } else {
+            texturepool.Add(parsed.texHash[i], parsed.texType[i]);
+            texturepool.Get(parsed.texHash[i])->genRGBATexture(parsed.texData[i], 2, 2);
+            textures.emplace_back(texturepool.Get(parsed.texHash[i]));
+        }
     }
 
     vertices = std::move(parsed.vertices);
@@ -14,7 +21,7 @@ Model::Model(const std::string &modelDir, TexturePool& texturepool)
 
     if (parsed.vertices.size() == 0 ||
         parsed.indices.size() == 0 || 
-        parsed.textureData.size() == 0) {
+        parsed.texData.size() == 0) {
 
         textures.emplace_back(std::make_shared<Texture>(textureType::BaseColor));
         textures[0]->genRGBATexture(fallbackPixels, 2, 2);
