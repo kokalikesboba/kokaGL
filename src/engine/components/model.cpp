@@ -1,34 +1,33 @@
 #include "model.h"
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
-Model::Model(const std::string &modelDir)
+Model::Model(const std::string &modelDir, TexturePool& texturepool)
 {
-    Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(
-        modelDir,
-        aiProcess_CalcTangentSpace |
-        aiProcess_Triangulate |
-        aiProcess_JoinIdenticalVertices |
-        aiProcess_SortByPType 
-    );
 
-    #include "engine/entities/placeholders.h"
+    Parser parsed(modelDir);
     
-    std::vector<std::shared_ptr<Texture>> textures;
-    textures.emplace_back(std::make_shared<Texture>(textureType::BaseColor));
-    textures[0]->genRGBATexture(fallbackPixels, 2, 2);
+    for (int i = 0; i < parsed.textureHash.size(); ++i) {
+        if ()
+    }
 
-    mesh.emplace_back(std::make_unique<Mesh>(kErrorVertices,  kErrorIndices, textures));
+    vertices = std::move(parsed.vertices);
+    indices = std::move(parsed.indices);
+
+    if (parsed.vertices.size() == 0 ||
+        parsed.indices.size() == 0 || 
+        parsed.textureData.size() == 0) {
+
+        textures.emplace_back(std::make_shared<Texture>(textureType::BaseColor));
+        textures[0]->genRGBATexture(fallbackPixels, 2, 2);
+
+        std::make_unique<Mesh>(kErrorVertices,  kErrorIndices, textures);
+    }
+
+    std::make_unique<Mesh>(vertices, indices, textures);
 }
 
 void Model::Draw(const Shader &shader) const
 {
-    for (int i = 0; i < mesh.size(); ++i) {
-        mesh[i]->Draw(shader, position, orientation, scale);
-    }
+    mesh->Draw(shader, position, orientation, scale);
 }
 
 void Model::SetPosition(glm::vec3 position)

@@ -2,18 +2,20 @@
 	#include <mach-o/dyld.h>  // macOS specific
 #endif
 
+
+#include "opengl/drawable/framebuffer.h"
+#include "opengl/utils.h"
+
+#include "engine/runtime/texturepool.h"
+#include "engine/components/model.h"
+#include "engine/components/light.h"
+
 #include "engine/runtime/framepacer.h"
 #include "engine/runtime/input.h"
-
-#include "engine/entities/model.h"
-#include "engine/entities/light.h"
 
 #include "imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
-
-#include "opengl/drawable/framebuffer.h"
-#include "opengl/utils.h"
 
 #include <filesystem>
 
@@ -79,7 +81,8 @@ int main() {
 	sword.SetPosition({2.0f,1.f,-2.0f});
 	*/
 
-	Model missing("lala");
+	TexturePool texturepool;
+	Model missing("lala", texturepool);
 
 	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
@@ -119,16 +122,14 @@ int main() {
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
+
 		// gridPlane.Draw(pointLight);
 		// sphere.Draw(pointLight);
 		// cubeStack.Draw(pointLight);
 		// sword.Draw(pointLight);
 		missing.Draw(pointLight);
-		light.Draw(pointLight);
-		GLenum err = glGetError();
-		if (err != GL_NO_ERROR) printf("GL error: %d\n", err);
 		postProcess.FramebufferToWindow(pp_default);
-		
+
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();

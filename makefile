@@ -48,12 +48,13 @@ CPP_SRCS = \
 	src/opengl/resources/viewport.cpp \
 	src/opengl/drawable/mesh.cpp \
 	src/opengl/drawable/framebuffer.cpp \
-	src/engine/entities/model.cpp \
-	src/engine/entities/light.cpp \
+	src/engine/components/model.cpp \
+	src/engine/components/light.cpp \
 	src/engine/runtime/input.cpp \
 	src/engine/runtime/framepacer.cpp \
+	src/engine/runtime/texturepool.cpp \
+	src/engine/runtime/parser.cpp \
 	src/main.cpp
-	## src/engine/runtime/texturepool.cpp \
 
 
 C_SRCS = \
