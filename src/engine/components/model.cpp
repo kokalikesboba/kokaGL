@@ -1,33 +1,26 @@
 #include "model.h"
 
-Model::Model(const std::string &modelDir, TexturePool& texturepool)
+Model::Model(const std::string &modelDir, TexturePool& textureCache)
 {
 
     Parser parsed(modelDir);
-    
+
     for (int i = 0; i < parsed.texHash.size(); ++i) {
-        if (texturepool.isCached(parsed.texHash[i])) {
-            std::shared_ptr<Texture> buffer = texturepool.Get(parsed.texHash[i]);
-            textures.push_back(buffer);
+        if (textureCache.isCachedAndAlive(parsed.texHash[i])) {
+            textures.push_back(textureCache.Get(parsed.texHash[i]));
         } else {
-            texturepool.Add(parsed.texHash[i], parsed.texType[i]);
-            texturepool.Get(parsed.texHash[i])->genRGBATexture(parsed.texData[i], 2, 2);
-            textures.emplace_back(texturepool.Get(parsed.texHash[i]));
+            textureCache.Add(
+                parsed.texHash[i],
+                parsed.texType[i],
+                parsed.texData[i],
+                2,
+                2
+            );
         }
     }
 
     vertices = std::move(parsed.vertices);
     indices = std::move(parsed.indices);
-
-    if (parsed.vertices.size() == 0 ||
-        parsed.indices.size() == 0 || 
-        parsed.texData.size() == 0) {
-
-        textures.emplace_back(std::make_shared<Texture>(textureType::BaseColor));
-        textures[0]->genRGBATexture(fallbackPixels, 2, 2);
-
-        std::make_unique<Mesh>(kErrorVertices,  kErrorIndices, textures);
-    }
 
     std::make_unique<Mesh>(vertices, indices, textures);
 }

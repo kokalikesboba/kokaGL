@@ -54,16 +54,10 @@ static const std::vector<GLuint> kErrorIndices = {
     20, 22, 21,  20, 23, 22, // bottom
 };
 
-static  unsigned char fallbackPixels[] = {
-    255, 0, 255, 255,  0, 0, 0, 255,    // Row 1: Pink, Black
-    0, 0, 0, 255,     255, 0, 255,255     // Row 2: Black, Pink
-};
-
-
 class Model
 {
 public:
-    Model(const std::string& modelDir, TexturePool& texturepool);
+    Model(const std::string& modelDir, TexturePool& textureCache);
     void Draw(const Shader& shader) const;
 
     void SetPosition(glm::vec3 position);
