@@ -9,7 +9,7 @@
 #include <iostream>
 
 // Default missing texture.
-inline unsigned char fallbackPixels[] = {
+inline std::vector<unsigned char> fallbackPixels = {
     227, 66, 107, 255,  
     66, 94, 135, 255,
     66, 94, 135, 255,
@@ -21,7 +21,7 @@ class TexturePool
 {
 public:
     TexturePool();
-    std::shared_ptr<Texture> Add(unsigned int texHash, textureType textype, const unsigned char* data, int width, int height);
+    std::shared_ptr<Texture> Add(unsigned int texHash, textureType textype, std::vector<unsigned char>& bytes, int width, int height);
     bool isCachedAndAlive(unsigned int texHash);
     std::shared_ptr<Texture> Get(unsigned int texHash);
 private:

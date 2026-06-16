@@ -7,6 +7,7 @@
 #include "opengl/format.h"
 
 #include <iostream>
+#include <vector>
 
 class Texture
 {
@@ -16,7 +17,7 @@ public:
     void Bind(GLuint texUnit) const;
     void Unbind() const;
 
-    void genRGBATexture(const unsigned char* data, int imgWidth, int imgHeight);
+    void genRGBATexture(unsigned char* bytes, int imgWidth, int imgHeight);
     
     void linkUni(const Shader& shader, const char* uniformName, GLuint texUnit) const;
 
@@ -31,9 +32,8 @@ private:
     GLuint ID = 0;
     textureType type;
 
-    int imgWidth = 0;
-    int imgHeight = 0;
-    unsigned char* data = nullptr;
+    int width = 0;
+    int height = 0;
 
     bool textureGenerated = false;
 

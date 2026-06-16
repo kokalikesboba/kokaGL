@@ -82,7 +82,6 @@ int main() {
 	*/
 
 	TexturePool texturepool;
-	texturepool.Add()
 	Model missing("lala", texturepool);
 
 	Light light({1.f,1.f,1.f});

@@ -4,26 +4,32 @@ TexturePool::TexturePool()
 {
 	// Initializes the black and magenta fallback texture.
     errorTex = std::make_shared<Texture>(textureType::BaseColor);
-	errorTex->genRGBATexture(fallbackPixels, 2, 2);
+	errorTex->genRGBATexture(fallbackPixels.data(), 2, 2);
+	cache.insert({0, errorTex});
 }
 
 // Adds a texture to be observed by the pool while also buffering it to the GPU. Callers are responsible for keeping the returned pointer alive.
-std::shared_ptr<Texture>  TexturePool::Add(unsigned int texHash, textureType textype, const unsigned char* data, int width, int height)
+std::shared_ptr<Texture>  TexturePool::Add(unsigned int texHash, textureType textype, std::vector<unsigned char>& bytes, int width, int height)
 {
+	if (bytes.empty()) {
+		++errorTexInstances;
+		std::cerr << "[ERROR][TexturePool] Empty bytes were attempted to be passed to Add() by: " << texHash << std::endl;
+		return errorTex;
+	}
+
 	if (cache.find(texHash) == cache.end()) {
 		std::shared_ptr<Texture> buffer = std::make_shared<Texture>(textype);
-		buffer->genRGBATexture(data, width, height);
+		buffer->genRGBATexture(bytes.data(), width, height);
 		cache.insert({texHash, buffer});
 		return buffer;
 	} else {
-		std::cerr << "Attempted to add a texture whose texHash already exists: " << texHash << std::endl;
-		// I chose to make this error case obvious.
+		std::cerr << "[ERROR][TexturePool] Attempted to add a texture whose texHash already exists: " << texHash << std::endl;
 		++errorTexInstances;
 		return errorTex;
 	}
 }
 
-// Checks if the hash exists in the cache, also checks if the stored pointer has expired and deletes it. 
+// Checks if the hash exists in the map, also checks if the stored pointer has expired and deletes it. 
 bool TexturePool::isCachedAndAlive(unsigned int texHash)
 {
 	auto it = cache.find(texHash);
@@ -40,13 +46,15 @@ bool TexturePool::isCachedAndAlive(unsigned int texHash)
 // Gets a live Texture for the hash, or the fallback if missing/expired.
 std::shared_ptr<Texture> TexturePool::Get(unsigned int texHash)
 {
+	if (!texHash) std::cerr << "[WARN][TexturePool] Requested hash of 0, this is likely from a failed parse." << std::endl; 
+
     auto it = cache.find(texHash);
     if (it != cache.end()) {
         std::shared_ptr<Texture> tex = it->second.lock();
         if (tex)
             return tex;          // present and alive
     }
-    std::cerr << "Tried to get a Texture with an invalid texHash: " << texHash << std::endl;
+    std::cerr << "[ERROR][TexturePool] Tried to get a Texture with an invalid hash: " << texHash << std::endl;
     ++errorTexInstances;
     return errorTex;
 }

@@ -12,7 +12,7 @@ void Texture::Bind(GLuint texUnit) const
     glActiveTexture(unit);
     glBindTexture(GL_TEXTURE_2D,ID);
 	// quick hack
-	if (!textureGenerated) std::cerr << "Texture: " << ID << " was bound, but not generated." << std::endl;
+	if (!textureGenerated) std::cerr << "[WARN][Texture] Texture:" << ID << " was bound, but not generated." << std::endl;
 }
 
 void Texture::Unbind() const
@@ -20,8 +20,18 @@ void Texture::Unbind() const
     glBindTexture(GL_TEXTURE_2D,0);
 }
 
-void Texture::genRGBATexture(const unsigned char *data, int imgWidth, int imgHeight)
+void Texture::genRGBATexture(unsigned char* bytes, int width, int height)
 {
+	this->width = width;
+	this->height = height;
+
+	if (width < 1 || height < 1) {
+		std::cerr << "[WARN][Texture] Bizarre texture dimension: " << width << " " << height << std::endl;
+	}
+	if ((bytes == nullptr)) {
+		std::cerr << "[ERROR][Texture] Texture bytes is null" << std::endl;
+	}
+
 	glBindTexture(GL_TEXTURE_2D,ID);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -33,12 +43,12 @@ void Texture::genRGBATexture(const unsigned char *data, int imgWidth, int imgHei
 		GL_TEXTURE_2D,
 		0,
 		GL_RGBA,
-		imgWidth,
-		imgHeight,
+		width,
+		height,
 		0,
 		GL_RGBA,
 		GL_UNSIGNED_BYTE,
-		data
+		bytes
 	);
 
 	textureGenerated = true;
@@ -62,7 +72,7 @@ void Texture::Delete()
 		glDeleteTextures(1, &ID);
 		ID = 0;
 	} else {
-		std::cerr << "Attempted to delete a texture with ID of 0" << std::endl;
+		std::cerr << "[ERROR][Texture] Attempted to delete a texture with ID of 0" << std::endl;
 	}
 }
 

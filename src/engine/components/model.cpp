@@ -9,12 +9,14 @@ Model::Model(const std::string &modelDir, TexturePool& textureCache)
         if (textureCache.isCachedAndAlive(parsed.texHash[i])) {
             textures.push_back(textureCache.Get(parsed.texHash[i]));
         } else {
-            textureCache.Add(
-                parsed.texHash[i],
-                parsed.texType[i],
-                parsed.texData[i],
-                2,
-                2
+            textures.push_back(
+                textureCache.Add(
+                    parsed.texHash[i],
+                    parsed.texType[i],
+                    parsed.texData[i],
+                    parsed.texWidth[i],
+                    parsed.texHeight[i]
+                )   
             );
         }
     }
@@ -22,7 +24,7 @@ Model::Model(const std::string &modelDir, TexturePool& textureCache)
     vertices = std::move(parsed.vertices);
     indices = std::move(parsed.indices);
 
-    std::make_unique<Mesh>(vertices, indices, textures);
+    mesh = std::make_unique<Mesh>(vertices, indices, textures);
 }
 
 void Model::Draw(const Shader &shader) const
