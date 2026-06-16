@@ -70,19 +70,42 @@ int main() {
 
     Shader pointLight("shaders/pointLight.vert", "shaders/pointLight.frag");
 
-	/*
-	Model gridPlane("assets/models/gridPlane");
-	gridPlane.SetPosition({0.f,0.f,0.f});
-	Model sphere("assets/models/sphere");
-	sphere.SetPosition({2.f,2.f,2.f});
-	Model cubeStack("assets/models/cubeStack");
-	cubeStack.SetPosition({-2.0f,0.1f,-2.0f});
-	Model sword("assets/models/sword");
-	sword.SetPosition({2.0f,1.f,-2.0f});
-	*/
-
 	TexturePool texturepool;
-	Model missing("lala", texturepool);
+
+	// Ground plane — origin, the floor everything sits on.
+	Model gridPlane("assets/models/gridPlane.glb", texturepool);
+	gridPlane.SetPosition({0.0f, 0.0f, 0.0f});
+
+	// The leaning tower of cubes — back-left, a tall vertical landmark.
+	Model cubeStack("assets/models/cubeStack.glb", texturepool);
+	cubeStack.SetPosition({-3.0f, 0.1f, -3.0f});
+
+	// Sphere — front-right, raised so it reads as floating / hero object.
+	Model sphere("assets/models/sphere.glb", texturepool);
+	sphere.SetPosition({3.5f, 1.5f, 2.0f});
+
+	// Sword — center stage, tilted as if planted point-down in the ground.
+	Model sword("assets/models/sword.glb", texturepool);
+	sword.SetPosition({0.0f, 1.0f, 0.0f});
+	sword.SetEulerRotation({0.0f, 45.0f, 180.0f});
+
+	// Chest — front-left, the new model, angled toward the camera.
+	Model chest("assets/models/chest.glb", texturepool);
+	chest.SetPosition({-3.0f, 0.1f, 2.5f});
+	chest.SetEulerRotation({0.0f, -30.0f, 0.0f});
+
+	// Laika — back-right, scaled up a touch as a focal character.
+	Model laika("assets/models/laika.glb", texturepool);
+	laika.SetPosition({3.0f, 0.1f, -3.0f});
+	laika.SetEulerRotation({0.0f, 200.0f, 0.0f});
+
+	// Pointer — small, near origin, your gizmo/indicator model.
+	Model pointer("assets/models/pointer.glb", texturepool);
+	pointer.SetPosition({1.5f, 0.1f, 1.5f});
+
+	// error.glb — off to the side as the deliberate "this one's the test" model.
+	Model error("assets/models/error.glb", texturepool);
+	error.SetPosition({0.0f, 0.1f, -5.0f});
 
 	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
@@ -123,11 +146,18 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		// gridPlane.Draw(pointLight);
-		// sphere.Draw(pointLight);
-		// cubeStack.Draw(pointLight);
-		// sword.Draw(pointLight);
-		missing.Draw(pointLight);
+		gridPlane.Draw(pointLight);
+		cubeStack.Draw(pointLight);
+		sphere.Draw(pointLight);
+		sword.Draw(pointLight);
+		chest.Draw(pointLight);
+		laika.Draw(pointLight);
+
+		glDisable(GL_DEPTH_TEST);
+		pointer.Draw(lightGizmo);
+		error.Draw(lightGizmo);
+		glEnable(GL_DEPTH_TEST);
+
 		postProcess.FramebufferToWindow(pp_default);
 
 		ImGui_ImplOpenGL3_NewFrame(); 
