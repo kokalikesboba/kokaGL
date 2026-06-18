@@ -1,4 +1,5 @@
 #include "parser.h"
+#include "stb/stb_img.h"
 
 unsigned int hash(const std::vector<unsigned char>& data) {
     unsigned int h = 5381;
@@ -43,36 +44,27 @@ Parser::Parser(std::string modelDir)
 
     for (int i = 0; i < scene->mNumMeshes; ++i) {
         const aiMesh* mesh = scene->mMeshes[i];
-
         for (int j = 0; j < mesh->mNumFaces; ++j) {
             const aiFace& face = mesh->mFaces[j];
-
-            for (int k = 0; k < face.mNumIndices; ++k)
+            for (int k = 0; k < face.mNumIndices; ++k) {
                 indices.push_back(face.mIndices[k]);
+            }
         }
     }
 
     const aiMesh* mesh = scene->mMeshes[0];   // single-mesh for now
-
-// Vertices: one Vertex per mNumVertices, pulled from parallel attribute arrays.
     for (unsigned int v = 0; v < mesh->mNumVertices; ++v) {
         Vertex vert;
-
-        vert.position = { mesh->mVertices[v].x,
-                        mesh->mVertices[v].y,
-                        mesh->mVertices[v].z };
-
-        if (mesh->HasNormals())
-            vert.normal = { mesh->mNormals[v].x,
-                            mesh->mNormals[v].y,
-                            mesh->mNormals[v].z };
-
-        if (mesh->mTextureCoords[0])   // UV channel 0 may be absent
-            vert.texUV = { mesh->mTextureCoords[0][v].x,
-                        mesh->mTextureCoords[0][v].y };
-        else
-            vert.texUV = { 0.0f, 0.0f };
-
+        vert.position = {mesh->mVertices[v].x, mesh->mVertices[v].y, mesh->mVertices[v].z};
+        if (mesh->HasNormals()) {
+            vert.normal = {mesh->mNormals[v].x, mesh->mNormals[v].y,mesh->mNormals[v].z};
+        }
+        if (mesh->mTextureCoords[0]) {
+            vert.texUV = {mesh->mTextureCoords[0][v].x,mesh->mTextureCoords[0][v].y};
+        } else {
+            vert.texUV = {0.0f, 0.0f};
+        }
         vertices.push_back(vert);
     }
+    
 }
