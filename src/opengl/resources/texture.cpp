@@ -28,7 +28,7 @@ void Texture::genRGBATexture(unsigned char* bytes, int width, int height)
 	if (width < 1 || height < 1) {
 		std::cerr << "[WARN][Texture] Bizarre texture dimension: " << width << " " << height << std::endl;
 	}
-	if ((bytes == nullptr)) {
+	if (bytes == nullptr) {
 		std::cerr << "[ERROR][Texture] Texture bytes is null" << std::endl;
 	}
 

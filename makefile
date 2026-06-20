@@ -22,10 +22,10 @@ TARGET = kokaGL
 
 CPP_SRCS = \
 	$(EXTERN)/stb/stb.cpp \
+	$(EXTERN)/simdjson/simdjson.cpp \
 	$(EXTERN)/fastgltf/src/fastgltf.cpp \
     $(EXTERN)/fastgltf/src/base64.cpp \
 	$(EXTERN)/fastgltf/src/io.cpp \
-	$(EXTERN)/simdjson/simdjson.cpp \
 	$(EXTERN)/imgui/imgui.cpp \
 	$(EXTERN)/imgui/imgui_draw.cpp \
 	$(EXTERN)/imgui/imgui_tables.cpp \
