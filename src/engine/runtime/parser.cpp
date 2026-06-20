@@ -1,70 +1,52 @@
-#include "parser.h"
-#include "stb/stb_img.h"
+    #include "parser.h"
 
-unsigned int hash(const std::vector<unsigned char>& data) {
-    unsigned int h = 5381;
-    for (size_t i = 0; i < data.size(); ++i)
-        h = h * 31 + data[i];
-    return h;
-}
+    #include "stb/stb_img.h"
+    #include <fastgltf/core.hpp>
+    #include <fastgltf/tools.hpp>      // accessor tools live here
+    #include <fastgltf/types.hpp>
+    #include <fastgltf/glm_element_traits.hpp>
 
-Parser::Parser(std::string modelDir)
-{
-    std::filesystem::path path = modelDir;
-    if (!std::filesystem::exists(path)) {
-        std::cerr << "[ERROR][Parser] Invalid model path: " << modelDir << std::endl;
+    unsigned int hash(const std::vector<unsigned char>& data) {
+        unsigned int h = 5381;
+        for (size_t i = 0; i < data.size(); ++i)
+            h = h * 31 + data[i];
+        return h;
+    }
+
+    unsigned char* stbiLoadEmbedded(unsigned char* data, int data_len, int* width, int* height) {
+        int channelsRGBA = 4;
+        unsigned char* pixels = stbi_load_from_memory(data, data_len, width, height, &channelsRGBA, 4);
+        return pixels;
+    }
+
+    unsigned char* stbiLoadDir(std::string dir, int* width, int* height) {
+        int channelsRGBA = 4;
+        unsigned char* pixels = stbi_load(dir.c_str(), width, height, &channelsRGBA, 4);
+        return pixels;
+    }
+
+    void Parser::loadShameCube() {
         vertices = errorVertices;
         indices = errorIndices;
         texHash.push_back(0);
-        return;
     }
 
-    Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(
-        modelDir,
-        aiProcess_CalcTangentSpace |
-        aiProcess_Triangulate |
-        aiProcess_JoinIdenticalVertices |
-        aiProcess_SortByPType
-    );
-
-    if (!scene || (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || !scene->mRootNode) {
-    std::cerr << "[ERROR][Parser] Assimp failed to load '" << modelDir
-              << "': " << importer.GetErrorString() << "\n";
-        vertices = errorVertices;
-        indices = errorIndices;
-        texHash.push_back(0);
-        return;
-    }
-
-    // if (scene->mNumTextures == 0) {
-    //    std::cerr << "[ERROR][Parser] No embedded texture found in: " << modelDir << std::endl;
-    //}
-    texHash.push_back(0);
-
-    for (int i = 0; i < scene->mNumMeshes; ++i) {
-        const aiMesh* mesh = scene->mMeshes[i];
-        for (int j = 0; j < mesh->mNumFaces; ++j) {
-            const aiFace& face = mesh->mFaces[j];
-            for (int k = 0; k < face.mNumIndices; ++k) {
-                indices.push_back(face.mIndices[k]);
-            }
+    Parser::Parser(std::string modelDir) {
+        std::filesystem::path path = modelDir;
+        if (!std::filesystem::exists(path)) {
+            std::cerr << "[ERROR][Parser] Invalid model path: " << modelDir << std::endl;
+            loadShameCube();
+            return;
         }
-    }
 
-    const aiMesh* mesh = scene->mMeshes[0];   // single-mesh for now
-    for (unsigned int v = 0; v < mesh->mNumVertices; ++v) {
-        Vertex vert;
-        vert.position = {mesh->mVertices[v].x, mesh->mVertices[v].y, mesh->mVertices[v].z};
-        if (mesh->HasNormals()) {
-            vert.normal = {mesh->mNormals[v].x, mesh->mNormals[v].y,mesh->mNormals[v].z};
-        }
-        if (mesh->mTextureCoords[0]) {
-            vert.texUV = {mesh->mTextureCoords[0][v].x,mesh->mTextureCoords[0][v].y};
+        auto buffExp = fastgltf::GltfDataBuffer::FromPath(modelDir);
+        if (buffExp.error() != fastgltf::Error::None) {
+            std::cerr << "[ERROR][Parser] Error while parsing." << std::endl;
+            loadShameCube();
+            return;
         } else {
-            vert.texUV = {0.0f, 0.0f};
+            std::cerr << "stub!" << std::endl;
+            loadShameCube();
+            return;
         }
-        vertices.push_back(vert);
     }
-    
-}

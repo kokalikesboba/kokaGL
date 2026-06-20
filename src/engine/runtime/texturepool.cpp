@@ -9,18 +9,13 @@ TexturePool::TexturePool()
 }
 
 // Adds a texture to be observed by the pool while also buffering it to the GPU. Callers are responsible for keeping the returned pointer alive.
-std::shared_ptr<Texture>  TexturePool::Add(unsigned int texHash, textureType textype, std::vector<unsigned char>& bytes, int width, int height)
+std::shared_ptr<Texture> TexturePool::Add(unsigned int texHash, textureType textype, std::vector<unsigned char>& bytes, int width, int height)
 {
-	if (bytes.empty()) {
-		++errorTexInstances;
-		std::cerr << "[ERROR][TexturePool] Empty bytes were attempted to be passed to Add() by: " << texHash << std::endl;
-		return errorTex;
-	}
-
 	if (cache.find(texHash) == cache.end()) {
 		std::shared_ptr<Texture> buffer = std::make_shared<Texture>(textype);
 		buffer->genRGBATexture(bytes.data(), width, height);
 		cache.insert({texHash, buffer});
+		std::cout << "[Success][Texturepool] Inserted a texture into cache with hash of: " << texHash << std::endl;
 		return buffer;
 	} else {
 		std::cerr << "[ERROR][TexturePool] Attempted to add a texture whose texHash already exists: " << texHash << std::endl;
@@ -46,7 +41,7 @@ bool TexturePool::isCachedAndAlive(unsigned int texHash)
 // Gets a live Texture for the hash, or the fallback if missing/expired.
 std::shared_ptr<Texture> TexturePool::Get(unsigned int texHash)
 {
-	if (!texHash) std::cerr << "[WARN][TexturePool] Requested hash of 0, this is likely from a failed parse." << std::endl; 
+	if (!texHash) std::cerr << "[WARN][TexturePool] A model requested a hash of 0, this is likely from a failed parse." << std::endl; 
 
     auto it = cache.find(texHash);
     if (it != cache.end()) {

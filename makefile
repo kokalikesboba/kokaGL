@@ -1,35 +1,31 @@
 EXTERN = extern
-# =======================
-# COMPILERS
-# =======================
+
 CXX = clang++
 CC  = clang
-# =======================
-# COMPILER FLAGS
-# =======================
-CXXFLAGS = -g -O2 -std=c++17 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc
+
+CXXFLAGS = -g -O2 -std=c++17 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc -I$(EXTERN)/simdjson
 CFLAGS   = -g -O2 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc
-# =======================
-# PLATFORMS
-# =======================
+
 UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
     CXXFLAGS += -I/opt/homebrew/include
     CFLAGS   += -I/opt/homebrew/include
-    LDLIBS    = -lglfw -lassimp -framework OpenGL
+    LDLIBS    = -lglfw -framework OpenGL
     LDFLAGS  += -L/opt/homebrew/lib
 else
-    LDLIBS    = -lglfw -lGL -ldl -lassimp
+    LDLIBS    = -lglfw -lGL -ldl
 endif
-# =======================
-# OUTPUT
-# =======================
+
+MAKEFLAGS += -j10
+
 TARGET = kokaGL
-# =======================
-# SOURCE FILES
-# =======================
+
 CPP_SRCS = \
 	$(EXTERN)/stb/stb.cpp \
+	$(EXTERN)/fastgltf/src/fastgltf.cpp \
+    $(EXTERN)/fastgltf/src/base64.cpp \
+	$(EXTERN)/fastgltf/src/io.cpp \
+	$(EXTERN)/simdjson/simdjson.cpp \
 	$(EXTERN)/imgui/imgui.cpp \
 	$(EXTERN)/imgui/imgui_draw.cpp \
 	$(EXTERN)/imgui/imgui_tables.cpp \
@@ -60,77 +56,30 @@ CPP_SRCS = \
 C_SRCS = \
 	$(EXTERN)/glad/glad.c
 
-
-# =======================
-# OBJECT FILES
-# =======================
-
-# Convert each .cpp file into a corresponding .o file in build/
-# Example:
-#   src/main.cpp  -> build/src/main.o
 CPP_OBJS = $(CPP_SRCS:%.cpp=build/%.o)
 
-# Convert each .c file into a corresponding .o file in build/
-# Example:
-#   libs/glad/glad.c -> build/libs/glad/glad.o
 C_OBJS   = $(C_SRCS:%.c=build/%.o)
 
 # Combine all object files into one list
 OBJS     = $(CPP_OBJS) $(C_OBJS)
 
-
-# =======================
-# DEFAULT TARGET
-# =======================
-
-# This is what runs when you type `make`
 all: $(TARGET)
 
-
-# =======================
-# LINK STEP
-# =======================
-
-# The final executable depends on ALL object files
-# If any .o file changes, this rule runs
 $(TARGET): $(OBJS)
 	$(CXX) $(OBJS) -o $(TARGET) $(LDFLAGS) $(LDLIBS)
 
-
-# =======================
-# COMPILE C++ FILES
-# =======================
-
-# Pattern rule:
-#   build/anything.o depends on anything.cpp
 build/%.o: %.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-
-# =======================
-# COMPILE C FILES
-# =======================
-
-# Same as above, but for .c files
 build/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-
-# =======================
-# CLEANUP
-# =======================
-
-# Remove all build output
-# Run with: make clean
 clean:
+	rm -rf build/src
+
+clean-all:
 	rm -rf build
 
-
-# =======================
-# PHONY TARGETS
-# =======================
-
-# Tell make these targets are not actual files
-.PHONY: all clean
+.PHONY: all clean clean-all

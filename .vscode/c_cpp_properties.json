@@ -6,7 +6,9 @@
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/extern",
                 "${workspaceFolder}/extern/KHR",
-                "${workspaceFolder}/extern/imgui/",
+                "${workspaceFolder}/extern/imgui",
+                "${workspaceFolder}/extern/simdjson",
+                "${workspaceFolder}/extern/fastgltf/include",
                 "/opt/homebrew/include"
             ],
             "compilerPath": "/usr/bin/clang++",
