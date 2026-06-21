@@ -4,7 +4,7 @@
 #include "stb/stb_img.h"
 #include "opengl/resources/texture.h"
 
-#include <vector>
+#include <memory>
 #include <unordered_map>
 #include <iostream>
 
