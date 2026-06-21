@@ -9,14 +9,15 @@ struct Vertex {
 	glm::vec3 position;
 	glm::vec3 normal;
 	glm::vec3 color;
-	glm::vec2 texUV;
+	glm::vec2 uv;
 };
 
 enum class textureType {
     BaseColor,
-	OcclusionRoughnessMetallic,
+	RoughnessMetallic,
+	Occlusion,
 	Normal,
 	Emissive
 };
 
-#endif
+#endif	

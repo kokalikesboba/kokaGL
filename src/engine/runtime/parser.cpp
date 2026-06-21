@@ -61,23 +61,32 @@ Parser::Parser(std::string modelDir) {
 
     fastgltf::Asset& asset = loadedAsset.get();
 
-    for (size_t m = 0; m < asset.meshes.size(); ++m) {
+    for (auto& mesh : asset.meshes) {
 
-        fastgltf::Mesh& mesh = asset.meshes[m];
+        for (auto& prim : mesh.primitives) {
 
-        for (size_t p = 0; p < mesh.primitives.size(); ++p) {
-
-            fastgltf::Primitive& prim = mesh.primitives[p];
             size_t baseVertex = vertices.size();
 
             fastgltf::Attribute* posAttr = prim.findAttribute("POSITION");
             fastgltf::Accessor& posAccessor = asset.accessors[posAttr->accessorIndex];
-            
             vertices.resize(baseVertex + posAccessor.count);
+            for (size_t i = 0; i < posAccessor.count; ++i) {
+                auto pos = fastgltf::getAccessorElement<fastgltf::math::fvec3>(asset, posAccessor, i);
+                vertices[baseVertex + i].position = {pos.x(), pos.y(), pos.z()};
+            }
 
-            for (size_t v = 0; v < posAccessor.count; ++v) {
-                auto pos = fastgltf::getAccessorElement<fastgltf::math::fvec3>(asset, posAccessor, v);
-                vertices[baseVertex + v].position = { pos.x(), pos.y(), pos.z() };
+            fastgltf::Attribute* normalAttribute = prim.findAttribute("NORMAL");
+            fastgltf::Accessor& normalAccessor = asset.accessors[normalAttribute->accessorIndex];
+            for (size_t i = 0; i < normalAccessor.count; ++i) {
+                auto normal = fastgltf::getAccessorElement<fastgltf::math::fvec3>(asset, normalAccessor, i);
+                vertices[baseVertex + i].normal = {normal.x(), normal.y(), normal.z()};
+            } 
+
+            fastgltf::Attribute* uvAttribute = prim.findAttribute("TEXCOORD_0");
+            fastgltf::Accessor& uvAccessor = asset.accessors[uvAttribute->accessorIndex];
+            for (size_t i = 0; i < posAccessor.count; ++i) {
+                auto uv = fastgltf::getAccessorElement<fastgltf::math::fvec2>(asset, uvAccessor, i);
+                vertices[baseVertex + i].uv = {uv.x(), uv.y()};    
             }
 
             if (prim.indicesAccessor.has_value()) {
@@ -89,8 +98,8 @@ Parser::Parser(std::string modelDir) {
                     indices.push_back(baseVertex + index);
                 }
             }
-
         }
     }
+
     texHash.push_back(0);
 }
