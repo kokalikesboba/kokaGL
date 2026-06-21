@@ -76,10 +76,6 @@ int main() {
 	Model gridPlane("assets/models/gridPlane.glb", texturepool);
 	gridPlane.SetPosition({0.0f, 0.0f, 0.0f});
 
-	// The leaning tower of cubes — back-left, a tall vertical landmark.
-	Model cubeStack("assets/models/cubeStack.glb", texturepool);
-	cubeStack.SetPosition({-3.0f, 0.1f, -3.0f});
-
 	// Sphere — front-right, raised so it reads as floating / hero object.
 	Model sphere("assets/models/sphere.glb", texturepool);
 	sphere.SetPosition({3.5f, 1.5f, 2.0f});
@@ -94,10 +90,10 @@ int main() {
 	chest.SetPosition({-3.0f, 0.1f, 2.5f});
 	chest.SetEulerRotation({0.0f, -30.0f, 0.0f});
 
-	// Laika — back-right, scaled up a touch as a focal character.
-	Model laika("assets/models/laika.glb", texturepool);
-	laika.SetPosition({3.0f, 0.1f, -3.0f});
-	laika.SetEulerRotation({0.0f, 200.0f, 0.0f});
+	// Monkey — back-right, scaled up a touch as a focal character.
+	Model monkey("assets/models/monkeyglb.glb", texturepool);
+	monkey.SetPosition({3.0f, 0.1f, -3.0f});
+	monkey.SetEulerRotation({0.0f, 200.0f, 0.0f});
 
 	// Pointer — small, near origin, your gizmo/indicator model.
 	Model pointer("assets/models/pointer.glb", texturepool);
@@ -147,11 +143,10 @@ int main() {
 		glClear(GL_DEPTH_BUFFER_BIT);
 
 		gridPlane.Draw(pointLight);
-		cubeStack.Draw(pointLight);
 		sphere.Draw(pointLight);
 		sword.Draw(pointLight);
 		chest.Draw(pointLight);
-		laika.Draw(pointLight);
+		monkey.Draw(pointLight);
 
 		glDisable(GL_DEPTH_TEST);
 		pointer.Draw(lightGizmo);

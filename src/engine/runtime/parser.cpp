@@ -1,52 +1,109 @@
-    #include "parser.h"
+#include "parser.h"
 
-    #include "stb/stb_img.h"
-    #include <fastgltf/core.hpp>
-    #include <fastgltf/tools.hpp>      // accessor tools live here
-    #include <fastgltf/types.hpp>
-    #include <fastgltf/glm_element_traits.hpp>
+#include "stb/stb_img.h"
+#include <fastgltf/core.hpp>
+#include <fastgltf/tools.hpp>      // accessor tools live here
+#include <fastgltf/types.hpp>
+#include <fastgltf/glm_element_traits.hpp>
 
-    unsigned int hash(const std::vector<unsigned char>& data) {
-        unsigned int h = 5381;
-        for (size_t i = 0; i < data.size(); ++i)
-            h = h * 31 + data[i];
-        return h;
+unsigned int hash(const std::vector<unsigned char>& data) {
+    unsigned int h = 5381;
+    for (size_t i = 0; i < data.size(); ++i)
+        h = h * 31 + data[i];
+    return h;
+}
+
+unsigned char* stbiLoadEmbedded(unsigned char* data, int data_len, int* width, int* height) {
+    int channelsRGBA = 4;
+    unsigned char* pixels = stbi_load_from_memory(data, data_len, width, height, &channelsRGBA, 4);
+    return pixels;
+}
+
+unsigned char* stbiLoadDir(std::string dir, int* width, int* height) {
+    int channelsRGBA = 4;
+    unsigned char* pixels = stbi_load(dir.c_str(), width, height, &channelsRGBA, 4);
+    return pixels;
+}
+
+void Parser::loadShameCube() {
+    vertices = errorVertices;
+    indices = errorIndices;
+    texHash.push_back(0);
+}
+
+Parser::Parser(std::string modelDir) {
+
+    // ===== Validate path exists =====
+    std::filesystem::path path = modelDir;
+    if (!std::filesystem::exists(path)) {
+        std::cerr << "[ERROR][Parser] Invalid model path: " << modelDir << std::endl;
+        loadShameCube();
+        return;
     }
 
-    unsigned char* stbiLoadEmbedded(unsigned char* data, int data_len, int* width, int* height) {
-        int channelsRGBA = 4;
-        unsigned char* pixels = stbi_load_from_memory(data, data_len, width, height, &channelsRGBA, 4);
-        return pixels;
+    // ===== Read file bytes into memory =====
+    // FromPath loads the raw file into a buffer. This can fail if the
+    // file is unreadable. It does NOT parse anything yet.
+    auto dataBuffer = fastgltf::GltfDataBuffer::FromPath(modelDir);
+    if (dataBuffer.error() != fastgltf::Error::None) {
+        std::cerr << "[ERROR][Parser] Could not read file: " << modelDir << std::endl;
+        loadShameCube();
+        return;
     }
 
-    unsigned char* stbiLoadDir(std::string dir, int* width, int* height) {
-        int channelsRGBA = 4;
-        unsigned char* pixels = stbi_load(dir.c_str(), width, height, &channelsRGBA, 4);
-        return pixels;
+    // ===== Parse bytes into a glTF asset =====
+    // loadGltf turns the raw bytes into a structured Asset. This fails
+    // if the bytes are not valid glTF (missing fields, corrupt data).
+    fastgltf::Parser parser;
+    auto loadedAsset = parser.loadGltf(dataBuffer.get(), path.parent_path(),
+                                       fastgltf::Options::LoadExternalBuffers);
+    if (loadedAsset.error() != fastgltf::Error::None) {
+        std::cerr << "[ERROR][Parser] Failed to parse glTF: " << modelDir
+                  << " - " << fastgltf::getErrorMessage(loadedAsset.error()) << std::endl;
+        loadShameCube();
+        return;
     }
+    fastgltf::Asset& asset = loadedAsset.get();
 
-    void Parser::loadShameCube() {
-        vertices = errorVertices;
-        indices = errorIndices;
-        texHash.push_back(0);
-    }
+    // ===== Walk every mesh in the asset =====
+    for (size_t m = 0; m < asset.meshes.size(); ++m) {
+        fastgltf::Mesh& mesh = asset.meshes[m];
 
-    Parser::Parser(std::string modelDir) {
-        std::filesystem::path path = modelDir;
-        if (!std::filesystem::exists(path)) {
-            std::cerr << "[ERROR][Parser] Invalid model path: " << modelDir << std::endl;
-            loadShameCube();
-            return;
+        // ===== Walk every primitive in the mesh =====
+        for (size_t p = 0; p < mesh.primitives.size(); ++p) {
+            fastgltf::Primitive& prim = mesh.primitives[p];
+
+            // baseVertex marks where THIS primitive's vertices start in
+            // the shared array, so its indices can be offset correctly.
+            size_t baseVertex = vertices.size();
+
+            // ===== Extract vertex positions =====
+            // POSITION is the one attribute glTF guarantees exists.
+            // Resize up front so we can write each vertex by index.
+            fastgltf::Attribute* posAttr = prim.findAttribute("POSITION");
+            fastgltf::Accessor& posAccessor = asset.accessors[posAttr->accessorIndex];
+            vertices.resize(baseVertex + posAccessor.count);
+
+            for (size_t v = 0; v < posAccessor.count; ++v) {
+                fastgltf::math::fvec3 pos =
+                    fastgltf::getAccessorElement<fastgltf::math::fvec3>(asset, posAccessor, v);
+                vertices[baseVertex + v].position = { pos.x(), pos.y(), pos.z() };
+            }
+
+            // ===== Extract indices =====
+            // Indices are per-primitive and start at 0, so add baseVertex
+            // to each one to point into the correct slot of the shared array.
+            if (prim.indicesAccessor.has_value()) {
+                fastgltf::Accessor& idxAccessor = asset.accessors[prim.indicesAccessor.value()];
+                indices.reserve(indices.size() + idxAccessor.count);
+
+                for (size_t i = 0; i < idxAccessor.count; ++i) {
+                    std::uint32_t index =
+                        fastgltf::getAccessorElement<std::uint32_t>(asset, idxAccessor, i);
+                    indices.push_back(baseVertex + index);
+                }
+            }
         }
-
-        auto buffExp = fastgltf::GltfDataBuffer::FromPath(modelDir);
-        if (buffExp.error() != fastgltf::Error::None) {
-            std::cerr << "[ERROR][Parser] Error while parsing." << std::endl;
-            loadShameCube();
-            return;
-        } else {
-            std::cerr << "stub!" << std::endl;
-            loadShameCube();
-            return;
-        }
     }
+    texHash.push_back(0);
+}
