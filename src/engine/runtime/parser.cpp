@@ -33,7 +33,7 @@ void Parser::loadShameCube() {
 
 Parser::Parser(std::string modelDir) {
 
-    // ===== Validate path exists =====
+    // Placeholder on file path fail
     std::filesystem::path path = modelDir;
     if (!std::filesystem::exists(path)) {
         std::cerr << "[ERROR][Parser] Invalid model path: " << modelDir << std::endl;
@@ -41,9 +41,7 @@ Parser::Parser(std::string modelDir) {
         return;
     }
 
-    // ===== Read file bytes into memory =====
-    // FromPath loads the raw file into a buffer. This can fail if the
-    // file is unreadable. It does NOT parse anything yet.
+    // Placeholder if fastgltf error returns an error
     auto dataBuffer = fastgltf::GltfDataBuffer::FromPath(modelDir);
     if (dataBuffer.error() != fastgltf::Error::None) {
         std::cerr << "[ERROR][Parser] Could not read file: " << modelDir << std::endl;
@@ -51,58 +49,47 @@ Parser::Parser(std::string modelDir) {
         return;
     }
 
-    // ===== Parse bytes into a glTF asset =====
-    // loadGltf turns the raw bytes into a structured Asset. This fails
-    // if the bytes are not valid glTF (missing fields, corrupt data).
+    // Actual parsing starts here.
     fastgltf::Parser parser;
-    auto loadedAsset = parser.loadGltf(dataBuffer.get(), path.parent_path(),
-                                       fastgltf::Options::LoadExternalBuffers);
+    auto loadedAsset = parser.loadGltf(dataBuffer.get(), path.parent_path(), fastgltf::Options::LoadExternalBuffers);
+    // Placeholder if parser returns error
     if (loadedAsset.error() != fastgltf::Error::None) {
-        std::cerr << "[ERROR][Parser] Failed to parse glTF: " << modelDir
-                  << " - " << fastgltf::getErrorMessage(loadedAsset.error()) << std::endl;
+        std::cerr << "[ERROR][Parser] Failed to parse glTF: " << modelDir << " - " << fastgltf::getErrorMessage(loadedAsset.error()) << std::endl;
         loadShameCube();
         return;
     }
+
     fastgltf::Asset& asset = loadedAsset.get();
 
-    // ===== Walk every mesh in the asset =====
     for (size_t m = 0; m < asset.meshes.size(); ++m) {
+
         fastgltf::Mesh& mesh = asset.meshes[m];
 
-        // ===== Walk every primitive in the mesh =====
         for (size_t p = 0; p < mesh.primitives.size(); ++p) {
-            fastgltf::Primitive& prim = mesh.primitives[p];
 
-            // baseVertex marks where THIS primitive's vertices start in
-            // the shared array, so its indices can be offset correctly.
+            fastgltf::Primitive& prim = mesh.primitives[p];
             size_t baseVertex = vertices.size();
 
-            // ===== Extract vertex positions =====
-            // POSITION is the one attribute glTF guarantees exists.
-            // Resize up front so we can write each vertex by index.
             fastgltf::Attribute* posAttr = prim.findAttribute("POSITION");
             fastgltf::Accessor& posAccessor = asset.accessors[posAttr->accessorIndex];
+            
             vertices.resize(baseVertex + posAccessor.count);
 
             for (size_t v = 0; v < posAccessor.count; ++v) {
-                fastgltf::math::fvec3 pos =
-                    fastgltf::getAccessorElement<fastgltf::math::fvec3>(asset, posAccessor, v);
+                auto pos = fastgltf::getAccessorElement<fastgltf::math::fvec3>(asset, posAccessor, v);
                 vertices[baseVertex + v].position = { pos.x(), pos.y(), pos.z() };
             }
 
-            // ===== Extract indices =====
-            // Indices are per-primitive and start at 0, so add baseVertex
-            // to each one to point into the correct slot of the shared array.
             if (prim.indicesAccessor.has_value()) {
                 fastgltf::Accessor& idxAccessor = asset.accessors[prim.indicesAccessor.value()];
                 indices.reserve(indices.size() + idxAccessor.count);
 
                 for (size_t i = 0; i < idxAccessor.count; ++i) {
-                    std::uint32_t index =
-                        fastgltf::getAccessorElement<std::uint32_t>(asset, idxAccessor, i);
+                    auto index = fastgltf::getAccessorElement<unsigned int>(asset, idxAccessor, i);
                     indices.push_back(baseVertex + index);
                 }
             }
+
         }
     }
     texHash.push_back(0);

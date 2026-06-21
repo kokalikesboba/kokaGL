@@ -23,6 +23,8 @@
                 "${workspaceFolder}/extern",
                 "${workspaceFolder}/extern/KHR",
                 "${workspaceFolder}/extern/imgui/",
+                "${workspaceFolder}/extern/simdjson",
+                "${workspaceFolder}/extern/fastgltf/include",
                 "/usr/include/"
             ],
             "compilerPath": "/usr/bin/clang++",
