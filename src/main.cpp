@@ -91,7 +91,7 @@ int main() {
 	chest.SetEulerRotation({0.0f, -30.0f, 0.0f});
 
 	// Monkey — back-right, scaled up a touch as a focal character.
-	Model monkey("assets/models/monkeyglb.glb", texturepool);
+	Model monkey("assets/models/monkey.glb", texturepool);
 	monkey.SetPosition({3.0f, 0.1f, -3.0f});
 	monkey.SetEulerRotation({0.0f, 200.0f, 0.0f});
 

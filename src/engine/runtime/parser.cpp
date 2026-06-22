@@ -114,7 +114,38 @@ Parser::Parser(std::string modelDir) {
         }
     }
 
- 
+    for (auto& materials : asset.materials) {
 
-    texHash.push_back(0);
+        if (materials.pbrData.baseColorTexture.has_value()) {
+            auto& texture = asset.textures[materials.pbrData.baseColorTexture->textureIndex];
+            auto& image = asset.images[texture.imageIndex.value()];
+
+            // Absolute fucking magic to me
+            auto* bufferViewSource = std::get_if<fastgltf::sources::BufferView>(&image.data);
+            if (!bufferViewSource) LoadShameTexture(TextureType::BaseColor);
+
+            auto& bufferView = asset.bufferViews[bufferViewSource->bufferViewIndex];
+            auto& buffer     = asset.buffers[bufferView.bufferIndex];
+
+            auto* bufferArray = std::get_if<fastgltf::sources::Array>(&buffer.data);
+            if (!bufferArray) LoadShameTexture(TextureType::BaseColor);
+
+            const unsigned char* base = reinterpret_cast<const unsigned char*>(bufferArray->bytes.data());
+            const unsigned char* pngData = base + bufferView.byteOffset;
+            size_t pngLength = bufferView.byteLength;
+
+            int width, height;
+            unsigned char* data = stbi_load_from_memory(pngData, (int)pngLength, &width, &height, nullptr, 4);
+
+            std::vector<unsigned char> pixels(data, data + width * height * 4);
+
+            texHash.push_back(hash(pixels));
+            texType.push_back(TextureType::BaseColor);
+            texData.push_back(pixels);
+            texWidth.push_back(width);
+            texHeight.push_back(height);
+        } else {
+            LoadShameTexture(TextureType::BaseColor);
+        }
+    } 
 }
