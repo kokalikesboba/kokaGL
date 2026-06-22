@@ -12,7 +12,7 @@
 class Texture
 {
 public:
-    Texture(textureType type);
+    Texture(TextureType type);
 
     void Bind(GLuint texUnit) const;
     void Unbind() const;
@@ -21,7 +21,7 @@ public:
     
     void linkUni(const Shader& shader, const char* uniformName, GLuint texUnit) const;
 
-    textureType getType() const;
+    TextureType getType() const;
 
     void Delete();
     ~Texture();
@@ -30,7 +30,7 @@ public:
 
 private:
     GLuint ID = 0;
-    textureType type;
+    TextureType type;
 
     int width = 0;
     int height = 0;

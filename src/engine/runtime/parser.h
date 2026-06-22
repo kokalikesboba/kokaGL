@@ -59,16 +59,16 @@ class Parser {
 public: 
     Parser(std::string modelDir);
     
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
     std::vector<unsigned int> texHash;
-    std::vector<textureType> texType;
+    std::vector<TextureType> texType;
     std::vector<std::vector<unsigned char>> texData;
     std::vector<int> texWidth;
     std::vector<int> texHeight;
-
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
 private:
-    void loadShameCube();
+    void LoadShameMesh();
+    void LoadShameTexture(TextureType errorType);
 };
 
 #endif

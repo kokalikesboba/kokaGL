@@ -17,7 +17,7 @@
         vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, position));
         vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
         vao.LinkAttrib(vbo, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, color));
-        vao.LinkAttrib(vbo, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texUV));
+        vao.LinkAttrib(vbo, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, uv));
 
     }
 
@@ -33,10 +33,11 @@
 
         for (int i = 0; i < textures.size(); ++i) {
             switch (textures[i]->getType()) {
-                case textureType::BaseColor: textures[i]->Bind(0); break;
-                case textureType::OcclusionRoughnessMetallic: textures[i]->Bind(1); break;
-                case textureType::Normal: textures[i]->Bind(2); break;
-                case textureType::Emissive: textures[i]->Bind(3); break;
+                case TextureType::BaseColor: textures[i]->Bind(0); break;
+                case TextureType::RoughnessMetallic: textures[i]->Bind(1); break;
+                case TextureType::Normal: textures[i]->Bind(2); break;
+                case TextureType::Occlusion: textures[i]->Bind(3); break;
+                case TextureType::Emissive: textures[i]->Bind(4); break;
             }
         }
 

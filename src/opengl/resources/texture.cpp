@@ -1,6 +1,6 @@
 #include "texture.h"
 
-Texture::Texture(textureType type)
+Texture::Texture(TextureType type)
 {
 	this->type = type;
 	glGenTextures(1, &ID);
@@ -60,7 +60,7 @@ void Texture::linkUni(const Shader& shader, const char *uniformName, GLuint texU
     glUniform1i(uniformAdr, texUnit);
 }
 
-textureType Texture::getType() const
+TextureType Texture::getType() const
 {
 	return type;
 }

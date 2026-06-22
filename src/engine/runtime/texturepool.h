@@ -21,7 +21,7 @@ class TexturePool
 {
 public:
     TexturePool();
-    std::shared_ptr<Texture> Add(unsigned int texHash, textureType textype, std::vector<unsigned char>& bytes, int width, int height);
+    std::shared_ptr<Texture> Add(unsigned int texHash, TextureType textype, std::vector<unsigned char>& bytes, int width, int height);
     bool isCachedAndAlive(unsigned int texHash);
     std::shared_ptr<Texture> Get(unsigned int texHash);
 private:

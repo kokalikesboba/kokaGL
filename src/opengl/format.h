@@ -12,7 +12,7 @@ struct Vertex {
 	glm::vec2 uv;
 };
 
-enum class textureType {
+enum class TextureType {
     BaseColor,
 	RoughnessMetallic,
 	Occlusion,
@@ -20,4 +20,4 @@ enum class textureType {
 	Emissive
 };
 
-#endif	
+#endif

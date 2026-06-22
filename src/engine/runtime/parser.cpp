@@ -25,10 +25,23 @@ unsigned char* stbiLoadDir(std::string dir, int* width, int* height) {
     return pixels;
 }
 
-void Parser::loadShameCube() {
+
+void Parser::LoadShameMesh() {
     vertices = errorVertices;
     indices = errorIndices;
     texHash.push_back(0);
+    texType.push_back(TextureType::BaseColor);
+    texData.push_back(std::vector<unsigned char>{});
+    texWidth.push_back(2);
+    texHeight.push_back(2);
+}
+
+void Parser::LoadShameTexture(TextureType errorType) {
+    texHash.push_back(0);
+    texType.push_back(errorType);
+    texData.push_back(std::vector<unsigned char>{});
+    texWidth.push_back(2);
+    texHeight.push_back(2);
 }
 
 Parser::Parser(std::string modelDir) {
@@ -37,7 +50,7 @@ Parser::Parser(std::string modelDir) {
     std::filesystem::path path = modelDir;
     if (!std::filesystem::exists(path)) {
         std::cerr << "[ERROR][Parser] Invalid model path: " << modelDir << std::endl;
-        loadShameCube();
+        LoadShameMesh();
         return;
     }
 
@@ -45,7 +58,7 @@ Parser::Parser(std::string modelDir) {
     auto dataBuffer = fastgltf::GltfDataBuffer::FromPath(modelDir);
     if (dataBuffer.error() != fastgltf::Error::None) {
         std::cerr << "[ERROR][Parser] Could not read file: " << modelDir << std::endl;
-        loadShameCube();
+        LoadShameMesh();
         return;
     }
 
@@ -55,7 +68,7 @@ Parser::Parser(std::string modelDir) {
     // Placeholder if parser returns error
     if (loadedAsset.error() != fastgltf::Error::None) {
         std::cerr << "[ERROR][Parser] Failed to parse glTF: " << modelDir << " - " << fastgltf::getErrorMessage(loadedAsset.error()) << std::endl;
-        loadShameCube();
+        LoadShameMesh();
         return;
     }
 
@@ -100,6 +113,8 @@ Parser::Parser(std::string modelDir) {
             }
         }
     }
+
+ 
 
     texHash.push_back(0);
 }
