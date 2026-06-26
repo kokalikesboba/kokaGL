@@ -4,7 +4,7 @@ This project supersedes [koka3d](https://github.com/kokalikesboba/koka3D) in spi
 You can find design goals, quirks, and documentations on the [wiki](https://github.com/kokalikesboba/kokaGL/wiki) tab.
 
 <img src="meta/readme_img1.png" width="250"/>
-TODO: Image above is is borked unavailable cuz at the minute after a parser rework. :(
+TODO: Can't take a better photo, the program is borked as of this README.md commit. 
 
 # Features:
 - GLTF File Parsing and loading.
