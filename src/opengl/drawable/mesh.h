@@ -1,21 +1,22 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include <opengl/buffers/vao.h>
+#include "opengl/buffers/vao.h"
 #include "opengl/buffers/ebo.h"
 #include "opengl/resources/texture.h"
-#include "opengl/resources/viewport.h"
+
+#include "glm/gtc/quaternion.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 #include <string>
 #include <vector>
 #include <memory>
 
 class Mesh {
-
 public:
     Mesh(
         std::vector<Vertex> vertices,
-        std::vector<GLuint> indices,
+        std::vector<unsigned int> indices,
         std::vector <std::shared_ptr<Texture>> textures
     );
     void Draw(
@@ -25,7 +26,6 @@ public:
         const glm::vec3& scale = {1.f, 1.f, 1.f}
     );
     ~Mesh();
-
 private: 
     std::vector <Vertex> vertices;
     std::vector <GLuint> indices;

@@ -4,7 +4,7 @@
         std::vector<Vertex> vertices,
         std::vector<GLuint> indices,
         std::vector <std::shared_ptr<Texture>> textures
-    ) : 
+    ) :
         vertices(std::move(vertices)),
         indices(std::move(indices)),
         textures(std::move(textures)),

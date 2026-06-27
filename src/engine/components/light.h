@@ -21,7 +21,6 @@ public:
 private:
     glm::vec3 position = {0.f, 0.f, 0.f};
     glm::quat rotation = {1.f, 0.f, 0.f, 0.f};
-    
     glm::vec3 color = {1.f, 1.f, 1.f};
 };
 

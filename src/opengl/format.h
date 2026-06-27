@@ -5,6 +5,12 @@
 
 #include <vector>
 
+struct BillboardVertex {
+	glm::vec3 position;
+	glm::vec3 normal;
+	glm::vec2 uv;
+};
+
 struct Vertex {
 	glm::vec3 position;
 	glm::vec3 normal;
@@ -17,7 +23,8 @@ enum class TextureType {
 	RoughnessMetallic,
 	Occlusion,
 	Normal,
-	Emissive
+	Emissive,
+	Billboard,
 };
 
 #endif

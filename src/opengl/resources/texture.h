@@ -3,8 +3,8 @@
 
 #include "glad/glad.h"
 
-#include "opengl/resources/shader.h"
 #include "opengl/format.h"
+#include "opengl/resources/shader.h"
 
 #include <iostream>
 #include <vector>

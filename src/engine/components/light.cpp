@@ -3,6 +3,9 @@
 Light::Light(glm::vec3 color)
 {
     this->color = color;
+
+    glm::quat rotX = glm::angleAxis(180.f, glm::vec3(1,0,0));
+    rotation *= rotX;
 }
 
 void Light::Draw(const Shader &shader) const

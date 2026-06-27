@@ -43,6 +43,7 @@ CPP_SRCS = \
 	src/opengl/resources/shader.cpp \
 	src/opengl/resources/viewport.cpp \
 	src/opengl/drawable/mesh.cpp \
+	src/opengl/drawable/billboard.cpp \
 	src/opengl/drawable/framebuffer.cpp \
 	src/engine/components/model.cpp \
 	src/engine/components/light.cpp \
@@ -60,7 +61,6 @@ CPP_OBJS = $(CPP_SRCS:%.cpp=build/%.o)
 
 C_OBJS   = $(C_SRCS:%.c=build/%.o)
 
-# Combine all object files into one list
 OBJS     = $(CPP_OBJS) $(C_OBJS)
 
 all: $(TARGET)
