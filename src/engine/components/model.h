@@ -2,8 +2,6 @@
 #define MODEL_H
 
 #include "opengl/drawable/mesh.h"
-#include "opengl/format.h"
-#include "glad/glad.h"
 
 #include "engine/runtime/texturepool.h"
 #include "engine/runtime/parser.h"
@@ -29,7 +27,7 @@ public:
 private:
     std::unique_ptr<Mesh> mesh = nullptr;
 
-    std::vector<Vertex> vertices;
+    std::vector<PNCUVertex> vertices;
     std::vector<GLuint> indices;
     std::vector<std::shared_ptr<Texture>> textures;
 

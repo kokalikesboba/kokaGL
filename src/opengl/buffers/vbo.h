@@ -13,13 +13,12 @@ class VBO
 {
 public:
 	VBO();
-	
-	VBO(const std::vector <Vertex>& vertices);
+	VBO(const std::vector<PNCUVertex>& vertices);
+	VBO(const std::vector<PNUVertex>& vertices);
 	void Bind() const;
 	void Unbind() const;
 	void Delete();
 	~VBO();
-
 	// Makes this class non-copyable
 	VBO(const VBO&) = delete;
 	VBO& operator=(const VBO&) = delete;

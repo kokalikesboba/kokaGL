@@ -6,10 +6,11 @@
 #include <opengl/resources/texture.h>
 
 #include "glm/gtc/quaternion.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 #include <vector>
-/*
-std::vector<BillboardVertex> bbVertices = {
+
+std::vector<PNUVertex> bbVertices = {
     // position                  normal             uv
     {{ 0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}}, // top right
     {{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}}, // top left
@@ -24,13 +25,12 @@ std::vector<unsigned int> bbIndices = {
 
 class Billboard {
 public:
-    Billboard(
-        std::vector<unsigned char>& texture
-    );
+    // Constructor Intakes raw image bytes and uploads it to the GPU
+    Billboard(std::vector<unsigned char>& texture, int width, int height);
+    
     void Draw(
         const Shader& shader,
         const glm::vec3& position = {0.f, 0.f, 0.f},
-        const glm::quat& orientation = {1.f, 0.f, 0.f, 0.f},
         const glm::vec3& scale = {1.f, 1.f, 1.f}
     );
     ~Billboard();
@@ -41,6 +41,5 @@ private:
     // Texture won't hook into pool for now.
     Texture texture; 
 };
-*/
 
 #endif

@@ -12,7 +12,7 @@
 #include <memory>
 #include <vector>
 
-inline const std::vector<Vertex> errorVertices = {
+inline const std::vector<PNCUVertex> errorVertices = {
     // position              // normal           // color (magenta)    // uv
     // Front
     {{ 0.5f,  0.5f,  0.5f}, { 0.f,  0.f,  1.f}, {1.f, 0.f, 1.f}, {1.f, 1.f}},
@@ -59,7 +59,7 @@ class Parser {
 public: 
     Parser(std::string modelDir);
     
-    std::vector<Vertex> vertices;
+    std::vector<PNCUVertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<unsigned int> texHash;
     std::vector<TextureType> texType;

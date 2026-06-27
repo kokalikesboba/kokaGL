@@ -5,11 +5,18 @@ VBO::VBO()
 	glGenBuffers(1, &ID);
 }
 
-VBO::VBO(const std::vector<Vertex> &vertices)
+VBO::VBO(const std::vector<PNCUVertex> &vertices)
 {
 	glGenBuffers(1, &ID);
 	glBindBuffer(GL_ARRAY_BUFFER, ID);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(),GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(PNCUVertex), vertices.data(), GL_STATIC_DRAW);
+}
+
+VBO::VBO(const std::vector<PNUVertex> &vertices)
+{
+	glGenBuffers(1, &ID);
+	glBindBuffer(GL_ARRAY_BUFFER, ID);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(PNCUVertex), vertices.data(), GL_STATIC_DRAW);
 }
 
 void VBO::Bind() const
