@@ -9,8 +9,7 @@
 #include <iostream>
 #include <memory>
 
-class Model
-{
+class Model {
 public:
     Model(const std::string& modelDir, TexturePool& textureCache);
     void Draw(const Shader& shader) const;

@@ -1,9 +1,17 @@
 #include "billboard.h"
 
-Billboard::Billboard(std::vector<unsigned char>& texture, int width, int height) :
-vbo(bbVertices),
-ebo(bbIndices),
-texture(TextureType::BaseColor)
+Billboard::Billboard(
+    std::vector<PNUVertex> &vertices,
+    std::vector<unsigned int> &indices,
+    std::vector<unsigned char> &texture,
+    int width,
+    int height)
+    :
+    vertices(std::move(vertices)),
+    indices(std::move(indices)),
+    vbo(vertices),
+    ebo(indices),
+    texture(TextureType::BaseColor)
 {
     this->texture.genRGBATexture(texture.data(), width, height);
     vao.Bind();
@@ -16,7 +24,7 @@ texture(TextureType::BaseColor)
 void Billboard::Draw(
     const Shader &shader,
     const glm::vec3 &position,
-    const glm::vec3 &scale)
+    const glm::vec2 &scale)
 {
     vao.Bind();
     ebo.Bind();
@@ -26,10 +34,10 @@ void Billboard::Draw(
     glm::mat4 translationMatrix = glm::mat4(1.0f);
     translationMatrix = glm::translate(translationMatrix, position);
     glm::mat4  scalingMatrix = glm::mat4(1.0f);
-    scalingMatrix = glm::scale(scalingMatrix, scale);
+    scalingMatrix = glm::scale(scalingMatrix, {scale, 1.f});
     glm::mat4 modelMatrix = translationMatrix * scalingMatrix;
 
     glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));  
 
-    glDrawElements(GL_TRIANGLES, bbIndices.size(), GL_UNSIGNED_INT,0);
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,0);
 }

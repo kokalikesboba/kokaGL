@@ -1,8 +1,15 @@
-#ifndef GIZMO_H
-#define GIZMO_H
+#include "gizmo.h"
 
-#include "opengl/drawable/billboard.h"
-#include "opengl/format.h"
-#include "glad/glad.h"
+/*
+Gizmo::Gizmo(const std::string imgDir)
+:
+billboard(),
+gizmo("shaders/billboard.vert", "shaders/billboard.frag")
+{
 
-#endif
+}
+
+void Gizmo::Draw()
+{
+}
+*/
