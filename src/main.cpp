@@ -8,6 +8,7 @@
 
 #include "engine/runtime/texturepool.h"
 #include "engine/components/model.h"
+#include "engine/components/gizmo.h"
 #include "engine/components/light.h"
 
 #include "engine/runtime/framepacer.h"
@@ -69,6 +70,8 @@ int main() {
 	viewport.SetPosition({-6.5f, 3.f, 6.5f});
 
     Shader pointLight("shaders/pointLight.vert", "shaders/pointLight.frag");
+
+	Gizmo gizmo("assets/images/sammy_pixelvap.png");
 
 	TexturePool texturepool;
 
@@ -141,6 +144,8 @@ int main() {
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
+
+		gizmo.Draw();
 
 		gridPlane.Draw(pointLight);
 		sphere.Draw(pointLight);

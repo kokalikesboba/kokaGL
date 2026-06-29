@@ -25,6 +25,10 @@ void Texture::genRGBATexture(unsigned char* bytes, int width, int height)
 	this->width = width;
 	this->height = height;
 
+	if (!bytes) {
+		std::cout << "empty bytes" << std::endl;
+	} 
+
 	if (width < 1 || height < 1) {
 		std::cerr << "[WARN][Texture] Bizarre texture dimension: " << width << " " << height << std::endl;
 	}
@@ -52,7 +56,7 @@ void Texture::genRGBATexture(unsigned char* bytes, int width, int height)
 	);
 
 	textureGenerated = true;
-}
+	}
 
 void Texture::linkUni(const Shader& shader, const char *uniformName, GLuint texUnit) const
 {

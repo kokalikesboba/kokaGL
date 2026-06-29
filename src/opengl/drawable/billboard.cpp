@@ -1,19 +1,12 @@
 #include "billboard.h"
 
-Billboard::Billboard(
-    std::vector<PNUVertex> &vertices,
-    std::vector<unsigned int> &indices,
-    std::vector<unsigned char> &texture,
-    int width,
-    int height)
+Billboard::Billboard (
+    Texture* texture)
     :
-    vertices(std::move(vertices)),
-    indices(std::move(indices)),
-    vbo(vertices),
-    ebo(indices),
-    texture(PBRTexType::BaseColor)
+    texture(texture),
+    vbo(squareVerts),
+    ebo(squareIndices)
 {
-    this->texture.genRGBATexture(texture.data(), width, height);
     vao.Bind();
     ebo.Bind();
     vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(PNUVertex), (void*)offsetof(PNUVertex, position));
@@ -29,7 +22,7 @@ void Billboard::Draw(
     vao.Bind();
     ebo.Bind();
     shader.Activate();
-    this->texture.Bind(0);
+    this->texture->Bind(0);
 
     glm::mat4 translationMatrix = glm::mat4(1.0f);
     translationMatrix = glm::translate(translationMatrix, position);
@@ -39,5 +32,10 @@ void Billboard::Draw(
 
     glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));  
 
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,0);
+    glDrawElements(GL_TRIANGLES, squareIndices.size(), GL_UNSIGNED_INT,0);
+}
+
+Billboard::~Billboard()
+{
+    // Intentionally left blank.
 }
