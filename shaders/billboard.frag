@@ -6,10 +6,7 @@ in vec3 vertexNormal;
 in vec2 texCoord;
 
 uniform sampler2D diffuse0;
-uniform sampler2D specular0;
 uniform vec3 cameraPos;
-uniform vec3 lightColor;
-uniform vec3 lightDirection;
 
 void main()
 {
