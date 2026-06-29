@@ -25,8 +25,8 @@ class VAO {
 		~VAO();
 
 		// Makes this class non-copyable
-		VAO(const VBO&) = delete;
-		VAO& operator=(const VBO&) = delete;
+		VAO(const VAO&) = delete;
+		VAO& operator=(const VAO&) = delete;
 
 	private:
 		// ID reference for the Vertex Array Object
