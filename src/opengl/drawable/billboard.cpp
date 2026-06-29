@@ -11,7 +11,7 @@ Billboard::Billboard(
     indices(std::move(indices)),
     vbo(vertices),
     ebo(indices),
-    texture(TextureType::BaseColor)
+    texture(PBRTexType::BaseColor)
 {
     this->texture.genRGBATexture(texture.data(), width, height);
     vao.Bind();

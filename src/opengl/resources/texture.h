@@ -12,7 +12,7 @@
 class Texture
 {
 public:
-    Texture(TextureType type);
+    Texture(PBRTexType type);
 
     void Bind(GLuint texUnit) const;
     void Unbind() const;
@@ -21,7 +21,7 @@ public:
     
     void linkUni(const Shader& shader, const char* uniformName, GLuint texUnit) const;
 
-    TextureType getType() const;
+    PBRTexType getType() const;
 
     void Delete();
     ~Texture();
@@ -30,13 +30,13 @@ public:
 
 private:
     GLuint ID = 0;
-    TextureType type;
+    PBRTexType type;
 
     int width = 0;
     int height = 0;
 
+    // Generation check on bind.
     bool textureGenerated = false;
-
 };
 
 #endif

@@ -62,13 +62,13 @@ public:
     std::vector<PNCUVertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<unsigned int> texHash;
-    std::vector<TextureType> texType;
+    std::vector<PBRTexType> texType;
     std::vector<std::vector<unsigned char>> texData;
     std::vector<int> texWidth;
     std::vector<int> texHeight;
 private:
     void LoadShameMesh();
-    void LoadShameTexture(TextureType errorType);
+    void LoadShameTexture(PBRTexType errorType);
 };
 
 #endif

@@ -20,7 +20,7 @@ struct PNCUVertex {
 	glm::vec2 uv;
 };
 
-enum class TextureType {
+enum class PBRTexType {
 	// PBR Only
     BaseColor,
 	// PBR Only

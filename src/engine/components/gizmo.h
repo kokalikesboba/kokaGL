@@ -22,8 +22,8 @@ public:
     Gizmo(const std::string imgDir);
     void Draw();
 private:
+    Shader gizmoShader;
     Billboard billboard;
-    Shader gizmo;
     glm::vec3 position = {0.f, 0.f, 0.f};
     glm::vec3 scale = {1.f, 1.f, 1.f};
 };

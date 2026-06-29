@@ -1,6 +1,6 @@
 #include "texture.h"
 
-Texture::Texture(TextureType type)
+Texture::Texture(PBRTexType type)
 {
 	this->type = type;
 	glGenTextures(1, &ID);
@@ -60,7 +60,7 @@ void Texture::linkUni(const Shader& shader, const char *uniformName, GLuint texU
     glUniform1i(uniformAdr, texUnit);
 }
 
-TextureType Texture::getType() const
+PBRTexType Texture::getType() const
 {
 	return type;
 }

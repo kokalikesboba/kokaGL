@@ -3,8 +3,8 @@
 /*
 Gizmo::Gizmo(const std::string imgDir)
 :
-billboard(),
-gizmo("shaders/billboard.vert", "shaders/billboard.frag")
+gizmoShader("shaders/billboard.vert", "shaders/billboard.frag"),
+billboard()
 {
 
 }

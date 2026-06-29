@@ -30,13 +30,14 @@
         ebo.Bind();
         shader.Activate();
 
+        // TODO: this could be a range based for loop
         for (int i = 0; i < textures.size(); ++i) {
             switch (textures[i]->getType()) {
-                case TextureType::BaseColor: textures[i]->Bind(0); break;
-                case TextureType::RoughnessMetallic: textures[i]->Bind(1); break;
-                case TextureType::Normal: textures[i]->Bind(2); break;
-                case TextureType::Occlusion: textures[i]->Bind(3); break;
-                case TextureType::Emissive: textures[i]->Bind(4); break;
+                case PBRTexType::BaseColor: textures[i]->Bind(0); break;
+                case PBRTexType::RoughnessMetallic: textures[i]->Bind(1); break;
+                case PBRTexType::Normal: textures[i]->Bind(2); break;
+                case PBRTexType::Occlusion: textures[i]->Bind(3); break;
+                case PBRTexType::Emissive: textures[i]->Bind(4); break;
             }
         }
 
