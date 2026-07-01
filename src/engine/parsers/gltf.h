@@ -1,5 +1,5 @@
-#ifndef PARSER_H
-#define PARSER_H
+#ifndef GLTF_H
+#define GLTF_H
 
 #include "opengl/format.h"
 

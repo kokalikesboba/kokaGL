@@ -45,13 +45,13 @@ CPP_SRCS = \
 	src/opengl/drawable/mesh.cpp \
 	src/opengl/drawable/billboard.cpp \
 	src/opengl/drawable/framebuffer.cpp \
-	src/engine/components/model.cpp \
-	src/engine/components/gizmo.cpp \
-	src/engine/components/light.cpp \
 	src/engine/runtime/input.cpp \
 	src/engine/runtime/framepacer.cpp \
 	src/engine/runtime/texturepool.cpp \
-	src/engine/runtime/parser.cpp \
+	src/engine/parsers/gltf.cpp \
+	src/engine/components/model.cpp \
+	src/engine/components/gizmo.cpp \
+	src/engine/components/light.cpp \
 	src/main.cpp
 
 

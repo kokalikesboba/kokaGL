@@ -4,7 +4,7 @@
 #include "opengl/drawable/mesh.h"
 
 #include "engine/runtime/texturepool.h"
-#include "engine/runtime/parser.h"
+#include "engine/parsers/gltf.h"
 
 #include <iostream>
 #include <memory>

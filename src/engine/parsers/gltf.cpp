@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "gltf.h"
 
 unsigned int hash(const std::vector<unsigned char>& data) {
     unsigned int h = 5381;
