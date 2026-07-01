@@ -15,8 +15,8 @@
 class Mesh {
 public:
     Mesh(
-        std::vector<PNCUVertex> vertices,
-        std::vector<unsigned int> indices,
+        std::vector<PNCUVertex>& vertices,
+        std::vector<unsigned int>& indices,
         std::vector <std::shared_ptr<Texture>> textures
     );
     void Draw(
@@ -26,15 +26,12 @@ public:
         const glm::vec3& scale = {1.f, 1.f, 1.f}
     );
     ~Mesh();
-private: 
-    std::vector <PNCUVertex> vertices;
-    std::vector <GLuint> indices;
+private:
+    unsigned int indicesCount = 0;
     std::vector <std::shared_ptr<Texture>> textures;
-
     VAO vao; 
     VBO vbo;
     EBO ebo;
-
 };
 
 #endif

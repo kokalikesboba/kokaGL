@@ -1,17 +1,15 @@
     #include "mesh.h"
 
     Mesh::Mesh(
-        std::vector<PNCUVertex> vertices,
-        std::vector<GLuint> indices,
+        std::vector<PNCUVertex>& vertices,
+        std::vector<GLuint>& indices,
         std::vector <std::shared_ptr<Texture>> textures
     ) :
-        vertices(std::move(vertices)),
-        indices(std::move(indices)),
         textures(std::move(textures)),
-    
-        vbo(this->vertices), 
-        ebo(this->indices)
+        vbo(vertices), 
+        ebo(indices)
     {
+        indicesCount = indices.size();
         vao.Bind();
         ebo.Bind();
         vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(PNCUVertex), (void*)offsetof(PNCUVertex, position));
@@ -45,7 +43,7 @@
 
         glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));  
 
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,0);
+        glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT,0);
     }
 
     Mesh::~Mesh()
