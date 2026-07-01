@@ -4,6 +4,8 @@
 #include "opengl/drawable/billboard.h"
 #include "opengl/resources/shader.h"
 
+#include "stb/stb_img.h"
+
 class Gizmo {
 public:
     Gizmo(const std::string imgDir);

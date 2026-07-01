@@ -1,7 +1,5 @@
 #include "gizmo.h"
 
-#include "stb/stb_img.h"
-
 Gizmo::Gizmo(const std::string imgDir)
 {
     unsigned char* texData = stbi_load(imgDir.c_str(), &this->width, &this->height, nullptr, 4);
