@@ -3,9 +3,11 @@
 
 #include "opengl/format.h"
 
-#include "assimp/Importer.hpp"
-#include "assimp/scene.h"
-#include "assimp/postprocess.h"
+#include "fastgltf/core.hpp"
+#include "fastgltf/tools.hpp"
+#include "fastgltf/types.hpp"
+#include "fastgltf/glm_element_traits.hpp"
+#include "stb/stb_img.h"
 
 #include <iostream>
 #include <filesystem>

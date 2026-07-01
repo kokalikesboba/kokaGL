@@ -71,7 +71,7 @@ int main() {
 
     Shader pointLight("shaders/pointLight.vert", "shaders/pointLight.frag");
 
-	Gizmo gizmo("assets/images/sammy_pixelvap.png");
+	// Gizmo gizmo("assets/images/sammy_pixelvap.png");
 
 	TexturePool texturepool;
 
@@ -145,7 +145,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		gizmo.Draw();
+		// gizmo.Draw();
 
 		gridPlane.Draw(pointLight);
 		sphere.Draw(pointLight);
