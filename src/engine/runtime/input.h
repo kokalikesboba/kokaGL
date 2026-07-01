@@ -2,7 +2,7 @@
 
 #include "window/window.h"
 
-#include "engine/components/light.h"
+#include "engine/scene/light.h"
 
 #include <deque>
 #include <utility>

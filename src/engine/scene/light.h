@@ -2,7 +2,7 @@
 #define LIGHT_H
 
 #include "engine/runtime/texturepool.h"
-#include "engine/components/model.h"
+#include "engine/scene/model.h"
 
 #include <string>
 

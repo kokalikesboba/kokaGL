@@ -7,9 +7,9 @@
 #include "opengl/utils.h"
 
 #include "engine/runtime/texturepool.h"
-#include "engine/components/model.h"
-#include "engine/components/gizmo.h"
-#include "engine/components/light.h"
+#include "engine/scene/model.h"
+#include "engine/scene/gizmo.h"
+#include "engine/scene/light.h"
 
 #include "engine/runtime/framepacer.h"
 #include "engine/runtime/input.h"
