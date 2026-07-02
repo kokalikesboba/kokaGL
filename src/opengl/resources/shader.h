@@ -3,31 +3,26 @@
 
 #include <glad/glad.h>
 
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 #include <cerrno>
-
-std::string get_file_contents(const char* filename);
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 class Shader
 {
 public:
-	// Constructor that build the Shader Program from 2 different shaders
-	Shader(const char* vertexFile, const char* fragmentFile);
-	// Activates the Shader Program
+	Shader(const std::string& vertFile, const std::string& fragFile);
 	void Activate() const;
-	// Deletes the Shader Program
+	void Reload();
 	void Delete();
-	// ID gettter
 	GLuint getID() const;
 	~Shader();
 
 private:
-	// Reference ID of the Shader Program
 	GLuint ID;
-	// Checks if the different Shaders have compiled properly
+	std::string vertFile;
+	std::string fragFile;
 	void compileErrors(unsigned int shader, const char* type);
 };
 #endif

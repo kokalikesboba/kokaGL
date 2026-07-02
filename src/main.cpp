@@ -76,7 +76,7 @@ int main() {
 	TexturePool texturepool;
 
 	// Ground plane — origin, the floor everything sits on.
-	Model gridPlane("assets/models/gridPlane.glb", texturepool);
+	Model gridPlane("assets/models/plane.glb", texturepool);
 	gridPlane.SetPosition({0.0f, 0.0f, 0.0f});
 
 	// Sphere — front-right, raised so it reads as floating / hero object.
@@ -94,7 +94,7 @@ int main() {
 	chest.SetEulerRotation({0.0f, -30.0f, 0.0f});
 
 	// Monkey — back-right, scaled up a touch as a focal character.
-	Model monkey("assets/models/monkey.glb", texturepool);
+	Model monkey("assets/models/icoStack.glb", texturepool);
 	monkey.SetPosition({3.0f, 0.1f, -3.0f});
 	monkey.SetEulerRotation({0.0f, 200.0f, 0.0f});
 
@@ -204,6 +204,10 @@ int main() {
 			glm::eulerAngles(viewport.GetOrientation()).z
 		);
 		ImGui::Separator();
+		if (ImGui::Button("Reload Point Light Shader")) {
+			pointLight.Reload();
+		};
+
 
 		ImGui::End();
 

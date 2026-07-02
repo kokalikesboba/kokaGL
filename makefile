@@ -54,7 +54,6 @@ CPP_SRCS = \
 	src/engine/scene/light.cpp \
 	src/main.cpp
 
-
 C_SRCS = \
 	$(EXTERN)/glad/glad.c
 
