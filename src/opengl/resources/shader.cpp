@@ -19,6 +19,8 @@ std::string get_file_contents(const std::string& filename)
 // Constructor that build the Shader Program from 2 different shaders
 Shader::Shader(const std::string& vertFile, const std::string& fragFile)
 {
+	std::string base = vertFile.substr(vertFile.find_last_of('/') + 1);
+	shaderName = base.substr(0, base.find_last_of('.'));
 	this->vertFile = vertFile;
 	this->fragFile = fragFile;
 	
@@ -79,6 +81,63 @@ void Shader::Reload()
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+}
+
+void Shader::uploadMat4(const std::string &uniformName, const glm::mat4 matrix)
+{
+	Activate();
+	auto it = uniformLocationCache.find(uniformName);
+	if (it == uniformLocationCache.end()) {
+		// GLint returns -1 when uniform is invalid
+		auto uniLoc = glGetUniformLocation(ID, uniformName.c_str());
+		if (uniLoc == -1) {	
+			std::cerr << "[WARNING][SHADER] Unknown uniform in " << shaderName << ": " << uniformName << std::endl;
+			return;
+		}
+		std::cerr << "[VERBOSE][SHADER] Uniform: " << uniformName << " inserted into " << shaderName << std::endl;
+		uniformLocationCache.insert({uniformName, uniLoc});
+		glUniformMatrix4fv(uniLoc, 1, GL_FALSE, glm::value_ptr(matrix));
+	} else {
+		glUniformMatrix4fv(it->second, 1, GL_FALSE, glm::value_ptr(matrix));
+	}
+}
+
+void Shader::uploadVec3(const std::string &uniformName, const glm::vec3 vector)
+{
+	Activate();
+	auto it = uniformLocationCache.find(uniformName);
+	if (it == uniformLocationCache.end()) {
+		// GLint returns -1 when uniform is invalid
+		auto uniLoc = glGetUniformLocation(ID, uniformName.c_str());
+		if (uniLoc == -1) {	
+			std::cerr << "[WARNING][SHADER] Unknown uniform in " << shaderName << ": " << uniformName << std::endl;
+			return;
+		}
+		std::cerr << "[VERBOSE][SHADER] Uniform: " << uniformName << " inserted into " << shaderName << std::endl;
+		uniformLocationCache.insert({uniformName, uniLoc});
+		glUniform3fv(uniLoc, 1, glm::value_ptr(vector));
+	} else {
+		glUniform3fv(it->second, 1, glm::value_ptr(vector));
+	}
+}
+
+void Shader::uploadFloat1(const std::string &uniformName, float value)
+{
+	Activate();
+	auto it = uniformLocationCache.find(uniformName);
+	if (it == uniformLocationCache.end()) {
+		// GLint returns -1 when uniform is invalid
+		auto uniLoc = glGetUniformLocation(ID, uniformName.c_str());
+		if (uniLoc == -1) {	
+			std::cerr << "[WARNING][SHADER] Unknown uniform in " << shaderName << ": " << uniformName << std::endl;
+			return;
+		}
+		std::cerr << "[VERBOSE][SHADER] Uniform: " << uniformName << " inserted into " << shaderName << std::endl;
+		uniformLocationCache.insert({uniformName, uniLoc});
+		glUniform1i(uniLoc, value);
+	} else {
+		glUniform1i(it->second, value);
+	}
 }
 
 // Deletes the Shader Program on OpenGL's side

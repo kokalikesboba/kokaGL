@@ -5,25 +5,12 @@ Light::Light(glm::vec3 color)
     this->color = color;
 
     glm::quat rotX = glm::angleAxis(180.f, glm::vec3(1,0,0));
-    rotation *= rotX;
+    orientation *= rotX;
 }
 
 void Light::Draw(const Shader &shader) const
 {
 
-}
-
-void Light::LinkRotation(const Shader& shader, const char* uniform) const
-{
-    glm::vec3 direction = rotation * glm::vec3(0.0f, -1.0f, 0.0f);
-    shader.Activate();
-    glUniform3f(glGetUniformLocation(shader.getID(), uniform), direction.x, direction.y, direction.z);
-}
-
-void Light::LinkColor(const Shader& shader, const char* uniform) const
-{
-    shader.Activate();
-    glUniform3f(glGetUniformLocation(shader.getID(), uniform), color.r, color.g, color.b);
 }
 
 void Light::SetPosition(glm::vec3 position)
@@ -42,13 +29,23 @@ void Light::SetOrientation(glm::vec3 euler)
 {
     glm::quat rotX = glm::angleAxis(euler.x, glm::vec3(1,0,0));
     glm::quat rotY = glm::angleAxis(euler.y, glm::vec3(0,1,0));
-    rotation = rotY * rotX;
+    orientation = rotY * rotX;
     //gizmo.SetOrientation(euler);
 }
 
 void Light::Rotate(glm::vec3 delta) {
     glm::quat rotX = glm::angleAxis(delta.x, glm::vec3(1,0,0));
     glm::quat rotY = glm::angleAxis(delta.y, glm::vec3(0,1,0));
-    rotation = rotY * rotX * rotation;
+    orientation = rotY * rotX * orientation;
     //gizmo.SetOrientation(delta);
+}
+
+glm::vec3 Light::getColor()
+{
+    return color;
+}
+
+glm::vec3 Light::getOrientation()
+{
+    return orientation * glm::vec3(0.f, -1.0f, 0.f);
 }

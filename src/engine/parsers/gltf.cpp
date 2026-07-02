@@ -7,7 +7,6 @@ unsigned int hash(const std::vector<unsigned char>& data) {
     return h;
 }
 
-
 void Parser::LoadShameMesh() {
     vertices = errorVertices;
     indices = errorIndices;

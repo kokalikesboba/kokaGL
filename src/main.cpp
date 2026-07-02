@@ -131,14 +131,13 @@ int main() {
 		window.pollEvents();
 		input.Update(viewport, framepacer.deltatime, light);
 		
-		viewport.LinkViewportMatrix(pointLight, "cameraMatrix");
-		viewport.LinkViewportPos(pointLight, "cameraPos");
-		light.LinkColor(pointLight, "lightColor");
-		light.LinkRotation(pointLight, "lightDirection");
+		pointLight.uploadMat4("cameraMatrix", viewport.GetViewportMatrix());
+		lightGizmo.uploadMat4("cameraMatrix", viewport.GetViewportMatrix());
 
-		viewport.LinkViewportMatrix(lightGizmo, "cameraMatrix");
-		light.LinkColor(lightGizmo, "lightColor");
-
+		pointLight.uploadVec3("lightColor", light.getColor());
+		pointLight.uploadVec3("lightDirection", light.getOrientation());
+		lightGizmo.uploadVec3("lightColor", light.getColor());
+		
 		postProcess.RenderToFramebuffer();	
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
