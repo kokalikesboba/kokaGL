@@ -12,7 +12,7 @@
 class Model {
 public:
     Model(const std::string& modelDir, TexturePool& textureCache);
-    void Draw(const Shader& shader) const;
+    void Draw(Shader& shader) const;
 
     void SetPosition(glm::vec3 position);
     void AddPosition(glm::vec3 position);

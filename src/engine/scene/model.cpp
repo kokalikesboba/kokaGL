@@ -27,7 +27,7 @@ Model::Model(const std::string &modelDir, TexturePool& textureCache)
     mesh = std::make_unique<Mesh>(vertices, indices, textures);
 }
 
-void Model::Draw(const Shader &shader) const
+void Model::Draw(Shader &shader) const
 {
     mesh->Draw(shader, position, orientation, scale);
 }

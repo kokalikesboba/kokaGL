@@ -18,8 +18,6 @@ public:
     void Unbind() const;
 
     void genRGBATexture(unsigned char* bytes, int imgWidth, int imgHeight);
-    
-    void linkUni(const Shader& shader, const char* uniformName, GLuint texUnit) const;
 
     PBRTexType getType() const;
 

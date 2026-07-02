@@ -31,7 +31,7 @@ public:
         Texture* texture
     );
     void Draw(
-        const Shader& shader,
+        Shader& shader,
         const glm::vec3& position = {0.f, 0.f, 0.f},
         const glm::vec2& scale = {1.f, 1.f}
     );

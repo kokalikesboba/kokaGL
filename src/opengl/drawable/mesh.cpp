@@ -19,7 +19,7 @@
     }
 
     void Mesh::Draw(
-        const Shader& shader,
+        Shader& shader,
         const glm::vec3& position,
         const glm::quat& orientation,
         const glm::vec3& scale)
@@ -41,7 +41,7 @@
         scalingMatrix = glm::scale(scalingMatrix, scale);
         glm::mat4 modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
 
-        glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));  
+        shader.uploadMat4("modelMatrix", modelMatrix);
 
         glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT,0);
     }

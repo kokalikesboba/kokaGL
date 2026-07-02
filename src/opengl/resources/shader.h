@@ -20,7 +20,7 @@ public:
 	void Reload();
 	void uploadMat4(const std::string& uniformName, const glm::mat4 matrix);
 	void uploadVec3(const std::string& uniformName, const glm::vec3 vector);
-	void uploadFloat1(const std::string& uniformName, const float value);
+	void uploadInt1(const std::string& uniformName, const int value);
 	void Delete();
 	GLuint getID() const;
 	~Shader();

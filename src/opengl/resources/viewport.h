@@ -36,10 +36,6 @@ public:
 	glm::mat4 GetViewportMatrix() const;
 
 	glm::vec3 GetLocalAxis(glm::vec3 axis);
-
-	void LinkViewportMatrix(const Shader& shader, const char* uniform) const;
-	// TODO: This was made for a point light shader and it's not a great name, there are better ways to do this.
-	void LinkViewportPos(const Shader& shader, const char* uniform) const;
 	
 private:
 	// Something upstream gone wrong if this size ends up on screen

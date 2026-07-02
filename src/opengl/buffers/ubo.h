@@ -1,17 +1,23 @@
 #ifndef UBO_H
 #define UBO_H
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 
 #include "opengl/resources/shader.h"
 
 #include <vector>
 #include <iostream>
 
+/*
+	layout (std140) uniform PerFrame {
+		mat4 cameraMatrix;
+		float time;
+	};
+*/
+
 class UBO
 {
 public:
-	// Constructs a VBO. This buffer will not remain bound after execution.
 	UBO(const std::vector<float>& data, unsigned int slot);
 	void LinkUni(const Shader& shader,const char* uniform) const;
 	void Bind() const;

@@ -56,19 +56,12 @@ void Texture::genRGBATexture(unsigned char* bytes, int width, int height)
 	);
 
 	textureGenerated = true;
-	}
-
-void Texture::linkUni(const Shader& shader, const char *uniformName, GLuint texUnit) const
-{
-	GLuint uniformAdr = glGetUniformLocation(shader.getID(), uniformName);
-    glUniform1i(uniformAdr, texUnit);
 }
 
 PBRTexType Texture::getType() const
 {
 	return type;
 }
-
 
 void Texture::Delete()
 {

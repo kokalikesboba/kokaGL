@@ -17,7 +17,6 @@ void UBO::LinkUni(const Shader &shader, const char *uniform) const
 {
 	GLuint blockIndex = glGetUniformBlockIndex(shader.getID(), uniform);
 	glUniformBlockBinding(shader.getID(), blockIndex, 0);
-
 }
 
 void UBO::Bind() const

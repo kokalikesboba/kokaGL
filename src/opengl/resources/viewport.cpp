@@ -84,17 +84,3 @@ glm::vec3 Viewport::GetLocalAxis(glm::vec3 axis)
 {
     return orientation * glm::normalize(axis);
 }
-
-void Viewport::LinkViewportMatrix(const Shader &shader, const char *uniform) const
-{
-	shader.Activate();
-	glm::mat4 viewportMatrix = GetViewportMatrix();
-	glUniformMatrix4fv(glGetUniformLocation(shader.getID(), uniform), 1, GL_FALSE, glm::value_ptr(viewportMatrix));
-}
-
-void Viewport::LinkViewportPos(const Shader &shader, const char *uniform) const
-{
-	shader.Activate();
-	glUniform3f(glGetUniformLocation(shader.getID(), uniform), position.x, position.y, position.z);
-}
-

@@ -121,7 +121,7 @@ void Shader::uploadVec3(const std::string &uniformName, const glm::vec3 vector)
 	}
 }
 
-void Shader::uploadFloat1(const std::string &uniformName, float value)
+void Shader::uploadInt1(const std::string &uniformName, int value)
 {
 	Activate();
 	auto it = uniformLocationCache.find(uniformName);
@@ -169,7 +169,7 @@ void Shader::compileErrors(unsigned int shader, const char* type)
 		{
 			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
 			std::cerr << "SHADER_COMPILATION_ERROR for:" << type << "\n" << infoLog << std::endl;
-			throw std::runtime_error("Shader comp failed"); 
+			// throw std::runtime_error("Shader comp failed"); 
 		}
 	}
 	else

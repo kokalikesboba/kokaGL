@@ -10,23 +10,6 @@ uniform vec3 cameraPos;
 
 void main()
 {
-    vec3 ambientLight = vec3(0.4, 0.4, 0.4);
-
-    // Base color
-    vec3 baseColor = texture(diffuse0,texCoord).rgb; 
-    vec3 ambientComponent = baseColor * ambientLight;
-
-    // Diffuse
-    vec3 lightDirectionNormalized = normalize(lightDirection);
-    vec3 vertexNormalNormalized = normalize(vertexNormal);
-    float diffuseScalar = max(dot(vertexNormalNormalized, lightDirectionNormalized), 0.0);
-    vec3 diffuseComponent = baseColor * lightColor * diffuseScalar;
-
-    // Specular
-        
-
-    vec3 combinedColor = ambientComponent + diffuseComponent;
-    FragColor = vec4(combinedColor, 1.0);
-    // FragColor = vec4(vertexNormalNormalized * 0.5 + 0.5, 1.0);
+    FragColor = vec4(0.f,0.f,0.f, 1.f);
 }
   

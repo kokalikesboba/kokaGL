@@ -38,6 +38,7 @@ int main() {
 		return -1;
 	}
 
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
     GlfwContext glfw;
 
     Window window(800, 800, "kokaGL");
@@ -69,10 +70,7 @@ int main() {
 	viewport.SetEulerRotation({0.f,315.f,0.f});
 	viewport.SetPosition({-6.5f, 3.f, 6.5f});
 
-    Shader pointLight("shaders/pointLight.vert", "shaders/pointLight.frag");
-
-	// Gizmo gizmo("assets/images/sammy_pixelvap.png");
-
+	Shader pointLight("shaders/pointLight.vert", "shaders/pointLight.frag");
 	TexturePool texturepool;
 
 	// Ground plane — origin, the floor everything sits on.
@@ -108,17 +106,16 @@ int main() {
 
 	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
+	Shader lightGizmo("shaders/lightGizmo.vert", "shaders/lightGizmo.frag");
 	
 	Framebuffer postProcess(window.getFbWidth(), window.getFbHeight());
 	Shader pp_edgeDetector("shaders/pp_edgeDetector.vert", "shaders/pp_edgeDetector.frag");
-	pp_edgeDetector.Activate();
-	glUniform1i(glGetUniformLocation(pp_edgeDetector.getID(), "screenTexture"), 0);
-
-	Shader lightGizmo("shaders/lightGizmo.vert", "shaders/lightGizmo.frag");
-	Framebuffer gizmoLayer(window.getFbWidth(), window.getFbHeight());
+	pp_edgeDetector.uploadInt1("screenTexture", 0);
 	Shader pp_default("shaders/pp_default.vert", "shaders/pp_default.frag");
-	pp_default.Activate();
-	glUniform1i(glGetUniformLocation(pp_default.getID(), "screenTexture"), 0);
+	pp_default.uploadInt1("screenTexture", 0);
+
+	Gizmo gizmo("assets/images/sammy_pixelvap.png");
+	Shader billboard("shaders/billboard.vert", "shaders/billboard.frag");
 
 	// For the UI
 	bool desired_vsync = true;
@@ -144,7 +141,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		// gizmo.Draw();
+		gizmo.Draw(billboard);
 
 		gridPlane.Draw(pointLight);
 		sphere.Draw(pointLight);

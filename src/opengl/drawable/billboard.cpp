@@ -15,7 +15,7 @@ Billboard::Billboard (
 }
 
 void Billboard::Draw(
-    const Shader &shader,
+    Shader &shader,
     const glm::vec3 &position,
     const glm::vec2 &scale)
 {
@@ -30,7 +30,7 @@ void Billboard::Draw(
     scalingMatrix = glm::scale(scalingMatrix, {scale, 1.f});
     glm::mat4 modelMatrix = translationMatrix * scalingMatrix;
 
-    glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));  
+    shader.uploadMat4("modelMatrix", modelMatrix);
 
     glDrawElements(GL_TRIANGLES, squareIndices.size(), GL_UNSIGNED_INT,0);
 }
