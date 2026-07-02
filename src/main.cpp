@@ -123,15 +123,13 @@ int main() {
 	while (!window.shouldClose())
 	{
 		framepacer.Start();
-		
 		window.pollEvents();
 		input.Update(viewport, framepacer.deltatime, light);
-		
 		pointLight.UploadUni("cameraMatrix", viewport.GetViewportMatrix());
 		lightGizmo.UploadUni("cameraMatrix", viewport.GetViewportMatrix());
 
 		pointLight.UploadUni("lightColor", light.getColor());
-		pointLight.UploadUni("lightDirection", light.getOrientation());
+		pointLight.UploadUni("lightDirection", light.GetForwardAxis());
 		lightGizmo.UploadUni("lightColor", light.getColor());
 
 		postProcess.RenderToFramebuffer();	

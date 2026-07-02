@@ -37,8 +37,3 @@ glm::mat4 Viewport::GetViewportMatrix() const
 	glm::mat4 viewportMatrix = GetProjectionMatrix() * GetViewMatrix();
     return viewportMatrix;
 }
-
-glm::vec3 Viewport::GetLocalAxis(glm::vec3 axis) const
-{
-    return orientation * glm::normalize(axis);
-}

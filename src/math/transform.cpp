@@ -28,6 +28,11 @@ void Transform::SetOrientation(glm::quat orientation)
 	this->orientation = orientation;
 }
 
+glm::quat Transform::GetOrientation() const
+{
+    return orientation;
+}
+
 void Transform::AddEulerRotation(glm::vec3 rotation)
 {
 	glm::quat qPitch = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -37,7 +42,12 @@ void Transform::AddEulerRotation(glm::vec3 rotation)
 	orientation *=  delta;
 }
 
-glm::quat Transform::GetOrientation() const
+glm::vec3 Transform::GetLocalAxis(glm::vec3 axis) const
 {
-    return orientation;
+    return orientation * glm::normalize(axis);
+}
+
+glm::vec3 Transform::GetForwardAxis() const
+{
+    return orientation * up;
 }

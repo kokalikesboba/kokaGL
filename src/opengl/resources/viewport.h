@@ -15,7 +15,6 @@ public:
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetProjectionMatrix() const;
 	glm::mat4 GetViewportMatrix() const;
-	glm::vec3 GetLocalAxis(glm::vec3 axis) const;
 private:
 	// Something upstream gone wrong if this size ends up on screen
 	float fbWidth = 1000.f;

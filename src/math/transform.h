@@ -12,11 +12,14 @@ public:
 	void AddPosition(glm::vec3 position);
 	glm::vec3 GetPosition() const;
 
-	void SetEulerRotation(glm::vec3 rotation);
-	void AddEulerRotation(glm::vec3 rotation);
 	void SetOrientation(glm::quat orientation);
 	glm::quat GetOrientation() const;
+	void SetEulerRotation(glm::vec3 rotation);
+	void AddEulerRotation(glm::vec3 rotation);
+	glm::vec3 GetLocalAxis(glm::vec3 axis) const;
+	glm::vec3 GetForwardAxis() const;
 protected:
+	glm::vec3 up = {0.0, 1.f, 0.f};
 	glm::vec3 position = {0.f, 0.f, 0.f};
 	// identity quat
 	glm::quat orientation = {1.f, 0.f, 0.f, 0.f};
