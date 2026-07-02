@@ -48,8 +48,7 @@ int main() {
 
 	Input input(window.getWindowPtr());
 
-    // Load OpenGL function pointers via GLAD
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to init GLAD\n";
         return -1;
     }
