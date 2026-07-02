@@ -18,11 +18,15 @@ public:
 	void AddEulerRotation(glm::vec3 rotation);
 	glm::vec3 GetLocalAxis(glm::vec3 axis) const;
 	glm::vec3 GetForwardAxis() const;
+
+	void SetScale(glm::vec3 scale);
+	glm::vec3 GetScale() const;
 protected:
 	glm::vec3 up = {0.0, 1.f, 0.f};
 	glm::vec3 position = {0.f, 0.f, 0.f};
 	// identity quat
 	glm::quat orientation = {1.f, 0.f, 0.f, 0.f};
+	glm::vec3 scale = {1.f, 1.f, 1.f};
 };
 
 #endif

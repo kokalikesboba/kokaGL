@@ -51,3 +51,13 @@ glm::vec3 Transform::GetForwardAxis() const
 {
     return orientation * up;
 }
+
+void Transform::SetScale(glm::vec3 scale)
+{
+    this->scale = scale;
+}
+
+glm::vec3 Transform::GetScale() const
+{
+    return scale;
+}
