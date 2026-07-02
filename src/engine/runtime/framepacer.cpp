@@ -1,6 +1,12 @@
 #include "framepacer.h"
 
-void Framepacer::Start() { 
+Framepacer::Framepacer()
+{
+    programEpoch = std::chrono::steady_clock::now();
+}
+
+void Framepacer::Start()
+{
     frameTimeStart = std::chrono::steady_clock::now();
 }
 
@@ -37,4 +43,11 @@ void Framepacer::targetFramerate(unsigned int fpsTarget) {
     if (fpsTarget) {
         frametimeTarget = std::chrono::microseconds(1000000 / fpsTarget);
     }
+}
+
+// Returns time since program started in seconds. 
+unsigned int Framepacer::Time()
+{
+    return std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::steady_clock::now() - programEpoch).count();
 }

@@ -6,16 +6,17 @@
 
 class Framepacer {
     public:
-        // I don't really need a default constructor, for this member function. Compiler wasn't happy so I had to specify to use DMI
-        Framepacer() = default;
+        Framepacer();
         void Start();
         void End();
         void targetFramerate(unsigned int fpsTarget);
 
         float avgFPS = 0;
         float deltatime = 0.f;
-
+        
+        unsigned int Time();
     private:
+        std::chrono::time_point<std::chrono::steady_clock> programEpoch;
         std::chrono::time_point<std::chrono::steady_clock> frameTimeStart;
         std::chrono::time_point<std::chrono::steady_clock> frameTimeEnd;
         std::chrono::microseconds frametimeTarget;

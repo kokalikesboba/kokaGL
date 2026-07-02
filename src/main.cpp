@@ -137,7 +137,7 @@ int main() {
 		pointLight.uploadVec3("lightColor", light.getColor());
 		pointLight.uploadVec3("lightDirection", light.getOrientation());
 		lightGizmo.uploadVec3("lightColor", light.getColor());
-		
+
 		postProcess.RenderToFramebuffer();	
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
