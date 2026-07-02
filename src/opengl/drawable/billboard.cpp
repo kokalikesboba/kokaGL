@@ -30,7 +30,7 @@ void Billboard::Draw(
     scalingMatrix = glm::scale(scalingMatrix, {scale, 1.f});
     glm::mat4 modelMatrix = translationMatrix * scalingMatrix;
 
-    shader.uploadMat4("modelMatrix", modelMatrix);
+    shader.UploadUni("modelMatrix", modelMatrix);
 
     glDrawElements(GL_TRIANGLES, squareIndices.size(), GL_UNSIGNED_INT,0);
 }

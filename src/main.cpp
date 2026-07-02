@@ -110,9 +110,9 @@ int main() {
 	
 	Framebuffer postProcess(window.getFbWidth(), window.getFbHeight());
 	Shader pp_edgeDetector("shaders/pp_edgeDetector.vert", "shaders/pp_edgeDetector.frag");
-	pp_edgeDetector.uploadInt1("screenTexture", 0);
+	pp_edgeDetector.UploadUni("screenTexture", 0);
 	Shader pp_default("shaders/pp_default.vert", "shaders/pp_default.frag");
-	pp_default.uploadInt1("screenTexture", 0);
+	pp_default.UploadUni("screenTexture", 0);
 
 	Gizmo gizmo("assets/images/sammy_pixelvap.png");
 	Shader billboard("shaders/billboard.vert", "shaders/billboard.frag");
@@ -128,12 +128,12 @@ int main() {
 		window.pollEvents();
 		input.Update(viewport, framepacer.deltatime, light);
 		
-		pointLight.uploadMat4("cameraMatrix", viewport.GetViewportMatrix());
-		lightGizmo.uploadMat4("cameraMatrix", viewport.GetViewportMatrix());
+		pointLight.UploadUni("cameraMatrix", viewport.GetViewportMatrix());
+		lightGizmo.UploadUni("cameraMatrix", viewport.GetViewportMatrix());
 
-		pointLight.uploadVec3("lightColor", light.getColor());
-		pointLight.uploadVec3("lightDirection", light.getOrientation());
-		lightGizmo.uploadVec3("lightColor", light.getColor());
+		pointLight.UploadUni("lightColor", light.getColor());
+		pointLight.UploadUni("lightDirection", light.getOrientation());
+		lightGizmo.UploadUni("lightColor", light.getColor());
 
 		postProcess.RenderToFramebuffer();	
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -200,7 +200,7 @@ int main() {
 			glm::eulerAngles(viewport.GetOrientation()).z
 		);
 		ImGui::Separator();
-		if (ImGui::Button("Reload Point Light Shader")) {
+		if (ImGui::Button("Reload pointlight Shader")) {
 			pointLight.Reload();
 		};
 

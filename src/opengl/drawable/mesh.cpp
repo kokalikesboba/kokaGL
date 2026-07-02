@@ -41,7 +41,7 @@
         scalingMatrix = glm::scale(scalingMatrix, scale);
         glm::mat4 modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
 
-        shader.uploadMat4("modelMatrix", modelMatrix);
+        shader.UploadUni("modelMatrix", modelMatrix);
 
         glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT,0);
     }
