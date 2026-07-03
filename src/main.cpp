@@ -113,7 +113,7 @@ int main() {
 	Shader pp_default("shaders/pp_default.vert", "shaders/pp_default.frag");
 	pp_default.UploadUni("screenTexture", 0);
 
-	Gizmo gizmo("assets/images/marz_bread.png");
+	Gizmo gizmo("assets/images/sammy_pixelvap.png");
 	gizmo.AddPosition({0.f, 5.f, 0.f});
 	Shader bb_default("shaders/bb_default.vert", "shaders/bb_default.frag");
 
@@ -125,20 +125,24 @@ int main() {
 	int selectedShader = 0;
 	
 	while (!window.shouldClose())
-	{		
+	{
+		sphere.AddEulerRotation({50 * framepacer.deltatime,0.f,0.f});
+		gizmo.SetScale(2.f * glm::vec3(0.05f * cos(0.005f * framepacer.Time()) + 1.f));
+
 		framepacer.Start();
 		window.pollEvents();
 		input.Update(viewport, framepacer.deltatime, light);
+
 		mesh_phong.UploadUni("cameraMatrix", viewport.GetViewportMatrix());
+		mesh_phong.UploadUni("cameraPos", viewport.GetPosition());
 		light_default.UploadUni("cameraMatrix", viewport.GetViewportMatrix());
 		bb_default.UploadUni("cameraMatrix", viewport.GetViewportMatrix());	
-		bb_default.UploadUni("cameraOrientation", glm::mat4_cast(viewport.GetOrientation()));
-
+		bb_default.UploadUni("cameraOrientation", glm::mat4_cast(viewport.GetOrientation()));		
 		mesh_phong.UploadUni("lightColor", light.getColor());
 		mesh_phong.UploadUni("lightDirection", light.GetForwardAxis());
 		light_default.UploadUni("lightColor", light.getColor());
 
-		postProcess.RenderToFramebuffer();	
+		postProcess.RenderToFramebuffer();
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -151,7 +155,6 @@ int main() {
 		sword.Draw(mesh_phong);
 		chest.Draw(mesh_phong);
 		monkey.Draw(mesh_phong);
-		gizmo.SetScale(2.f * glm::vec3(0.05f * cos(0.005f * framepacer.Time()) + 1.f));
 
 		glDisable(GL_DEPTH_TEST);
 		pointer.Draw(light_default);

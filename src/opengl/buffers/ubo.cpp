@@ -1,22 +1,26 @@
 #include "ubo.h"
 
-UBO::UBO(const std::vector<float>& data, unsigned int slot)
-{	
+UBO::UBO(GLsizeiptr byteSize, GLuint slot)
+{
+	this->byteSize = byteSize;
+	this->slot = slot;
+
 	glGenBuffers(1, &ID);
 	Bind();
-	glBufferData(
-		GL_UNIFORM_BUFFER,
-		data.size() *  sizeof(float),
-		data.data(),
-		GL_STATIC_DRAW
-	);
-	glBindBufferBase(GL_UNIFORM_BUFFER, blockIndex, ID);
+	// Allocate only; contents come from Update() each frame.
+	glBufferData(GL_UNIFORM_BUFFER, byteSize, nullptr, GL_DYNAMIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, slot, ID);
 }
 
-void UBO::LinkUni(const Shader &shader, const char *uniform) const
+void UBO::LinkBlock(const Shader& shader, const char* blockName) const
 {
-	GLuint blockIndex = glGetUniformBlockIndex(shader.getID(), uniform);
-	glUniformBlockBinding(shader.getID(), blockIndex, 0);
+	GLuint blockIndex = glGetUniformBlockIndex(shader.getID(), blockName);
+	if (blockIndex == GL_INVALID_INDEX) {
+		std::cerr << "[WARNING][UBO] Unknown uniform block (" << blockName
+			<< ") in shader program: " << shader.getID() << std::endl;
+		return;
+	}
+	glUniformBlockBinding(shader.getID(), blockIndex, slot);
 }
 
 void UBO::Bind() const
@@ -35,7 +39,7 @@ void UBO::Delete()
         glDeleteBuffers(1, &ID);
         ID = 0; // Reset to 0 so we don't delete it twice
     } else {
-        std::cerr << "Attempted to delete a UBO with ID of 0" << std::endl;
+        std::cerr << "[ERROR][UBO] Attempted to delete a UBO with ID of 0" << std::endl;
     }
 }
 
@@ -43,4 +47,3 @@ UBO::~UBO()
 {
 	Delete();
 }
-

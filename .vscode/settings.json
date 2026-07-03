@@ -1,5 +1,5 @@
 {
-    "cmake.sourceDirectory": "/home/ari/Source/kokaGL/extern/glm",
+    "cmake.sourceDirectory": "/Users/ari/Source/kokaGL/extern/fastgltf",
     "glsllint.glslangValidatorPath": "/usr/bin/glslangValidator",
     "glsl-linter.validatorPath": "/usr/bin/glslangValidator"
 }
