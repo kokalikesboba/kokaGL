@@ -31,11 +31,11 @@ private:
 	void compileErrors(unsigned int shader, const char* type);
 	std::unordered_map<std::string, GLint> uniformLocationCache;
 
-	bool dontSpamConsole = false;
+	bool printConsole = true;
 
 	void UniformType(GLint loc, const glm::mat4& m) { glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(m)); }
 	void UniformType(GLint loc, const glm::vec3& v) { glUniform3fv(loc, 1, glm::value_ptr(v)); }
-	void UniformTyoe(GLint loc, const float f) { glUniform1f(loc, f); }
+	void UniformType(GLint loc, const float f) { glUniform1f(loc, f); }
 	void UniformType(GLint loc, const int i) { glUniform1i(loc, i); }
 };
 
@@ -49,13 +49,13 @@ inline void Shader::UploadUni(const std::string &uniformName, const T &value)
 		// GLint returns -1 when uniform is invalid
 		loc = glGetUniformLocation(ID, uniformName.c_str());
 		if (loc == -1) {	
-			std::cerr << "[WARNING][SHADER] Unknown uniform in " << shaderName << ": " << uniformName << std::endl;
+			if (printConsole) {
+				std::cerr << "[WARNING][SHADER] Unknown uniform (" << uniformName << ") in: " << shaderName << std::endl;
+				printConsole = false;
+			}
 			return;
 		}
-		if (!dontSpamConsole) {
-			std::cerr << "[VERBOSE][SHADER] Uniform: " << uniformName << " inserted into " << shaderName << std::endl;
-			dontSpamConsole = true;
-		}
+		std::cerr << "[VERBOSE][SHADER] Uniform: " << uniformName << " inserted into " << shaderName << std::endl;
 		uniformLocationCache.insert({uniformName, loc});
 	} else {
 		loc = it->second;

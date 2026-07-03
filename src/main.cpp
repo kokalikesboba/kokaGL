@@ -125,8 +125,7 @@ int main() {
 	int selectedShader = 0;
 	
 	while (!window.shouldClose())
-	{
-
+	{		
 		framepacer.Start();
 		window.pollEvents();
 		input.Update(viewport, framepacer.deltatime, light);

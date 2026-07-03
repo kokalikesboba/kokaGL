@@ -1,9 +1,9 @@
 #version 330 core
 out vec4 FragColor;
 
-in vec3 crntPosition;
-in vec3 vertexNormal;
-in vec2 texCoord;
+in vec3 vertPosition;
+in vec3 vertNormal;
+in vec2 vertUV;
 
 uniform sampler2D diffuse0;
 
@@ -16,17 +16,17 @@ void main()
     vec3 ambientLight = vec3(0.4, 0.4, 0.4);
 
     // Base color
-    vec3 baseColor = texture(diffuse0,texCoord).rgb; 
+    vec3 baseColor = texture(diffuse0,vertUV).rgb; 
     vec3 ambientComponent = baseColor * ambientLight;
 
     // Diffuse
     vec3 lightDirectionNormalized = normalize(lightDirection);
-    vec3 vertexNormalNormalized = normalize(vertexNormal);
-    float diffuseScalar = max(dot(vertexNormalNormalized, lightDirectionNormalized), 0.0);
+    vec3 vertNormalNormalized = normalize(vertNormal);
+    float diffuseScalar = max(dot(vertNormalNormalized, lightDirectionNormalized), 0.0);
     vec3 diffuseComponent = baseColor * lightColor * diffuseScalar;
 
     vec3 combinedColor = ambientComponent + diffuseComponent;
     FragColor = vec4(combinedColor, 1.0);
-    // FragColor = vec4(vertexNormalNormalized * 0.5 + 0.5, 1.0);
+    // FragColor = vec4(vertNormalNormalized * 0.5 + 0.5, 1.0);
 }
   
