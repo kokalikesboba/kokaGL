@@ -14,7 +14,9 @@ uniform mat4 cameraOrientation;
 
 void main()
 {
-    vec3 offset = mat3(cameraOrientation) * vec3(aPos.xy, 0.0);
+    vec2 scaleXY = vec2(length(modelMatrix[0].xyz), length(modelMatrix[1].xyz));
+    vec3 offset = mat3(cameraOrientation) * (vec3(aPos.xy, 0.0) * vec3(scaleXY, 1.0));
+    
     vertPosition = vec3(modelMatrix * vec4(0,0,0,1)) + offset;   // model's position + camera-aligned offset
     vertNormal = mat3(cameraOrientation) * vec3(0.0, 0.0, 1.0);  // faces the camera by construction
     vertUV = aUV;

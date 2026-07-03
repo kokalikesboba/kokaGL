@@ -16,7 +16,7 @@ Model::Model(const std::string &modelDir, TexturePool& textureCache)
                     parsed.texData[i],
                     parsed.texWidth[i],
                     parsed.texHeight[i]
-                )   
+                )
             );
         }
     }

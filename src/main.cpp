@@ -120,9 +120,13 @@ int main() {
 	// For the UI
 	bool desired_vsync = true;
 	int desired_fps = 0;
+	Shader* shaders[] = { &mesh_phong, &light_default, &bb_default,&pp_edgeDetector, &pp_default };
+	const char* shaderNames[] = { "mesh_phong", "light_default", "bb_default", "pp_edgeDetector", "pp_default" };
+	int selectedShader = 0;
 	
 	while (!window.shouldClose())
 	{
+
 		framepacer.Start();
 		window.pollEvents();
 		input.Update(viewport, framepacer.deltatime, light);
@@ -148,6 +152,7 @@ int main() {
 		sword.Draw(mesh_phong);
 		chest.Draw(mesh_phong);
 		monkey.Draw(mesh_phong);
+		gizmo.SetScale(2.f * glm::vec3(0.05f * cos(0.005f * framepacer.Time()) + 1.f));
 
 		glDisable(GL_DEPTH_TEST);
 		pointer.Draw(light_default);
@@ -200,10 +205,12 @@ int main() {
 			glm::eulerAngles(viewport.GetOrientation()).z
 		);
 		ImGui::Separator();
-		if (ImGui::Button("Reload pointlight Shader")) {
-			mesh_phong.Reload();
-		};
 
+		ImGui::ListBox("Shaders", &selectedShader, shaderNames, IM_ARRAYSIZE(shaderNames));
+		if (ImGui::Button("Reload Selected")) {
+			shaders[selectedShader]->Reload();
+		}
+		ImGui::Separator();
 
 		ImGui::End();
 

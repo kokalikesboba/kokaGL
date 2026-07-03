@@ -58,6 +58,9 @@ void Shader::Activate() const
 void Shader::Reload()
 {
 	uniformLocationCache.clear();
+	dontSpamConsole = false;
+	std::cout << "[VERBOSE][SHADER] Reloaded: " << shaderName << std::endl;
+
 	std::string vertexCode = get_file_contents(vertFile);
 	std::string fragmentCode = get_file_contents(fragFile);
 	const char* vertexSource = vertexCode.c_str();

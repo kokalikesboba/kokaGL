@@ -19,9 +19,6 @@ private:
     std::vector<PNCUVertex> vertices;
     std::vector<GLuint> indices;
     std::vector<std::shared_ptr<Texture>> textures;
-
-    // TODO: might be worth adding this to math
-    glm::vec3 scale = {1.f, 1.f, 1.f};
 };
  
 #endif
