@@ -126,7 +126,7 @@ int main() {
 	
 	while (!window.shouldClose())
 	{
-		light.AddEulerRotation({64.f * framepacer.deltatime,0.f,0.f});
+		light.AddEulerRotation({16.f * framepacer.deltatime,0.f,0.f});
 		sphere.AddEulerRotation({50.f * framepacer.deltatime,0.f,0.f});
 		gizmo.SetScale(2.f * glm::vec3(0.05f * cos(0.005f * framepacer.Time()) + 1.f));
 		glm::vec3 orbitCenter = {0.f, 1.f, 3.f};
