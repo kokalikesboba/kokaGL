@@ -126,8 +126,12 @@ int main() {
 	
 	while (!window.shouldClose())
 	{
-		sphere.AddEulerRotation({50 * framepacer.deltatime,0.f,0.f});
+		light.AddEulerRotation({64.f * framepacer.deltatime,0.f,0.f});
+		sphere.AddEulerRotation({50.f * framepacer.deltatime,0.f,0.f});
 		gizmo.SetScale(2.f * glm::vec3(0.05f * cos(0.005f * framepacer.Time()) + 1.f));
+		glm::vec3 orbitCenter = {0.f, 1.f, 3.f};
+		float angle = 0.005f * framepacer.Time();
+		gizmo.SetPosition(orbitCenter + glm::vec3(sin(angle), 0.f, cos(angle)));
 
 		framepacer.Start();
 		window.pollEvents();
@@ -155,11 +159,6 @@ int main() {
 		sword.Draw(mesh_phong);
 		chest.Draw(mesh_phong);
 		monkey.Draw(mesh_phong);
-
-		glDisable(GL_DEPTH_TEST);
-		pointer.Draw(light_default);
-		error.Draw(light_default);
-		glEnable(GL_DEPTH_TEST);
 
 		postProcess.FramebufferToWindow(pp_default);
 
