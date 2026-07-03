@@ -69,7 +69,7 @@ int main() {
 	viewport.SetEulerRotation({0.f,315.f,0.f});
 	viewport.SetPosition({-6.5f, 3.f, 6.5f});
 
-	Shader pointLight("shaders/pointLight.vert", "shaders/pointLight.frag");
+	Shader mesh_phong("shaders/mesh_phong.vert", "shaders/mesh_phong.frag");
 	TexturePool texturepool;
 
 	// Ground plane — origin, the floor everything sits on.
@@ -105,7 +105,7 @@ int main() {
 
 	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
-	Shader lightGizmo("shaders/lightGizmo.vert", "shaders/lightGizmo.frag");
+	Shader light_default("shaders/light_default.vert", "shaders/light_default.frag");
 	
 	Framebuffer postProcess(window.getFbWidth(), window.getFbHeight());
 	Shader pp_edgeDetector("shaders/pp_edgeDetector.vert", "shaders/pp_edgeDetector.frag");
@@ -113,8 +113,9 @@ int main() {
 	Shader pp_default("shaders/pp_default.vert", "shaders/pp_default.frag");
 	pp_default.UploadUni("screenTexture", 0);
 
-	Gizmo gizmo("assets/images/sammy_pixelvap.png");
-	Shader billboard("shaders/billboard.vert", "shaders/billboard.frag");
+	Gizmo gizmo("assets/images/marz_bread.png");
+	gizmo.AddPosition({0.f, 5.f, 0.f});
+	Shader bb_default("shaders/bb_default.vert", "shaders/bb_default.frag");
 
 	// For the UI
 	bool desired_vsync = true;
@@ -125,12 +126,14 @@ int main() {
 		framepacer.Start();
 		window.pollEvents();
 		input.Update(viewport, framepacer.deltatime, light);
-		pointLight.UploadUni("cameraMatrix", viewport.GetViewportMatrix());
-		lightGizmo.UploadUni("cameraMatrix", viewport.GetViewportMatrix());
+		mesh_phong.UploadUni("cameraMatrix", viewport.GetViewportMatrix());
+		light_default.UploadUni("cameraMatrix", viewport.GetViewportMatrix());
+		bb_default.UploadUni("cameraMatrix", viewport.GetViewportMatrix());	
+		bb_default.UploadUni("cameraOrientation", glm::mat4_cast(viewport.GetOrientation()));
 
-		pointLight.UploadUni("lightColor", light.getColor());
-		pointLight.UploadUni("lightDirection", light.GetForwardAxis());
-		lightGizmo.UploadUni("lightColor", light.getColor());
+		mesh_phong.UploadUni("lightColor", light.getColor());
+		mesh_phong.UploadUni("lightDirection", light.GetForwardAxis());
+		light_default.UploadUni("lightColor", light.getColor());
 
 		postProcess.RenderToFramebuffer();	
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -138,17 +141,17 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		gizmo.Draw(billboard);
+		gizmo.Draw(bb_default);
 
-		gridPlane.Draw(pointLight);
-		sphere.Draw(pointLight);
-		sword.Draw(pointLight);
-		chest.Draw(pointLight);
-		monkey.Draw(pointLight);
+		gridPlane.Draw(mesh_phong);
+		sphere.Draw(mesh_phong);
+		sword.Draw(mesh_phong);
+		chest.Draw(mesh_phong);
+		monkey.Draw(mesh_phong);
 
 		glDisable(GL_DEPTH_TEST);
-		pointer.Draw(lightGizmo);
-		error.Draw(lightGizmo);
+		pointer.Draw(light_default);
+		error.Draw(light_default);
 		glEnable(GL_DEPTH_TEST);
 
 		postProcess.FramebufferToWindow(pp_default);
@@ -198,7 +201,7 @@ int main() {
 		);
 		ImGui::Separator();
 		if (ImGui::Button("Reload pointlight Shader")) {
-			pointLight.Reload();
+			mesh_phong.Reload();
 		};
 
 

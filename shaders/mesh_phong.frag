@@ -6,7 +6,7 @@ in vec3 vertexNormal;
 in vec2 texCoord;
 
 uniform sampler2D diffuse0;
-uniform sampler2D specular0;
+
 uniform vec3 cameraPos;
 uniform vec3 lightColor;
 uniform vec3 lightDirection;
@@ -24,9 +24,6 @@ void main()
     vec3 vertexNormalNormalized = normalize(vertexNormal);
     float diffuseScalar = max(dot(vertexNormalNormalized, lightDirectionNormalized), 0.0);
     vec3 diffuseComponent = baseColor * lightColor * diffuseScalar;
-
-    // Specular
-        
 
     vec3 combinedColor = ambientComponent + diffuseComponent;
     FragColor = vec4(combinedColor, 1.0);

@@ -2,6 +2,7 @@
 
 Gizmo::Gizmo(const std::string imgDir)
 {
+    stbi_set_flip_vertically_on_load(true);
     unsigned char* texData = stbi_load(imgDir.c_str(), &this->width, &this->height, nullptr, 4);
     this->texture = std::make_unique<Texture>(PBRTexType::BaseColor);
     this->texture->genRGBATexture(texData, this->width , this->height);
@@ -10,7 +11,7 @@ Gizmo::Gizmo(const std::string imgDir)
     billboard = std::make_unique<Billboard>(this->texture.get());
 }
 
-void Gizmo::Draw(Shader& gizmoShader)
+void Gizmo::Draw(Shader& shader)
 {
-    billboard->Draw(gizmoShader);
+    billboard->Draw(shader, position, scale);
 }

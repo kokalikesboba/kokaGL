@@ -10,7 +10,7 @@
 class Gizmo : public Transform {
 public:
     Gizmo(const std::string imgDir);
-    void Draw(Shader& gizmoShader);
+    void Draw(Shader& shader);
 private:
     std::unique_ptr<Texture> texture;
     std::unique_ptr<Billboard> billboard;
