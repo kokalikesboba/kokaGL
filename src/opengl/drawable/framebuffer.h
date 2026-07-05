@@ -9,8 +9,9 @@
 class Framebuffer {
     public:
         Framebuffer(const double& width, const double& height);
-        void RenderToFramebuffer() const;
-        void FramebufferToWindow(const Shader& shader) const;
+        void DrawToFramebuffer() const;
+        void DrawToTarget(const Shader& shader, Framebuffer& target) const;
+        void DrawToWindow(const Shader& shader) const;
         ~Framebuffer();
     private:
         double width;

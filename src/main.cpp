@@ -68,8 +68,11 @@ int main() {
 	Shader mesh_phong("shaders/mesh_phong.vert", "shaders/mesh_phong.frag");
 	Shader light_default("shaders/light_default.vert", "shaders/light_default.frag");
 	Shader bb_default("shaders/bb_default.vert", "shaders/bb_default.frag");
-	Shader pp_edgeDetector("shaders/pp_edgeDetector.vert", "shaders/pp_edgeDetector.frag");
+	Shader pp_edge_detector("shaders/pp_edge_detector.vert", "shaders/pp_edge_detector.frag");
+	pp_edge_detector.UploadUni("screenTexture", 0);
 	Shader pp_default("shaders/pp_default.vert", "shaders/pp_default.frag");
+	pp_default.UploadUni("screenTexture", 0);
+	Shader mesh_depth_map("shaders/mesh_depth_map.vert", "shaders/mesh_depth_map.frag");
 
 	Viewport viewport(window.getFbWidth(), window.getFbHeight());
 	viewport.SetEulerRotation({0.f,315.f,0.f});
@@ -79,13 +82,10 @@ int main() {
 	vpubo.LinkBlock(mesh_phong, "viewportUBO");
 	vpubo.LinkBlock(light_default, "viewportUBO");
 	vpubo.LinkBlock(bb_default, "viewportUBO");
+	vpubo.LinkBlock(mesh_depth_map,"viewportUBO");
 	viewportUBO vpUpload;
 
 	TexturePool texturepool;
-
-	Framebuffer postProcess(window.getFbWidth(), window.getFbHeight());
-	pp_edgeDetector.UploadUni("screenTexture", 0);
-	pp_default.UploadUni("screenTexture", 0);
 
 	Gizmo gizmo("assets/images/sammy_pixelvap.png");
 	gizmo.AddPosition({0.f, 5.f, 0.f});
@@ -124,10 +124,13 @@ int main() {
 	Model error("assets/models/error.glb", texturepool);
 	error.SetPosition({0.0f, 0.1f, -5.0f});
 
+	Framebuffer framebuffer0(window.getFbWidth(), window.getFbHeight());
+	Framebuffer framebuffer1(window.getFbWidth(), window.getFbHeight());
+	
 	// For the UI
 	bool desired_vsync = true;
 	int desired_fps = 0;
-	Shader* shaders[] = { &mesh_phong, &light_default, &bb_default,&pp_edgeDetector, &pp_default };
+	Shader* shaders[] = { &mesh_phong, &light_default, &bb_default,&pp_edge_detector, &pp_default };
 	const char* shaderNames[] = { "mesh_phong", "light_default", "bb_default", "pp_edgeDetector", "pp_default" };
 	int selectedShader = 0;
 	
@@ -140,37 +143,37 @@ int main() {
 		float angle = 0.005f * framepacer.Time();
 		gizmo.SetPosition(orbitCenter + glm::vec3(sin(angle), 0.f, cos(angle)));
 
-		framepacer.Start();
 		window.pollEvents();
 		// TODO: Leaky
 		input.Update(viewport, framepacer.deltatime, light);
+		framepacer.Start();
 
 		vpUpload.matrix = viewport.GetViewportMatrix();
 		vpUpload.orientation = glm::mat4_cast(viewport.GetOrientation());
 		vpUpload.pos = viewport.GetPosition();
 		vpubo.Update(vpUpload);
+		
 		mesh_phong.UploadUni("lightColor", light.getColor());
 		mesh_phong.UploadUni("lightDirection", light.GetForwardAxis());
 		light_default.UploadUni("lightColor", light.getColor());
 
-		postProcess.RenderToFramebuffer();
+		framebuffer0.DrawToFramebuffer();
+
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		gizmo.Draw(bb_default);
-
 		gridPlane.Draw(mesh_phong);
 		sphere.Draw(mesh_phong);
 		sword.Draw(mesh_phong);
 		chest.Draw(mesh_phong);
-		monkey.Draw(mesh_phong);
+		gizmo.Draw(bb_default);
 
 		glDisable(GL_CULL_FACE);
 
-		postProcess.FramebufferToWindow(pp_default);
+		framebuffer0.DrawToWindow(pp_default);
 
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();

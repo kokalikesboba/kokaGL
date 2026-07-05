@@ -44,12 +44,22 @@ Framebuffer::Framebuffer(const double& width, const double& height)
 
 }
 
-void Framebuffer::RenderToFramebuffer() const
+void Framebuffer::DrawToFramebuffer() const
 {
     fbo.Bind();
 }
 
-void Framebuffer::FramebufferToWindow(const Shader &shader) const
+void Framebuffer::DrawToTarget(const Shader &shader, Framebuffer &target) const
+{
+	target.DrawToFramebuffer();
+	shader.Activate();
+	vao.Bind();
+	glDisable(GL_DEPTH_TEST);
+	glBindTexture(GL_TEXTURE_2D, frameBufferTextureID);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+void Framebuffer::DrawToWindow(const Shader &shader) const
 {
     fbo.Unbind();
     shader.Activate();
