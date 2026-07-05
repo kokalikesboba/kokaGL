@@ -40,7 +40,7 @@ Framebuffer::Framebuffer(const double& width, const double& height)
 		std::cout << "Framebuffer error: " << fboStatus << std::endl; 
 	}
 
-	fbo.Unbind();
+	// fbo.Unbind();
 
 }
 

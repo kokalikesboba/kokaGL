@@ -5,12 +5,18 @@ layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec3 aColor;
 layout (location = 3) in vec2 aUV;
 
+layout (std140) uniform viewportUBO {
+    mat4 viewportMatrix;
+    mat4 viewportOrientation;
+    vec3 viewportPosition;
+    float pad0;
+};
+
+uniform mat4 modelMatrix;
+
 out vec3 vertPosition;
 out vec3 vertNormal;
 out vec2 vertUV;
-
-uniform mat4 cameraMatrix;
-uniform mat4 modelMatrix;
 
 void main()
 {
@@ -21,5 +27,5 @@ void main()
     vertPosition = vec3(modelMatrix * vec4(aPos, 1.0f));
     
     // 4. Final screen position
-    gl_Position = cameraMatrix * vec4(vertPosition, 1.0);
+    gl_Position = viewportMatrix * vec4(vertPosition, 1.0);
 }

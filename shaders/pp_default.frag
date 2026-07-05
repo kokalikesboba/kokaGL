@@ -1,9 +1,10 @@
 #version 330 core
 
 in vec2 vertUV;
-out vec4 FragColor;
 
 uniform sampler2D screenTexture;
+
+out vec4 FragColor;
 
 void main()
 {

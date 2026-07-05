@@ -1,12 +1,13 @@
 #version 330 core
 
-out vec4 FragColor;
 in vec2 vertUV;
 
 uniform sampler2D screenTexture;
 
 const float offset_x = 1.0f / 800.0f;  
 const float offset_y = 1.0f / 800.0f;  
+
+out vec4 FragColor;
 
 vec2 offsets[9] = vec2[]
 (

@@ -4,10 +4,10 @@ in vec3 vertPosition;
 in vec3 vertNormal;
 in vec2 vertUV;
 
-out vec4 FragColor;
-
 uniform sampler2D diffuse0;
 uniform vec3 cameraPos;
+
+out vec4 FragColor;
 
 void main()
 {

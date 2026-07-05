@@ -6,15 +6,12 @@
 
 #include <iostream>
 
-/*
-	Matching GLSL block, bound once per shader with LinkBlock:
-	layout (std140) uniform PerFrame {
-		mat4 cameraMatrix;
-		float time;
-	};
-	std140 gotcha: vec3 is padded to 16 bytes. Use vec4 in blocks (and in
-	the CPU struct) or the offsets will silently disagree.
-*/
+struct viewportUBO {
+	glm::mat4 matrix;
+	glm::mat4 orientation;
+	glm::vec3 pos;
+	float pad0;
+};
 
 class UBO
 {

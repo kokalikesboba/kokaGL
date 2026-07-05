@@ -2,7 +2,7 @@
 	#include <mach-o/dyld.h>  // macOS specific
 #endif
 
-
+#include "opengl/buffers/ubo.h"
 #include "opengl/drawable/framebuffer.h"
 #include "opengl/utils.h"
 
@@ -44,8 +44,6 @@ int main() {
     Window window(800, 800, "kokaGL");
     window.makeContextCurrent();
 
-	Framepacer framepacer;
-
 	Input input(window.getWindowPtr());
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -65,12 +63,35 @@ int main() {
 	ImGui_ImplGlfw_InitForOpenGL(window.getWindowPtr(), true); // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
 	ImGui_ImplOpenGL3_Init();
 
+	Framepacer framepacer;
+
+	Shader mesh_phong("shaders/mesh_phong.vert", "shaders/mesh_phong.frag");
+	Shader light_default("shaders/light_default.vert", "shaders/light_default.frag");
+	Shader bb_default("shaders/bb_default.vert", "shaders/bb_default.frag");
+	Shader pp_edgeDetector("shaders/pp_edgeDetector.vert", "shaders/pp_edgeDetector.frag");
+	Shader pp_default("shaders/pp_default.vert", "shaders/pp_default.frag");
+
 	Viewport viewport(window.getFbWidth(), window.getFbHeight());
 	viewport.SetEulerRotation({0.f,315.f,0.f});
 	viewport.SetPosition({-6.5f, 3.f, 6.5f});
 
-	Shader mesh_phong("shaders/mesh_phong.vert", "shaders/mesh_phong.frag");
+	UBO vpubo(sizeof(viewportUBO), 0);
+	vpubo.LinkBlock(mesh_phong, "viewportUBO");
+	vpubo.LinkBlock(light_default, "viewportUBO");
+	vpubo.LinkBlock(bb_default, "viewportUBO");
+	viewportUBO vpUpload;
+
 	TexturePool texturepool;
+
+	Framebuffer postProcess(window.getFbWidth(), window.getFbHeight());
+	pp_edgeDetector.UploadUni("screenTexture", 0);
+	pp_default.UploadUni("screenTexture", 0);
+
+	Gizmo gizmo("assets/images/sammy_pixelvap.png");
+	gizmo.AddPosition({0.f, 5.f, 0.f});
+
+	Light light({1.f,1.f,1.f});
+	light.SetPosition({0.f,5.f,0.f});
 
 	// Ground plane — origin, the floor everything sits on.
 	Model gridPlane("assets/models/plane.glb", texturepool);
@@ -103,20 +124,6 @@ int main() {
 	Model error("assets/models/error.glb", texturepool);
 	error.SetPosition({0.0f, 0.1f, -5.0f});
 
-	Light light({1.f,1.f,1.f});
-	light.SetPosition({0.f,5.f,0.f});
-	Shader light_default("shaders/light_default.vert", "shaders/light_default.frag");
-	
-	Framebuffer postProcess(window.getFbWidth(), window.getFbHeight());
-	Shader pp_edgeDetector("shaders/pp_edgeDetector.vert", "shaders/pp_edgeDetector.frag");
-	pp_edgeDetector.UploadUni("screenTexture", 0);
-	Shader pp_default("shaders/pp_default.vert", "shaders/pp_default.frag");
-	pp_default.UploadUni("screenTexture", 0);
-
-	Gizmo gizmo("assets/images/sammy_pixelvap.png");
-	gizmo.AddPosition({0.f, 5.f, 0.f});
-	Shader bb_default("shaders/bb_default.vert", "shaders/bb_default.frag");
-
 	// For the UI
 	bool desired_vsync = true;
 	int desired_fps = 0;
@@ -135,13 +142,13 @@ int main() {
 
 		framepacer.Start();
 		window.pollEvents();
+		// TODO: Leaky
 		input.Update(viewport, framepacer.deltatime, light);
 
-		mesh_phong.UploadUni("cameraMatrix", viewport.GetViewportMatrix());
-		mesh_phong.UploadUni("cameraPos", viewport.GetPosition());
-		light_default.UploadUni("cameraMatrix", viewport.GetViewportMatrix());
-		bb_default.UploadUni("cameraMatrix", viewport.GetViewportMatrix());	
-		bb_default.UploadUni("cameraOrientation", glm::mat4_cast(viewport.GetOrientation()));		
+		vpUpload.matrix = viewport.GetViewportMatrix();
+		vpUpload.orientation = glm::mat4_cast(viewport.GetOrientation());
+		vpUpload.pos = viewport.GetPosition();
+		vpubo.Update(vpUpload);
 		mesh_phong.UploadUni("lightColor", light.getColor());
 		mesh_phong.UploadUni("lightDirection", light.GetForwardAxis());
 		light_default.UploadUni("lightColor", light.getColor());
