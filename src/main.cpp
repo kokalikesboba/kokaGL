@@ -130,8 +130,8 @@ int main() {
 	// For the UI
 	bool desired_vsync = true;
 	int desired_fps = 0;
-	Shader* shaders[] = { &mesh_phong, &light_default, &bb_default,&pp_edge_detector, &pp_default };
-	const char* shaderNames[] = { "mesh_phong", "light_default", "bb_default", "pp_edgeDetector", "pp_default" };
+	Shader* shaders[] = { &mesh_phong, &light_default, &bb_default,&pp_edge_detector, &pp_default, &mesh_depth_map };
+	const char* shaderNames[] = { "mesh_phong", "light_default", "bb_default", "pp_edgeDetector", "pp_default", "mesh_depth_map" };
 	int selectedShader = 0;
 	
 	while (!window.shouldClose())
@@ -165,10 +165,10 @@ int main() {
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		gridPlane.Draw(mesh_phong);
-		sphere.Draw(mesh_phong);
-		sword.Draw(mesh_phong);
-		chest.Draw(mesh_phong);
+		gridPlane.Draw(mesh_depth_map);
+		sphere.Draw(mesh_depth_map);
+		sword.Draw(mesh_depth_map);
+		chest.Draw(mesh_depth_map);
 		gizmo.Draw(bb_default);
 
 		glDisable(GL_CULL_FACE);

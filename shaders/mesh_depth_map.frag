@@ -1,9 +1,16 @@
 #version 330 core
 
-uniform vec3 lightColor; 
-
 out vec4 FragColor;
 
 void main() {
-    FragColor = vec4(vec3(lightColor), 1.f);
-}
+
+    float near = 0.05;
+    float far = 3.0;
+    float depth = gl_FragCoord.z;
+
+    float ndcDepth = depth * 2.0 - 1.0;
+
+    float linearDepth = (2.0 * near * far) / (far + near - ndcDepth * (far - near));
+
+    FragColor = (1 - (linearDepth / far)) * vec4(1.0, 1.0, 1.0, 1.0);
+} 
