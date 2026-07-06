@@ -73,6 +73,7 @@ int main() {
 	Shader pp_default("shaders/pp_default.vert", "shaders/pp_default.frag");
 	pp_default.UploadUni("screenTexture", 0);
 	Shader mesh_depth_map("shaders/mesh_depth_map.vert", "shaders/mesh_depth_map.frag");
+	Shader pp_ssao("shaders/pp_ssao.vert", "shaders/pp_ssao.frag");
 
 	Viewport viewport(window.getFbWidth(), window.getFbHeight());
 	viewport.SetEulerRotation({0.f,315.f,0.f});
@@ -126,12 +127,13 @@ int main() {
 
 	Framebuffer framebuffer0(window.getFbWidth(), window.getFbHeight());
 	Framebuffer framebuffer1(window.getFbWidth(), window.getFbHeight());
+	Framebuffer framebuffer2(window.getFbWidth(), window.getFbHeight());
 	
 	// For the UI
 	bool desired_vsync = true;
 	int desired_fps = 0;
-	Shader* shaders[] = { &mesh_phong, &light_default, &bb_default,&pp_edge_detector, &pp_default, &mesh_depth_map };
-	const char* shaderNames[] = { "mesh_phong", "light_default", "bb_default", "pp_edgeDetector", "pp_default", "mesh_depth_map" };
+	Shader* shaders[] = { &mesh_phong, &light_default, &bb_default,&pp_edge_detector, &pp_default, &mesh_depth_map, &pp_ssao };
+	const char* shaderNames[] = { "mesh_phong", "light_default", "bb_default", "pp_edgeDetector", "pp_default", "mesh_depth_map", "pp_ssao" };
 	int selectedShader = 0;
 	
 	while (!window.shouldClose())
@@ -157,6 +159,8 @@ int main() {
 		mesh_phong.UploadUni("lightDirection", light.GetForwardAxis());
 		light_default.UploadUni("lightColor", light.getColor());
 
+		// Pass one
+
 		framebuffer0.DrawToFramebuffer();
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -171,9 +175,35 @@ int main() {
 		chest.Draw(mesh_depth_map);
 		gizmo.Draw(bb_default);
 
+		// Pass two
+
+		framebuffer1.DrawToFramebuffer();
+
+		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		gridPlane.Draw(mesh_phong);
+		sphere.Draw(mesh_phong);
+		sword.Draw(mesh_phong);
+		chest.Draw(mesh_phong);
+		gizmo.Draw(bb_default);
+
+		// Pass three
+
 		glDisable(GL_CULL_FACE);
 
-		framebuffer0.DrawToWindow(pp_default);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, framebuffer0.frameBufferTextureID);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, framebuffer1.frameBufferTextureID);
+
+		pp_ssao.UploadUni("depthBuffer", 0);
+		pp_ssao.UploadUni("screenTexture", 1);
+		
+		framebuffer2.DrawToWindow(pp_ssao);
 
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();

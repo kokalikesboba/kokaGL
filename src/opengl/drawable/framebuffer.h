@@ -13,6 +13,7 @@ class Framebuffer {
         void DrawToTarget(const Shader& shader, Framebuffer& target) const;
         void DrawToWindow(const Shader& shader) const;
         ~Framebuffer();
+        GLuint frameBufferTextureID;
     private:
         double width;
         double height;
@@ -20,7 +21,6 @@ class Framebuffer {
         VBO vbo;
         FBO fbo;
         // Implicitly created resources that aren't super relevant for the rest of the pipeline.
-        GLuint frameBufferTextureID;
         GLuint RBO;
 };
 

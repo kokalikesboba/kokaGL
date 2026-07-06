@@ -4,7 +4,7 @@ in vec3 vertPosition;
 in vec3 vertNormal;
 in vec2 vertUV;
 
-uniform sampler2D diffuse0;
+uniform sampler2D baseColor;
 
 layout (std140) uniform viewportUBO {
     mat4 viewportMatrix;
@@ -29,7 +29,7 @@ void main()
     float diffuse  = max(dot(normal, lightDir), 0.0);
     float specular = pow(max(dot(normal, halfwayDir), 0.0), 64.0);
     
-    vec3 texColor = texture(diffuse0, vertUV).rgb;
+    vec3 texColor = texture(baseColor, vertUV).rgb;
     vec3 lit = texColor * (diffuse + ambient) + lightColor * specular;
 
     vec3 fogColor = vec3(0.07, 0.13, 0.17);
