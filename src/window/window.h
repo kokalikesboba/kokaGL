@@ -19,7 +19,6 @@ class GlfwContext {
 class Window {
 public:
     Window(unsigned int width, unsigned int height, const char* title);
-    ~Window();
    
     void MakeContextCurrent() const;
     void SwapBuffers() const;
@@ -28,14 +27,15 @@ public:
     void RenameWindow(const char* title) const;
 
     bool ShouldClose() const;
+    GLFWwindow* GetWindowPtr() const;
     int GetWidth() const;
     int GetHeight()  const;
     int GetFbWidth() const;
     int GetFbHeight() const;
-    GLFWwindow* GetWindowPtr() const;
 
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;
+    ~Window();
 
 private:
     GLFWwindow* windowPtr;
@@ -44,8 +44,6 @@ private:
     int height = 600;
     int fbWidth = 800;
     int fbHeight = 600;
-    std::string windowTitle;
-    bool vSync = true;
 };
 
 #endif      
