@@ -11,7 +11,9 @@ class GlfwContext {
     public:
     GlfwContext();
     ~GlfwContext();
-    //TODO: make non-copyable 
+
+    GlfwContext(const GlfwContext&) = delete;
+    GlfwContext& operator=(const GlfwContext&) = delete;
 };
 
 class Window {
