@@ -64,58 +64,58 @@ Window::~Window()
     }
 }
 
-int Window::getWidth()
+int Window::GetWidth() const
 {
     return width;
 }
 
-int Window::getHeight()
+int Window::GetHeight() const
 {
     return height;
 }
 
-int Window::getFbWidth()
+int Window::GetFbWidth() const
 {
     return fbWidth;
 }
 
-int Window::getFbHeight()
+int Window::GetFbHeight() const
 {
     return fbHeight;
 }
 
-GLFWwindow *Window::getWindowPtr()
+GLFWwindow *Window::GetWindowPtr() const
 {
     // Constructor already checks if windowPtr is NULL
     return windowPtr;
 }
 
-void Window::makeContextCurrent() const
+void Window::MakeContextCurrent() const
 {
     glfwMakeContextCurrent(windowPtr);
 }
 
-void Window::swapBuffers() const
+void Window::SwapBuffers() const
 {
     glfwSwapBuffers(windowPtr);
 }
 
-void Window::pollEvents() const
+void Window::PollEvents() const
 {
     glfwPollEvents();
 }
 
-void Window::renameWindow(const char* title) const
+void Window::RenameWindow(const char* title) const
 {
     glfwSetWindowTitle(windowPtr, title);
 }
 
-void Window::verticalSync(bool state) const
+void Window::VerticalSync(bool state) const
 {
     glfwSwapInterval(state);
 }
 
-bool Window::shouldClose() const
+bool Window::ShouldClose() const
 {
     return glfwWindowShouldClose(windowPtr) != 0;
 }

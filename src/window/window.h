@@ -16,36 +16,32 @@ class GlfwContext {
 
 class Window {
 public:
-    // Constructor / Destructor
     Window(unsigned int width, unsigned int height, const char* title);
     ~Window();
    
-    // Crucial functions
-    void makeContextCurrent() const;
-    bool shouldClose() const;
-    void swapBuffers() const;
-    void pollEvents() const;
+    void MakeContextCurrent() const;
+    void SwapBuffers() const;
+    void PollEvents() const;
+    void VerticalSync(bool state) const;
+    void RenameWindow(const char* title) const;
 
-    // Getters
-    int getWidth();
-    int getHeight();
-    int getFbWidth();
-    int getFbHeight();
-    GLFWwindow* getWindowPtr();
+    bool ShouldClose() const;
+    int GetWidth() const;
+    int GetHeight()  const;
+    int GetFbWidth() const;
+    int GetFbHeight() const;
+    GLFWwindow* GetWindowPtr() const;
 
-    // Fun stuff
-    void verticalSync(bool state) const;
-    void renameWindow(const char* title) const;
+    Window(const Window&) = delete;
+    Window& operator=(const Window&) = delete;
 
 private:
-
-    // TODO: Make windowPtr non-copyable.
     GLFWwindow* windowPtr;
 
-    int width = 100;
-    int height = 100;
-    int fbWidth = 100;
-    int fbHeight = 100;
+    int width = 800;
+    int height = 600;
+    int fbWidth = 800;
+    int fbHeight = 600;
     std::string windowTitle;
     bool vSync = true;
 };

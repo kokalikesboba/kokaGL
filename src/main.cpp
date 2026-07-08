@@ -42,9 +42,9 @@ int main() {
     GlfwContext glfw;
 
     Window window(800, 800, "kokaGL");
-    window.makeContextCurrent();
+    window.MakeContextCurrent();
 
-	Input input(window.getWindowPtr());
+	Input input(window.GetWindowPtr());
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to init GLAD\n";
@@ -60,7 +60,7 @@ int main() {
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 
 	// Setup Platform/Renderer backends
-	ImGui_ImplGlfw_InitForOpenGL(window.getWindowPtr(), true); // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+	ImGui_ImplGlfw_InitForOpenGL(window.GetWindowPtr(), true); // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
 	ImGui_ImplOpenGL3_Init();
 
 	Framepacer framepacer;
@@ -75,7 +75,7 @@ int main() {
 	Shader mesh_depth_map("shaders/mesh_depth_map.vert", "shaders/mesh_depth_map.frag");
 	Shader pp_ssao("shaders/pp_ssao.vert", "shaders/pp_ssao.frag");
 
-	Viewport viewport(window.getFbWidth(), window.getFbHeight());
+	Viewport viewport(window.GetFbWidth(), window.GetFbHeight());
 	viewport.SetEulerRotation({0.f,315.f,0.f});
 	viewport.SetPosition({-6.5f, 3.f, 6.5f});
 
@@ -125,9 +125,9 @@ int main() {
 	Model error("assets/models/error.glb", texturepool);
 	error.SetPosition({0.0f, 0.1f, -5.0f});
 
-	Framebuffer framebuffer0(window.getFbWidth(), window.getFbHeight());
-	Framebuffer framebuffer1(window.getFbWidth(), window.getFbHeight());
-	Framebuffer framebuffer2(window.getFbWidth(), window.getFbHeight());
+	Framebuffer framebuffer0(window.GetFbWidth(), window.GetFbHeight());
+	Framebuffer framebuffer1(window.GetFbWidth(), window.GetFbHeight());
+	Framebuffer framebuffer2(window.GetFbWidth(), window.GetFbHeight());
 	
 	// For the UI
 	bool desired_vsync = true;
@@ -136,7 +136,7 @@ int main() {
 	const char* shaderNames[] = { "mesh_phong", "light_default", "bb_default", "pp_edgeDetector", "pp_default", "mesh_depth_map", "pp_ssao" };
 	int selectedShader = 0;
 	
-	while (!window.shouldClose())
+	while (!window.ShouldClose())
 	{
 		light.AddEulerRotation({16.f * framepacer.deltatime,0.f,0.f});
 		sphere.AddEulerRotation({50.f * framepacer.deltatime,0.f,0.f});
@@ -145,7 +145,7 @@ int main() {
 		float angle = 0.005f * framepacer.Time();
 		gizmo.SetPosition(orbitCenter + glm::vec3(sin(angle), 0.f, cos(angle)));
 
-		window.pollEvents();
+		window.PollEvents();
 		// TODO: Leaky
 		input.Update(viewport, framepacer.deltatime, light);
 		framepacer.Start();
@@ -169,41 +169,15 @@ int main() {
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		gridPlane.Draw(mesh_depth_map);
-		sphere.Draw(mesh_depth_map);
-		sword.Draw(mesh_depth_map);
-		chest.Draw(mesh_depth_map);
-		gizmo.Draw(bb_default);
-
-		// Pass two
-
-		framebuffer1.DrawToFramebuffer();
-
-		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		gridPlane.Draw(mesh_phong);
 		sphere.Draw(mesh_phong);
 		sword.Draw(mesh_phong);
 		chest.Draw(mesh_phong);
 		gizmo.Draw(bb_default);
-
-		// Pass three
-
+		
 		glDisable(GL_CULL_FACE);
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, framebuffer0.frameBufferTextureID);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, framebuffer1.frameBufferTextureID);
-
-		pp_ssao.UploadUni("depthBuffer", 0);
-		pp_ssao.UploadUni("screenTexture", 1);
-		
-		framebuffer2.DrawToWindow(pp_ssao);
+		framebuffer0.DrawToWindow(pp_default);
 
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
@@ -211,8 +185,8 @@ int main() {
 		ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_NoMove);
 
 		ImGui::Text("Window width / height");
-		ImGui::Text("Logical: %i, /  %i", (int)window.getWidth(),(int)window.getHeight());
-		ImGui::Text("Framebuffer: %i, / %i", (int)window.getFbWidth(), (int)window.getFbHeight());
+		ImGui::Text("Logical: %i, /  %i", (int)window.GetWidth(),(int)window.GetHeight());
+		ImGui::Text("Framebuffer: %i, / %i", (int)window.GetFbWidth(), (int)window.GetFbHeight());
 		ImGui::Separator();
 
 		ImGui::Text("FPS: %.2f",
@@ -224,12 +198,12 @@ int main() {
 		};
 		ImGui::SameLine();
 		ImGui::Checkbox("Wait for Vsync", &desired_vsync);
-		if (desired_vsync) window.verticalSync(true);
-		else window.verticalSync(false);
+		if (desired_vsync) window.VerticalSync(true);
+		else window.VerticalSync(false);
 		ImGui::Separator();
 
 		double cursorPosX, cursorPosY;
-		glfwGetCursorPos(window.getWindowPtr(), &cursorPosX, &cursorPosY);
+		glfwGetCursorPos(window.GetWindowPtr(), &cursorPosX, &cursorPosY);
 		ImGui::Text("Cursor Position");
 		ImGui::Text("X: %.2f  Y: %.2f", (float)cursorPosX, (float)cursorPosY);
 		ImGui::Separator();
@@ -260,7 +234,7 @@ int main() {
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		window.swapBuffers();
+		window.SwapBuffers();
 
 		framepacer.End();
 	}
