@@ -7,8 +7,15 @@
 
 #include "stb/stb_img.h"
 
-class Gizmo : public Transform {
+class Gizmo : private Transform {
 public:
+    using Transform::SetPosition;
+    using Transform::AddPosition;
+    using Transform::GetPosition;
+
+    using Transform::SetScale;
+    using Transform::GetScale;
+
     Gizmo(const std::string imgDir);
     void Draw(Shader& shader);
 private:
@@ -17,4 +24,4 @@ private:
 
     int width, height = 0;
 };
-#endif  
+#endif

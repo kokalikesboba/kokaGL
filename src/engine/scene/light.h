@@ -7,8 +7,19 @@
 
 #include <string>
 
-class Light : public Transform {
-public: 
+class Light : private Transform {
+public:
+    using Transform::SetPosition;
+    using Transform::AddPosition;
+    using Transform::GetPosition;
+
+    using Transform::SetOrientation;
+    using Transform::GetOrientation;
+    using Transform::SetEulerRotation;
+    using Transform::AddEulerRotation;
+    using Transform::GetLocalAxis;
+    using Transform::GetForwardAxis;
+
     Light(glm::vec3 color);
     void Draw(const Shader& shader) const;
     glm::vec3 getColor();

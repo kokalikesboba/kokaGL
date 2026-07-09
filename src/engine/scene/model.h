@@ -20,5 +20,5 @@ private:
     std::vector<GLuint> indices;
     std::vector<std::shared_ptr<Texture>> textures;
 };
- 
+
 #endif
