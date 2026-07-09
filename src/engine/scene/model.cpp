@@ -3,7 +3,7 @@
 Model::Model(const std::string &modelDir, TexturePool& textureCache)
 {
 
-    Parser parsed(modelDir);
+    GLTF parsed(modelDir);
 
     for (int i = 0; i < parsed.texHash.size(); ++i) {
         if (textureCache.isCachedAndAlive(parsed.texHash[i])) {

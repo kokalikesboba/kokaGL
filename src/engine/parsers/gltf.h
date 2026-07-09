@@ -57,9 +57,9 @@ inline const std::vector<unsigned int> errorIndices = {
     20, 22, 21,  20, 23, 22, // bottom
 };
 
-class Parser {
+class GLTF {
 public: 
-    Parser(std::string modelDir);
+    GLTF(std::string modelDir);
     
     std::vector<PNCUVertex> vertices;
     std::vector<unsigned int> indices;

@@ -7,7 +7,7 @@ unsigned int hash(const std::vector<unsigned char>& data) {
     return h;
 }
 
-void Parser::LoadShameMesh() {
+void GLTF::LoadShameMesh() {
     vertices = errorVertices;
     indices = errorIndices;
     texHash.push_back(0);
@@ -17,7 +17,7 @@ void Parser::LoadShameMesh() {
     texHeight.push_back(2);
 }
 
-void Parser::LoadShameTexture(PBRTexType errorType) {
+void GLTF::LoadShameTexture(PBRTexType errorType) {
     texHash.push_back(0);
     texType.push_back(errorType);
     texData.push_back(std::vector<unsigned char>{});
@@ -25,7 +25,7 @@ void Parser::LoadShameTexture(PBRTexType errorType) {
     texHeight.push_back(2);
 }
 
-Parser::Parser(std::string modelDir) {
+GLTF::GLTF(std::string modelDir) {
 
     // Placeholder on file path fail
     std::filesystem::path path = modelDir;
