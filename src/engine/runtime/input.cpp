@@ -3,7 +3,8 @@
 Input::Input(GLFWwindow *windowPtr)
 {
     this->windowPtr = windowPtr;
-	glfwSetWindowUserPointer(windowPtr, this);
+	// TODO: This is broken
+	//glfwSetWindowUserPointer(windowPtr, this);
 	glfwSetScrollCallback(windowPtr, [](GLFWwindow* w, double x, double y) {
 		Input* input = static_cast<Input*>(glfwGetWindowUserPointer(w));
 		input->scrollX = x;
@@ -11,7 +12,7 @@ Input::Input(GLFWwindow *windowPtr)
 	});
 }
 
-void Input::Update(Viewport &viewport, const float &dt, Light &light)
+void Input::Update(Viewport &viewport, const float &dt)
 {
 	// Trackpad input
 	if (scrollX != 0.0) {

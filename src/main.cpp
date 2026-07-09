@@ -41,7 +41,7 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
     GlfwContext glfw;
 
-    Window window(800, 800, "kokaGL");
+    Window window(800, 600, "kokaGL");
     window.MakeContextCurrent();
 
 	Input input(window.GetWindowPtr());
@@ -125,13 +125,13 @@ int main() {
 	Model error("assets/models/error.glb", texturepool);
 	error.SetPosition({0.0f, 0.1f, -5.0f});
 
-	Framebuffer framebuffer0(window.GetFbWidth(), window.GetFbHeight());
-	Framebuffer framebuffer1(window.GetFbWidth(), window.GetFbHeight());
-	Framebuffer framebuffer2(window.GetFbWidth(), window.GetFbHeight());
-	
 	// For the UI
+	double cursorPosX, cursorPosY;
 	bool desired_vsync = true;
 	int desired_fps = 0;
+	float nearPlane = 1.f;
+	float farPlane = 40.f;
+	float fov = 70.f;
 	Shader* shaders[] = { &mesh_phong, &light_default, &bb_default,&pp_edge_detector, &pp_default, &mesh_depth_map, &pp_ssao };
 	const char* shaderNames[] = { "mesh_phong", "light_default", "bb_default", "pp_edgeDetector", "pp_default", "mesh_depth_map", "pp_ssao" };
 	int selectedShader = 0;
@@ -146,8 +146,8 @@ int main() {
 		gizmo.SetPosition(orbitCenter + glm::vec3(sin(angle), 0.f, cos(angle)));
 
 		window.PollEvents();
-		// TODO: Leaky
-		input.Update(viewport, framepacer.deltatime, light);
+		viewport.Resize(window.GetFbWidth(), window.GetFbHeight());
+		input.Update(viewport, framepacer.deltatime);
 		framepacer.Start();
 
 		vpUpload.matrix = viewport.GetViewportMatrix();
@@ -158,10 +158,6 @@ int main() {
 		mesh_phong.UploadUni("lightColor", light.getColor());
 		mesh_phong.UploadUni("lightDirection", light.GetForwardAxis());
 		light_default.UploadUni("lightColor", light.getColor());
-
-		// Pass one
-
-		framebuffer0.DrawToFramebuffer();
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
@@ -174,19 +170,15 @@ int main() {
 		sword.Draw(mesh_phong);
 		chest.Draw(mesh_phong);
 		gizmo.Draw(bb_default);
-		
-		glDisable(GL_CULL_FACE);
-
-		framebuffer0.DrawToWindow(pp_default);
 
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_NoMove);
 
-		ImGui::Text("Window width / height");
-		ImGui::Text("Logical: %i, /  %i", (int)window.GetWidth(),(int)window.GetHeight());
-		ImGui::Text("Framebuffer: %i, / %i", (int)window.GetFbWidth(), (int)window.GetFbHeight());
+		ImGui::Text("Window: %i, /  %i", (int)window.GetWidth(),(int)window.GetHeight());
+		glfwGetCursorPos(window.GetWindowPtr(), &cursorPosX, &cursorPosY);
+		ImGui::Text("Cursor Position X: %.i  Y: %.i", (int)cursorPosX, (int)cursorPosY);
 		ImGui::Separator();
 
 		ImGui::Text("FPS: %.2f",
@@ -194,18 +186,12 @@ int main() {
 		);
 		ImGui::InputInt("Input FPS", &desired_fps);
 		if (ImGui::Button("Apply FPS")) {
-			    framepacer.targetFramerate(desired_fps);
+			framepacer.targetFramerate(desired_fps);
 		};
 		ImGui::SameLine();
 		ImGui::Checkbox("Wait for Vsync", &desired_vsync);
 		if (desired_vsync) window.VerticalSync(true);
 		else window.VerticalSync(false);
-		ImGui::Separator();
-
-		double cursorPosX, cursorPosY;
-		glfwGetCursorPos(window.GetWindowPtr(), &cursorPosX, &cursorPosY);
-		ImGui::Text("Cursor Position");
-		ImGui::Text("X: %.2f  Y: %.2f", (float)cursorPosX, (float)cursorPosY);
 		ImGui::Separator();
 
 		ImGui::Text("Viewport Position");
@@ -214,14 +200,10 @@ int main() {
 			viewport.GetPosition().y, 
 			viewport.GetPosition().z
 		);
-		ImGui::Separator();
-		
-		ImGui::Text("Viewport Rotation");
-		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f",
-			glm::eulerAngles(viewport.GetOrientation()).x,
-			glm::eulerAngles(viewport.GetOrientation()).y,
-			glm::eulerAngles(viewport.GetOrientation()).z
-		);
+		ImGui::Text("Framebuffer: %i, / %i", (int)window.GetFbWidth(), (int)window.GetFbHeight());
+		if (ImGui::DragFloat("Near", &nearPlane, 0.01f, 0.001f, 10.f))  viewport.SetNearPlane(nearPlane);
+		if (ImGui::DragFloat("Far", &farPlane, 1.f, 1.f, 1000.f)) viewport.SetFarPlane(farPlane);
+		if (ImGui::DragFloat("FOV", &fov, 0.5f, 10.f, 170.f))  viewport.SetFOV(fov);
 		ImGui::Separator();
 
 		ImGui::ListBox("Shaders", &selectedShader, shaderNames, IM_ARRAYSIZE(shaderNames));

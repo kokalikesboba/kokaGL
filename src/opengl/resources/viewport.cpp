@@ -8,6 +8,29 @@ Viewport::Viewport(int fbWidth, int fbHeight)
 	glViewport(0,0,fbWidth,fbHeight);
 }
 
+void Viewport::Resize(int width, int height)
+{
+	this->fbWidth = width;
+	this->fbHeight = height;
+	this->aspect = (static_cast<float>(width)/static_cast<float>(height));
+	glViewport(0,0, width, height);
+}
+
+void Viewport::SetNearPlane(float nearPlane)
+{
+	this->nearPlane = nearPlane;
+}
+
+void Viewport::SetFarPlane(float farPlane)
+{
+	this->farPlane = farPlane;
+}
+
+void Viewport::SetFOV(float eulerFOV)
+{
+	this->eulerFOV = eulerFOV;
+}
+
 glm::mat4 Viewport::GetPositionInverseMatrix() const
 {
     glm::mat4 inversePos = glm::translate(glm::mat4(1.0f),-position);

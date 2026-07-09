@@ -1,10 +1,5 @@
 #include "window.h"
 
-void error_callback(int error, const char* description)
-{
-    fprintf(stderr, "GLFW Error (%d): %s\n", error, description);
-}
-
 GlfwContext::GlfwContext()
 {
     if (!glfwInit()) {
@@ -17,31 +12,29 @@ GlfwContext::~GlfwContext()
     glfwTerminate();
 }
 
-Window::Window(unsigned int width, unsigned int height, const char *title) 
+Window::Window(unsigned int width, unsigned int height, const char *title)
 {
-    windowPtr = nullptr;
-
     this->width = width; 
     this->height = height;
-    
-    // Request an OpenGL 3.3 core profile context
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    // Create window and associated OpenGL context
+
     windowPtr = glfwCreateWindow(width, height, title, nullptr, nullptr);
     if (!windowPtr) {
         throw std::runtime_error("Failed to create a GLFW window");
     }
-    glfwGetFramebufferSize(windowPtr, &this->fbWidth, &this->fbHeight);
 
-    // glfwSetErrorCallback(error_callback);
+    glfwSetWindowUserPointer(windowPtr, this);
+    glfwSetFramebufferSizeCallback(windowPtr, FbSizeCallback);
+
+    // This is an icon loader, only works with Linux on X11 and Windows. 
     #if defined(__linux__) || defined(_WIN32)
-        
         GLFWimage icon;
         unsigned char* imgPixels =
             stbi_load("assets/images/marz_boudle.png",
-                    &icon.width,
+                    &icon.width,    
                     &icon.height,
                     nullptr,
                     4);
@@ -55,7 +48,7 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
 }
 
 void Window::MakeContextCurrent() const
-{
+{   
     glfwMakeContextCurrent(windowPtr);
 }
 
@@ -64,9 +57,11 @@ void Window::SwapBuffers() const
     glfwSwapBuffers(windowPtr);
 }
 
-void Window::PollEvents() const
+void Window::PollEvents()
 {
     glfwPollEvents();
+    glfwGetWindowSize(windowPtr, &this->width, &this->height);
+    glfwGetFramebufferSize(windowPtr, &this->fbWidth, &this->fbHeight);
 }
 
 void Window::RenameWindow(const char* title) const
@@ -116,4 +111,16 @@ Window::~Window()
         glfwDestroyWindow(windowPtr);
         windowPtr = nullptr;
     }
+}
+
+void Window::FbSizeCallback(GLFWwindow *win, int w, int h)
+{
+    Window* self = static_cast<Window*>(glfwGetWindowUserPointer(win));
+    self->fbWidth = w;
+    self->fbHeight = h;
+}
+
+void error_callback(int error, const char* description)
+{
+    fprintf(stderr, "GLFW Error (%d): %s\n", error, description);
 }

@@ -10,9 +10,9 @@
 class Input {
     public:
         Input(GLFWwindow* windowPtr);
-        void Update(Viewport& viewport, const float& dt, Light& light);
+        void Update(Viewport& viewport, const float& dt);
     private:
-        GLFWwindow* windowPtr;
+        GLFWwindow* windowPtr = nullptr;
 
         float movementSpeed = 10.f;
         double sensitivity = 0.001f; 

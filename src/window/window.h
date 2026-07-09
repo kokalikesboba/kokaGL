@@ -22,7 +22,7 @@ public:
    
     void MakeContextCurrent() const;
     void SwapBuffers() const;
-    void PollEvents() const;
+    void PollEvents();
     void VerticalSync(bool state) const;
     void RenameWindow(const char* title) const;
 
@@ -36,14 +36,14 @@ public:
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;
     ~Window();
-
 private:
-    GLFWwindow* windowPtr;
-
+    GLFWwindow* windowPtr = nullptr;
     int width = 800;
     int height = 600;
     int fbWidth = 800;
     int fbHeight = 600;
+
+    static void FbSizeCallback(GLFWwindow* win, int w, int h);
 };
 
 #endif      
