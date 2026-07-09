@@ -3,16 +3,16 @@ This project supersedes [koka3d](https://github.com/kokalikesboba/koka3D) in spi
 
 You can find design goals, quirks, and documentations on the [wiki](https://github.com/kokalikesboba/kokaGL/wiki) tab.
 
-<img src="meta/readme_img1.png" width="250"/>
-TODO: Can't take a better photo, the program is borked as of this README.md commit. 
+<img src="kokagl.gif" width="400"/>
 
 # Features:
 - GLTF File Parsing and loading.
-- Viewport manipulation.
+- Viewport manipulation with trackpad support.
+- Deltatime implementation.
 - Variable window refresh rate.
 - Framebuffers and GLSL post processing.
-- Lambert Shading.
-- Deltatime implementation.
+- Phong shading.
+- Billboards and Gizmos.
 
 # Installation
 
@@ -27,4 +27,4 @@ Use `brew` or `apt` for them.
 
 Additionally, if you wish you use the VSCode profiles, you must  install the `CodeLLDB` extension since this is the expected debugger.
 
-Other dependencies such as GLAD, glm, stb, ImGUI, simdjson, fastgltf, are already included in this repository under the `extern/` directory and require no further installation.
+Other dependencies such as GLAD, glm, stb, ImGUI, simdjson, fastgltf, are vendored in this repository under the `extern/` directory and require no further installation.
