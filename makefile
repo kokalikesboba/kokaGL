@@ -49,6 +49,7 @@ CPP_SRCS = \
 	src/engine/runtime/input.cpp \
 	src/engine/runtime/framepacer.cpp \
 	src/engine/runtime/texturepool.cpp \
+	src/engine/runtime/renderqueue.cpp \
 	src/engine/parsers/gltf.cpp \
 	src/engine/scene/model.cpp \
 	src/engine/scene/gizmo.cpp \
