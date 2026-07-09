@@ -38,16 +38,25 @@ void Framepacer::End() {
 
 }
 
-void Framepacer::targetFramerate(unsigned int fpsTarget) {
+float Framepacer::GetAvgFPS() const
+{
+    return avgFPS;
+}
+
+float Framepacer::GetDeltaTime() const
+{
+    return deltatime;
+}
+
+// Returns time since program started in seconds. 
+unsigned int Framepacer::GetTime() const
+{
+    return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - programEpoch).count();
+}
+
+void Framepacer::SetTargetFramerate(unsigned int fpsTarget) {
     this->fpsTarget = fpsTarget;
     if (fpsTarget) {
         frametimeTarget = std::chrono::microseconds(1000000 / fpsTarget);
     }
-}
-
-// Returns time since program started in seconds. 
-unsigned int Framepacer::Time()
-{
-    return std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::steady_clock::now() - programEpoch).count();
 }

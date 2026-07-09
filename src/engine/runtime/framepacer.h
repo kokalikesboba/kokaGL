@@ -5,31 +5,33 @@
 #include <vector>
 
 class Framepacer {
-    public:
-        Framepacer();
-        void Start();
-        void End();
-        void targetFramerate(unsigned int fpsTarget);
+public:
+    Framepacer();
+    void Start();
+    void End();
 
-        float avgFPS = 0;
-        float deltatime = 0.f;
-        
-        unsigned int Time();
-    private:
-        std::chrono::time_point<std::chrono::steady_clock> programEpoch;
-        std::chrono::time_point<std::chrono::steady_clock> frameTimeStart;
-        std::chrono::time_point<std::chrono::steady_clock> frameTimeEnd;
-        std::chrono::microseconds frametimeTarget;
-        std::chrono::microseconds frametimeDuration;
+    void SetTargetFramerate(unsigned int fpsTarget);
 
-        unsigned int fpsTarget = 0;
+    float GetAvgFPS() const;
+    float GetDeltaTime() const;
+    // Returns time since program start in milliseconds.
+    unsigned int GetTime() const;
+private:
+    std::chrono::time_point<std::chrono::steady_clock> programEpoch;
+    std::chrono::time_point<std::chrono::steady_clock> frameTimeStart;
+    std::chrono::time_point<std::chrono::steady_clock> frameTimeEnd;
+    std::chrono::microseconds frametimeTarget;
+    std::chrono::microseconds frametimeDuration;
 
-        std::chrono::milliseconds avgSampleInterval = std::chrono::milliseconds(500);
-        std::chrono::microseconds avgSum = std::chrono::microseconds(0);
-        unsigned int avgFramesSampled = 0;
-        // std::chrono automatically initilizes with time since epoch
-        std::chrono::time_point<std::chrono::steady_clock> avgSampleStart;
+    long long int fpsTarget = 0;
+    float avgFPS = 0.f;
+    float deltatime = 0.f;
 
+    std::chrono::milliseconds avgSampleInterval = std::chrono::milliseconds(500);
+    std::chrono::microseconds avgSum = std::chrono::microseconds(0);
+    unsigned int avgFramesSampled = 0;
+    // std::chrono automatically initilizes with time since epoch
+    std::chrono::time_point<std::chrono::steady_clock> avgSampleStart;
 };
 
 #endif
