@@ -17,6 +17,7 @@ public:
 	using Transform::GetOrientation;
 	using Transform::SetEulerRotation;
 	using Transform::AddEulerRotation;
+	using Transform::GetEulerRotation;
 	using Transform::GetLocalAxis;
 	using Transform::GetForwardAxis;
 

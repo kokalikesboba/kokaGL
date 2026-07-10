@@ -16,6 +16,7 @@ public:
 	glm::quat GetOrientation() const;
 	void SetEulerRotation(glm::vec3 rotation);
 	void AddEulerRotation(glm::vec3 rotation);
+	glm::vec3 GetEulerRotation(glm::vec3 rotation) const;
 	glm::vec3 GetLocalAxis(glm::vec3 axis) const;
 	glm::vec3 GetForwardAxis() const;
 

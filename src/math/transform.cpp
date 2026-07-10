@@ -42,6 +42,11 @@ void Transform::AddEulerRotation(glm::vec3 rotation)
 	orientation *=  delta;
 }
 
+glm::vec3 Transform::GetEulerRotation(glm::vec3 rotation) const
+{
+    return glm::degrees(glm::eulerAngles(orientation));
+}
+
 glm::vec3 Transform::GetLocalAxis(glm::vec3 axis) const
 {
     return orientation * glm::normalize(axis);
