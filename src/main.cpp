@@ -7,6 +7,7 @@
 #include "opengl/utils.h"
 
 #include "engine/runtime/texturepool.h"
+#include "engine/runtime/renderqueue.h"
 #include "engine/scene/model.h"
 #include "engine/scene/gizmo.h"
 #include "engine/scene/light.h"
@@ -68,7 +69,7 @@ int main() {
 	Shader mesh_phong("shaders/mesh_phong.vert", "shaders/mesh_phong.frag");
 	Shader light_default("shaders/light_default.vert", "shaders/light_default.frag");
 	Shader bb_default("shaders/bb_default.vert", "shaders/bb_default.frag");
-	Shader pp_edge_detector("shaders/pp_edge_detector.vert", "shaders/pp_edge_detector.frag");
+	Shader pp_edge_detector("shaders/pp_edge_detector.vert", "shaders/pp_edge_detector.frag"); 	
 	pp_edge_detector.UploadUni("screenTexture", 0);
 	Shader pp_default("shaders/pp_default.vert", "shaders/pp_default.frag");
 	pp_default.UploadUni("screenTexture", 0);

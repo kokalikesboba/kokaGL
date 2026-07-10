@@ -1,6 +1,8 @@
 #ifndef RENDERQUEUE_H
 #define RENDERQUEUE_H
 
+#include "nlohmann/json.hpp"
+
 #include "engine/scene/model.h"
 
 #include <vector>
