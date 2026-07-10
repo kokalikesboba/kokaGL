@@ -95,7 +95,7 @@ int main() {
 	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
 
-	RenderQueue queue("assets/manifests/models.json", texturepool);
+	AssetManager queue("assets/manifests/models.json", texturepool);
 
 	// For the UI
 	double cursorPosX, cursorPosY;
@@ -163,11 +163,15 @@ int main() {
 		else window.VerticalSync(false);
 		ImGui::Separator();
 
-		ImGui::Text("Viewport Position");
 		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f", 
 			viewport.GetPosition().x, 
 			viewport.GetPosition().y, 
 			viewport.GetPosition().z
+		);
+		ImGui::Text("rX: %.2f  rY: %.2f  rZ: %.2f", 
+			viewport.GetEulerRotation().x, 
+			viewport.GetEulerRotation().y, 
+			viewport.GetEulerRotation().z
 		);
 		ImGui::Text("Framebuffer: %i, / %i", (int)window.GetFbWidth(), (int)window.GetFbHeight());
 		if (ImGui::DragFloat("Near", &nearPlane, 0.01f, 0.001f, 10.f))  viewport.SetNearPlane(nearPlane);
@@ -178,8 +182,9 @@ int main() {
 		if (ImGui::Button("Reload Model Manifest")) {
 			queue.Reload();
 		}
-		ImGui::Separator();
-
+		if (ImGui::Button("Save Model Manifet")) {
+			queue.SaveCurrentArrangement();
+		}
 		ImGui::ListBox("Shaders", &selectedShader, shaderNames, IM_ARRAYSIZE(shaderNames));
 		if (ImGui::Button("Reload Selected Shader")) {
 			shaders[selectedShader]->Reload();

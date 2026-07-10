@@ -42,7 +42,7 @@ void Transform::AddEulerRotation(glm::vec3 rotation)
 	orientation *=  delta;
 }
 
-glm::vec3 Transform::GetEulerRotation(glm::vec3 rotation) const
+glm::vec3 Transform::GetEulerRotation() const
 {
     return glm::degrees(glm::eulerAngles(orientation));
 }

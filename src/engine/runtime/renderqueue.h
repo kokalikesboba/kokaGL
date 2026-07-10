@@ -8,7 +8,6 @@
 #include "engine/scene/model.h"
 
 #include <fstream>
-
 #include <memory>
 #include <vector>
 
@@ -17,18 +16,20 @@ struct Entry {
     std::unique_ptr<Model> modelPtr;
 };
 
-class RenderQueue {
+class AssetManager {
 public:
-    RenderQueue(const std::string& manifestDir, TexturePool& texturePool);
+    AssetManager(const std::string& manifestDir, TexturePool& texturePool);
     void Reload();
+    void SaveCurrentArrangement();
     // void Add();
     // void Remove();
     void Draw(Shader& shader);
-    ~RenderQueue();
+    ~AssetManager();
 private:
     std::string manifestDir;
     TexturePool* const texturePool;
     std::vector<std::unique_ptr<Model>> queue;
+    nlohmann::ordered_json source;
 };
 
 #endif
