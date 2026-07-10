@@ -175,8 +175,13 @@ int main() {
 		if (ImGui::DragFloat("FOV", &fov, 0.5f, 10.f, 170.f))  viewport.SetFOV(fov);
 		ImGui::Separator();
 
+		if (ImGui::Button("Reload Model Manifest")) {
+			queue.Reload();
+		}
+		ImGui::Separator();
+
 		ImGui::ListBox("Shaders", &selectedShader, shaderNames, IM_ARRAYSIZE(shaderNames));
-		if (ImGui::Button("Reload Selected")) {
+		if (ImGui::Button("Reload Selected Shader")) {
 			shaders[selectedShader]->Reload();
 		}
 		ImGui::Separator();

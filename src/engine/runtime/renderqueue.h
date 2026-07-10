@@ -20,11 +20,14 @@ struct Entry {
 class RenderQueue {
 public:
     RenderQueue(const std::string& manifestDir, TexturePool& texturePool);
+    void Reload();
     // void Add();
     // void Remove();
     void Draw(Shader& shader);
     ~RenderQueue();
 private:
+    std::string manifestDir;
+    TexturePool* const texturePool;
     std::vector<std::unique_ptr<Model>> queue;
 };
 
