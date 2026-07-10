@@ -95,36 +95,7 @@ int main() {
 	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
 
-	// Ground plane — origin, the floor everything sits on.
-	Model gridPlane("assets/models/plane.glb", texturepool);
-	gridPlane.SetPosition({0.0f, 0.0f, 0.0f});
-
-	// Sphere — front-right, raised so it reads as floating / hero object.
-	Model sphere("assets/models/sphere.glb", texturepool);
-	sphere.SetPosition({3.5f, 1.5f, 2.0f});
-
-	// Sword — center stage, tilted as if planted point-down in the ground.
-	Model sword("assets/models/sword.glb", texturepool);
-	sword.SetPosition({0.0f, 1.0f, 0.0f});
-	sword.SetEulerRotation({0.0f, 45.0f, 180.0f});
-
-	// Chest — front-left, the new model, angled toward the camera.
-	Model chest("assets/models/chest.glb", texturepool);
-	chest.SetPosition({-3.0f, 0.1f, 2.5f});
-	chest.SetEulerRotation({0.0f, -30.0f, 0.0f});
-
-	// Monkey — back-right, scaled up a touch as a focal character.
-	Model monkey("assets/models/icoStack.glb", texturepool);
-	monkey.SetPosition({3.0f, 0.1f, -3.0f});
-	monkey.SetEulerRotation({0.0f, 200.0f, 0.0f});
-
-	// Pointer — small, near origin, your gizmo/indicator model.
-	Model pointer("assets/models/pointer.glb", texturepool);
-	pointer.SetPosition({1.5f, 0.1f, 1.5f});
-
-	// error.glb — off to the side as the deliberate "this one's the test" model.
-	Model error("assets/models/error.glb", texturepool);
-	error.SetPosition({0.0f, 0.1f, -5.0f});
+	RenderQueue queue("assets/manifests/models.json", texturepool);
 
 	// For the UI
 	double cursorPosX, cursorPosY;
@@ -140,7 +111,6 @@ int main() {
 	while (!window.ShouldClose())
 	{
 		light.AddEulerRotation({16.f * framepacer.GetDeltaTime(),0.f,0.f});
-		sphere.AddEulerRotation({50.f * framepacer.GetDeltaTime(),0.f,0.f});
 		gizmo.SetScale(2.f * glm::vec3(0.05f * cos(0.005f * framepacer.GetDeltaTime()) + 1.f));
 		glm::vec3 orbitCenter = {0.f, 1.f, 3.f};
 		float angle = 0.005f * framepacer.GetTime();
@@ -166,10 +136,8 @@ int main() {
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		gridPlane.Draw(mesh_phong);
-		sphere.Draw(mesh_phong);
-		sword.Draw(mesh_phong);
-		chest.Draw(mesh_phong);
+		queue.Draw(mesh_phong);
+
 		gizmo.Draw(bb_default);
 
 		ImGui_ImplOpenGL3_NewFrame(); 

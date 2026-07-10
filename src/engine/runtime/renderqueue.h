@@ -3,19 +3,29 @@
 
 #include "nlohmann/json.hpp"
 
+#include "opengl/resources/shader.h"
+#include "engine/runtime/texturepool.h"
 #include "engine/scene/model.h"
 
+#include <fstream>
+
+#include <memory>
 #include <vector>
+
+struct Entry {
+    std::string name;
+    std::unique_ptr<Model> modelPtr;
+};
 
 class RenderQueue {
 public:
-    RenderQueue();
-    void Add();
-    void Remove();
-    void Draw();
+    RenderQueue(const std::string& manifestDir, TexturePool& texturePool);
+    // void Add();
+    // void Remove();
+    void Draw(Shader& shader);
     ~RenderQueue();
 private:
-    std::vector<Model> queue;
+    std::vector<std::unique_ptr<Model>> queue;
 };
 
 #endif
