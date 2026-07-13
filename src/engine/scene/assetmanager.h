@@ -1,5 +1,5 @@
-#ifndef RENDERQUEUE_H
-#define RENDERQUEUE_H
+#ifndef ASSETMANAGER_H
+#define ASSETMANAGER_H
 
 #include "nlohmann/json.hpp"
 

@@ -6,8 +6,7 @@
 #include "opengl/drawable/framebuffer.h"
 #include "opengl/utils.h"
 
-#include "engine/runtime/texturepool.h"
-#include "engine/runtime/renderqueue.h"
+#include "engine/scene/assetmanager.h"
 #include "engine/scene/model.h"
 #include "engine/scene/gizmo.h"
 #include "engine/scene/light.h"

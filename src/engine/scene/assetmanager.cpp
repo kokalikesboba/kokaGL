@@ -1,4 +1,4 @@
-#include "renderqueue.h"
+#include "assetmanager.h"
 
 AssetManager::AssetManager(const std::string &manifestDir, TexturePool& texturePool) 
 : 
