@@ -95,7 +95,7 @@ int main() {
 	Light light({1.f,1.f,1.f});
 	light.SetPosition({0.f,5.f,0.f});
 
-	AssetManager queue("assets/manifests/models.json", texturepool);
+	AssetManager assetMan("manifest.json", texturepool);
 
 	// For the UI
 	double cursorPosX, cursorPosY;
@@ -136,7 +136,7 @@ int main() {
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		queue.Draw(mesh_phong);
+		assetMan.Draw(mesh_phong);
 
 		gizmo.Draw(bb_default);
 
@@ -180,10 +180,10 @@ int main() {
 		ImGui::Separator();
 
 		if (ImGui::Button("Reload Model Manifest")) {
-			queue.Reload();
+			assetMan.Reload();
 		}
 		if (ImGui::Button("Save Model Manifet")) {
-			queue.SaveCurrentArrangement();
+			assetMan.SaveCurrentArrangement();
 		}
 		ImGui::ListBox("Shaders", &selectedShader, shaderNames, IM_ARRAYSIZE(shaderNames));
 		if (ImGui::Button("Reload Selected Shader")) {
