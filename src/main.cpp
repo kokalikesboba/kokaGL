@@ -2,6 +2,8 @@
 	#include <mach-o/dyld.h>  // macOS specific
 #endif
 
+#include "window/input.h"
+
 #include "opengl/buffers/ubo.h"
 #include "opengl/drawable/framebuffer.h"
 #include "opengl/utils.h"
@@ -12,8 +14,6 @@
 #include "engine/scene/light.h"
 
 #include "engine/runtime/framepacer.h"
-#include "engine/runtime/input.h"
-
 #include "imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
