@@ -21,8 +21,9 @@ public:
     using Transform::GetForwardAxis;
 
     Light(glm::vec3 color);
-    void Draw(const Shader& shader) const;
-    glm::vec3 getColor();
+    // Kind of pointless when shaders exist, but whatever.
+    void ChangeColor(glm::vec3 color);
+    glm::vec3 GetColor();
 
 private:
     glm::vec3 color = {1.f, 1.f, 1.f};

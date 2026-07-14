@@ -1,19 +1,19 @@
-#include "assetmanager.h"
+#include "scene.h"
 
-AssetManager::AssetManager(const std::string& manifestDir)
+Scene::Scene(const std::string& manifestDir)
 {
     this->manifestDir = manifestDir;
     Reload();
 }
 
-void AssetManager::Reload()
+void Scene::Reload()
 {
     models.clear();
     gizmos.clear();
 
     std::ifstream file(manifestDir);
     if (!file.is_open())
-        throw std::runtime_error("[AssetManager] can't open manifest: " + manifestDir);
+        throw std::runtime_error("[Scene] can't open manifest: " + manifestDir);
 
     source = nlohmann::ordered_json::parse(file);
 
@@ -41,7 +41,7 @@ void AssetManager::Reload()
         g->SetPosition({p[0], p[1], p[2]});
     }
 }
-void AssetManager::SaveCurrentArrangement()
+void Scene::SaveCurrentArrangement()
 {
     nlohmann::ordered_json data;
 
@@ -68,21 +68,21 @@ void AssetManager::SaveCurrentArrangement()
     }
 
     std::ofstream file(manifestDir);
-    if (!file) throw std::runtime_error("[AssetManager] can't write manifest: " + manifestDir);
+    if (!file) throw std::runtime_error("[Scene] can't write manifest: " + manifestDir);
     file << data.dump(2);
 }
 
-std::vector<std::unique_ptr<Model>>* AssetManager::getModelList()
+std::vector<std::unique_ptr<Model>>* Scene::getModelList()
 {
     return &models;
 }
 
-std::vector<std::unique_ptr<Gizmo>>* AssetManager::getGizmoList()
+std::vector<std::unique_ptr<Gizmo>>* Scene::getGizmoList()
 {
     return &gizmos;
 }
 
-void AssetManager::Draw(Shader& mesh_shader, Shader& billboard_shader)
+void Scene::Draw(Shader& mesh_shader, Shader& billboard_shader)
 {
     for (auto& models : models) {
         models->Draw(mesh_shader);
@@ -92,6 +92,6 @@ void AssetManager::Draw(Shader& mesh_shader, Shader& billboard_shader)
     }
 }
 
-AssetManager::~AssetManager()
+Scene::~Scene()
 {
 }

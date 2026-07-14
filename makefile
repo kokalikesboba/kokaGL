@@ -50,11 +50,11 @@ CPP_SRCS = \
 	src/engine/parsers/gltf.cpp \
 	src/engine/runtime/framepacer.cpp \
 	src/engine/runtime/texturepool.cpp \
-	src/engine/runtime/rendermanager.cpp \
-	src/engine/scene/assetmanager.cpp \
+	src/engine/runtime/renderer.cpp \
 	src/engine/scene/model.cpp \
 	src/engine/scene/gizmo.cpp \
 	src/engine/scene/light.cpp \
+	src/engine/scene/scene.cpp \
 	src/main.cpp
 
 C_SRCS = \

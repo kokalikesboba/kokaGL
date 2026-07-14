@@ -6,13 +6,10 @@
 #include "opengl/drawable/framebuffer.h"
 //#include "opengl/renderer.h"
 
-#include "engine/scene/assetmanager.h"
-#include "engine/scene/model.h"
-#include "engine/scene/gizmo.h"
-#include "engine/scene/light.h"
+#include "engine/scene/scene.h"
 
 #include "engine/runtime/framepacer.h"
-#include "engine/runtime/rendermanager.h"
+#include "engine/runtime/renderer.h"
 
 #include "window/input.h"
 #include "imgui.h"
@@ -85,8 +82,8 @@ int main() {
 
     Light light({0.4f, 0.4f, 0.4f});
 
-	AssetManager assets("scene.json");
-    RenderManager renderer("resources.json", assets.getModelList(), assets.getGizmoList());
+	Scene assets("scene.json");
+    Renderer renderer("resources.json", assets.getModelList(), assets.getGizmoList());
 
 	// For the UI
 	double cursorPosX, cursorPosY;
@@ -116,9 +113,9 @@ int main() {
 		vpUpload.pos = viewport.GetPosition();
 		vpubo.Update(vpUpload);
 		
-		mesh_phong.UploadUni("lightColor", light.getColor());
+		mesh_phong.UploadUni("lightColor", light.GetColor());
 		mesh_phong.UploadUni("lightDirection", light.GetForwardAxis());
-		light_default.UploadUni("lightColor", light.getColor());
+		light_default.UploadUni("lightColor", light.GetColor());
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glEnable(GL_DEPTH_TEST);

@@ -5,12 +5,12 @@ Light::Light(glm::vec3 color)
     this->color = color;
 }
 
-void Light::Draw(const Shader &shader) const
+void Light::ChangeColor(glm::vec3 color)
 {
-
+    this->color = color;
 }
 
-glm::vec3 Light::getColor()
+glm::vec3 Light::GetColor()
 {
     return color;
 }
