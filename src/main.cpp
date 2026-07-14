@@ -85,8 +85,8 @@ int main() {
 
     Light light({0.4f, 0.4f, 0.4f});
 
-	AssetManager assets("manifest.json");
-    RenderManager renderer("rendercfg.json", assets.getModelList(), assets.getGizmoList());
+	AssetManager assets("scene.json");
+    RenderManager renderer("resources.json", assets.getModelList(), assets.getGizmoList());
 
 	// For the UI
 	double cursorPosX, cursorPosY;

@@ -4,7 +4,11 @@ RenderManager::RenderManager(std::string configDir, std::vector<std::unique_ptr<
 models(models),
 gizmos(gizmos)
 {
-    // std::string source = nlohmann::ordered_json::parse(configDir);
+    auto source = nlohmann::ordered_json::parse(configDir);
+    
+    for (const auto& entry : source.at("viewport")) {
+        ;
+    }
 }
 
 void RenderManager::Draw(DrawMode)
