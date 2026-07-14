@@ -3,6 +3,7 @@
 
 #include "math/transform.h"
 // TODO: Smell regarding viewport resizing
+// Is it really though? A gl function call in a gl resource?
 #include "glad/glad.h"
 
 // is a

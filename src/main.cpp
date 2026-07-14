@@ -4,12 +4,10 @@
 
 #include "opengl/buffers/ubo.h"
 #include "opengl/drawable/framebuffer.h"
-//#include "opengl/renderer.h"
 
 #include "engine/scene/scene.h"
-
-#include "engine/runtime/framepacer.h"
 #include "engine/runtime/renderer.h"
+#include "engine/runtime/framepacer.h"
 
 #include "window/input.h"
 #include "imgui.h"
@@ -51,39 +49,28 @@ int main() {
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	ImFont* font1 = io.Fonts->AddFontFromFileTTF("assets/fonts/Fredoka.ttf", 13.f);
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-
-	// Setup Platform/Renderer backends
-	ImGui_ImplGlfw_InitForOpenGL(window.GetWindowPtr(), true); // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	ImGui_ImplGlfw_InitForOpenGL(window.GetWindowPtr(), true);
 	ImGui_ImplOpenGL3_Init();
 
-	Framepacer framepacer;
 
-	Shader mesh_phong("shaders/mesh_phong.vert", "shaders/mesh_phong.frag");
-	Shader light_default("shaders/light_default.vert", "shaders/light_default.frag");
-	Shader bb_default("shaders/bb_default.vert", "shaders/bb_default.frag");
-	Shader pp_edge_detector("shaders/pp_edge_detector.vert", "shaders/pp_edge_detector.frag"); 	
-	pp_edge_detector.UploadUni("screenTexture", 0);
-	Shader pp_default("shaders/pp_default.vert", "shaders/pp_default.frag");
-	pp_default.UploadUni("screenTexture", 0);
-	Shader mesh_depth_map("shaders/mesh_depth_map.vert", "shaders/mesh_depth_map.frag");
-	Shader pp_ssao("shaders/pp_ssao.vert", "shaders/pp_ssao.frag");
-
-	Viewport viewport(window.GetFbWidth(), window.GetFbHeight());
+    // TODO: abstract in this order.
+    Framepacer framepacer;
+	Scene scene("scene.json");
+    Light light({0.4f, 0.4f, 0.4f});
+    Renderer renderer("renderer.json", scene.getModelList(), scene.getGizmoList());
+    // temporary bad syntax
+	UBO vpubo(sizeof(viewportUBO), 0);
+    Viewport viewport(window.GetFbWidth(), window.GetFbHeight());
 	viewport.SetEulerRotation({0.f,315.f,0.f});
 	viewport.SetPosition({-6.5f, 3.f, 6.5f});
-
-	UBO vpubo(sizeof(viewportUBO), 0);
-	vpubo.LinkBlock(mesh_phong, "viewportUBO");
-	vpubo.LinkBlock(light_default, "viewportUBO");
-	vpubo.LinkBlock(bb_default, "viewportUBO");
-	vpubo.LinkBlock(mesh_depth_map,"viewportUBO");
+	vpubo.LinkBlock(*renderer.shaders[0], "viewportUBO");
+	vpubo.LinkBlock(*renderer.shaders[6], "viewportUBO");
+	vpubo.LinkBlock(*renderer.shaders[2], "viewportUBO");
+	vpubo.LinkBlock(*renderer.shaders[1],"viewportUBO");
+    renderer.shaders[4]->UploadUni("screenTexture", 0);
+	renderer.shaders[5]->UploadUni("screenTexture", 0);
 	viewportUBO vpUpload;
-
-    Light light({0.4f, 0.4f, 0.4f});
-
-	Scene assets("scene.json");
-    Renderer renderer("resources.json", assets.getModelList(), assets.getGizmoList());
 
 	// For the UI
 	double cursorPosX, cursorPosY;
@@ -92,7 +79,7 @@ int main() {
 	float nearPlane = 1.f;
 	float farPlane = 40.f;
 	float fov = 70.f;
-	Shader* shaders[] = { &mesh_phong, &light_default, &bb_default,&pp_edge_detector, &pp_default, &mesh_depth_map, &pp_ssao };
+	Shader* shaders[] = {  };
 	const char* shaderNames[] = { "mesh_phong", "light_default", "bb_default", "pp_edgeDetector", "pp_default", "mesh_depth_map", "pp_ssao" };
 	int selectedShader = 0;
 	
@@ -113,9 +100,9 @@ int main() {
 		vpUpload.pos = viewport.GetPosition();
 		vpubo.Update(vpUpload);
 		
-		mesh_phong.UploadUni("lightColor", light.GetColor());
-		mesh_phong.UploadUni("lightDirection", light.GetForwardAxis());
-		light_default.UploadUni("lightColor", light.GetColor());
+		renderer.shaders[0]->UploadUni("lightColor", light.GetColor());
+		renderer.shaders[0]->UploadUni("lightDirection", light.GetForwardAxis());
+		renderer.shaders[6]->UploadUni("lightColor", light.GetColor());
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
@@ -123,7 +110,8 @@ int main() {
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		assets.Draw(mesh_phong, bb_default);
+        // temporary bad syntax
+		scene.Draw(*renderer.shaders[0], *renderer.shaders[2]);
 
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
@@ -165,10 +153,10 @@ int main() {
 		ImGui::Separator();
 
 		if (ImGui::Button("Reload Model Manifest")) {
-			assets.Reload();
+			scene.Reload();
 		}
 		if (ImGui::Button("Save Model Manifet")) {
-			assets.SaveCurrentArrangement();
+			scene.SaveCurrentArrangement();
 		}
 		ImGui::ListBox("Shaders", &selectedShader, shaderNames, IM_ARRAYSIZE(shaderNames));
 		if (ImGui::Button("Reload Selected Shader")) {
@@ -180,6 +168,7 @@ int main() {
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        
 		window.SwapBuffers();
 
 		framepacer.End();

@@ -6,13 +6,17 @@
 #include "engine/scene/model.h"
 #include "engine/scene/gizmo.h"
 #include "engine/scene/light.h"
-
-#include "engine/runtime/texturepool.h"
+// Needs to be wrapped into a high level Camera
 #include "opengl/resources/viewport.h"
 
+#include "engine/runtime/texturepool.h"
+
+#include <iostream>
+#include <fstream>
+#include <filesystem>
+#include <string>
 #include <vector>
 #include <memory>
-#include <string>
 
 enum class DrawMode {
     Default,
@@ -27,10 +31,13 @@ public:
     Renderer(std::string configDir, std::vector<std::unique_ptr<Model>>* models, std::vector<std::unique_ptr<Gizmo>>* gizmos);
     void Draw(DrawMode);
     ~Renderer();
+    // temporarily public
+    std::vector<std::unique_ptr<Shader>> shaders;
 private:
     std::string configDir;
+    std::string shaderDir;
 
-    std::vector<std::unique_ptr<Shader>> shaders;
+
     // I should probably wrap this at some point
     // Viewport viewport;
     

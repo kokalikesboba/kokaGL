@@ -55,6 +55,7 @@ CPP_SRCS = \
 	src/engine/scene/gizmo.cpp \
 	src/engine/scene/light.cpp \
 	src/engine/scene/scene.cpp \
+	src/engine/scene/camera.cpp \
 	src/main.cpp
 
 C_SRCS = \

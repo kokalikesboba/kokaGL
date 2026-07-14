@@ -32,9 +32,9 @@ public:
     void Draw(Shader& mesh_shader, Shader& billboard_shader);
     ~Scene();
 private:
+    std::string manifestDir;
     nlohmann::ordered_json source;
 
-    std::string manifestDir;
     std::string modelDir;
     std::string imgDir;
 

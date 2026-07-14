@@ -5,7 +5,7 @@
         "orientation": [0.0, 0.0, 0.0]
     }
 ],
-"shaderRootDir": "shaders/",
+"shaderDir": "shaders/",
 "shaders": [
     {
         "name": "mesh_phong"
@@ -20,7 +20,7 @@
         "name": "pp_default"
     },
     {
-        "name:": "pp_edge_detector"
+        "name": "pp_edge_detector"
     },
     {
         "name": "pp_ssao"
