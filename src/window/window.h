@@ -18,7 +18,7 @@ class GlfwContext {
 
 class Window {
 public:
-    Window(unsigned int width, unsigned int height, const char* title);
+    Window(unsigned int width, unsigned int height, const char* title, bool gl_debug_context);
    
     void MakeContextCurrent() const;
     void SwapBuffers() const;
@@ -40,8 +40,14 @@ private:
     GLFWwindow* windowPtr = nullptr;
     int width = 800;
     int height = 600;
+
+    int minWidth = 320;
+    int minHeight = 240;
+
     int fbWidth = 800;
     int fbHeight = 600;
+
+    bool GL_DEBUG = true;
 
     static void FbSizeCallback(GLFWwindow* win, int w, int h);
 };

@@ -12,13 +12,19 @@ GlfwContext::~GlfwContext()
     glfwTerminate();
 }
 
-Window::Window(unsigned int width, unsigned int height, const char *title)
+Window::Window(unsigned int width, unsigned int height, const char *title, bool gl_debug_context)
 {
     this->width = width; 
     this->height = height;
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    if (gl_debug_context) {
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+    } else {
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_FALSE);
+    }
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     windowPtr = glfwCreateWindow(width, height, title, nullptr, nullptr);
@@ -26,6 +32,7 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
         throw std::runtime_error("Failed to create a GLFW window");
     }
 
+    glfwSetWindowSizeLimits(windowPtr, minWidth, minHeight, GLFW_DONT_CARE, GLFW_DONT_CARE);
     glfwSetWindowUserPointer(windowPtr, this);
     glfwSetFramebufferSizeCallback(windowPtr, FbSizeCallback);
 

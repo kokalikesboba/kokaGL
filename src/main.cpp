@@ -5,6 +5,7 @@
 #include "opengl/buffers/ubo.h"
 #include "opengl/drawable/framebuffer.h"
 #include "opengl/utils.h"
+//#include "opengl/renderer.h"
 
 #include "engine/scene/assetmanager.h"
 #include "engine/scene/model.h"
@@ -38,10 +39,8 @@ int main() {
 		return -1;
 	}
 
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
     GlfwContext glfw;
-
-    Window window(800, 600, "kokaGL");
+    Window window(800, 600, "kokaGL", true);
     window.MakeContextCurrent();
 
 	Input input(window.GetWindowPtr());
@@ -50,8 +49,6 @@ int main() {
         std::cerr << "Failed to init GLAD\n";
         return -1;
     }
-
-	// printGPUSpecs();
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -64,6 +61,8 @@ int main() {
 	ImGui_ImplOpenGL3_Init();
 
 	Framepacer framepacer;
+
+	// Renderer();
 
 	Shader mesh_phong("shaders/mesh_phong.vert", "shaders/mesh_phong.frag");
 	Shader light_default("shaders/light_default.vert", "shaders/light_default.frag");
@@ -87,7 +86,6 @@ int main() {
 	viewportUBO vpUpload;
 
 	TexturePool texturepool;
-
 	Gizmo gizmo("assets/images/sammy_pixelvap.png");
 	gizmo.AddPosition({0.f, 5.f, 0.f});
 
