@@ -7,14 +7,20 @@
 #include "opengl/utils.h"
 //#include "opengl/renderer.h"
 
+#include "engine/runtime/texturepool.h"
 #include "engine/scene/assetmanager.h"
 #include "engine/scene/model.h"
 #include "engine/scene/gizmo.h"
 #include "engine/scene/light.h"
 
 #include "engine/runtime/framepacer.h"
+<<<<<<< HEAD
 
 #include "window/input.h"
+=======
+#include "window/input.h"
+
+>>>>>>> origin/main
 #include "imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
@@ -133,7 +139,7 @@ int main() {
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		assetMan.Draw(mesh_phong);
+		assetMan.Draw(mesh_phong, bb_default);
 
 		gizmo.Draw(bb_default);
 

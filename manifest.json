@@ -1,47 +1,107 @@
 {
+  "modelDir": "assets/models/",
+  "imgDir": "assets/images/",
   "models": [
     {
-      "name": "gridPlane",
-      "path": "assets/models/plane.glb",
-      "position": [0.0, 0.0, 0.0],
-      "rotation": [0.0, 0.0, 0.0]
+      "name": "plane.glb",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ]
     },
     {
-      "name": "sphere",
-      "path": "assets/models/sphere.glb",
-      "position": [3.5, 1.5, 2.0],
-      "rotation": [0.0, 0.0, 0.0]
+      "name": "sphere.glb",
+      "position": [
+        3.5,
+        1.5,
+        2.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ]
     },
     {
-      "name": "sword",
-      "path": "assets/models/sword.glb",
-      "position": [0.0, 1.0, 0.0],
-      "rotation": [0.0, 45.0, 180.0]
+      "name": "sword.glb",
+      "position": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "rotation": [
+        -3.38902002164701e-13,
+        45.000003814697266,
+        180.0
+      ]
     },
     {
-      "name": "chest",
-      "path": "assets/models/chest.glb",
-      "position": [-3.0, 0.1, 2.5],
-      "rotation": [0.0, -30.0, 0.0]
+      "name": "chest.glb",
+      "position": [
+        -3.0,
+        0.10000000149011612,
+        2.5
+      ],
+      "rotation": [
+        0.0,
+        -30.000001907348633,
+        0.0
+      ]
     },
     {
-      "name": "monkey",
-      "path": "assets/models/icoStack.glb",
-      "position": [3.0, 0.1, -3.0],
-      "rotation": [0.0, 200.0, 0.0]
+      "name": "icoStack.glb",
+      "position": [
+        3.0,
+        0.10000000149011612,
+        -3.0
+      ],
+      "rotation": [
+        180.0,
+        20.000001907348633,
+        180.0
+      ]
     },
     {
-      "name": "pointer",
-      "path": "assets/models/pointer.glb",
-      "position": [1.5, 0.1, 1.5],
-      "rotation": [0.0, 0.0, 0.0]
+      "name": "pointer.glb",
+      "position": [
+        1.5,
+        0.10000000149011612,
+        1.5
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ]
     },
     {
-      "name": "error",
-      "path": "assets/models/error.glb",
-      "position": [0.0, 0.1, -5.0]
-      ,
-      "rotation": [0.0, 0.0, 0.0]
+      "name": "error.glb",
+      "position": [
+        0.0,
+        0.10000000149011612,
+        -5.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ]
+    }
+  ],
+  "gizmos": [
+    {
+      "name": "sammy_pixelvap.png",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ]
     }
   ]
 }
