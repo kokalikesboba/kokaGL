@@ -9,6 +9,7 @@ Gizmo::Gizmo(const std::string imgDir)
     stbi_image_free(texData);
     
     billboard = std::make_unique<Billboard>(this->texture.get());
+    stbi_set_flip_vertically_on_load(false);
 }
 
 void Gizmo::Draw(Shader& shader)
