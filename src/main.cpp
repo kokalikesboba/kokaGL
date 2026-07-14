@@ -4,7 +4,6 @@
 
 #include "opengl/buffers/ubo.h"
 #include "opengl/drawable/framebuffer.h"
-#include "opengl/utils.h"
 //#include "opengl/renderer.h"
 
 #include "engine/scene/assetmanager.h"
@@ -61,8 +60,6 @@ int main() {
 	ImGui_ImplOpenGL3_Init();
 
 	Framepacer framepacer;
-
-	// Renderer();
 
 	Shader mesh_phong("shaders/mesh_phong.vert", "shaders/mesh_phong.frag");
 	Shader light_default("shaders/light_default.vert", "shaders/light_default.frag");
