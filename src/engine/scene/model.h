@@ -11,7 +11,7 @@
 
 class Model : public Transform {
 public:
-    Model(const std::string& modelDir, TexturePool& textureCache);
+    Model(const std::string& modelDir, TexturePool* textureCache);
     void Draw(Shader& shader) const;
 private:
     std::unique_ptr<Mesh> mesh = nullptr;

@@ -12,6 +12,7 @@
 #include "engine/scene/light.h"
 
 #include "engine/runtime/framepacer.h"
+#include "engine/runtime/rendermanager.h"
 
 #include "window/input.h"
 #include "imgui.h"
@@ -82,14 +83,10 @@ int main() {
 	vpubo.LinkBlock(mesh_depth_map,"viewportUBO");
 	viewportUBO vpUpload;
 
-	TexturePool texturepool;
-	Gizmo gizmo("assets/images/sammy_pixelvap.png");
-	gizmo.AddPosition({0.f, 5.f, 0.f});
+    Light light({0.4f, 0.4f, 0.4f});
 
-	Light light({1.f,1.f,1.f});
-	light.SetPosition({0.f,5.f,0.f});
-
-	AssetManager assetMan("manifest.json", texturepool);
+	AssetManager assets("manifest.json");
+    RenderManager renderer("rendercfg.json", assets.getModelList(), assets.getGizmoList());
 
 	// For the UI
 	double cursorPosX, cursorPosY;
@@ -104,11 +101,10 @@ int main() {
 	
 	while (!window.ShouldClose())
 	{
-		light.AddEulerRotation({16.f * framepacer.GetDeltaTime(),0.f,0.f});
-		gizmo.SetScale(2.f * glm::vec3(0.05f * cos(0.005f * framepacer.GetDeltaTime()) + 1.f));
-		glm::vec3 orbitCenter = {0.f, 1.f, 3.f};
-		float angle = 0.005f * framepacer.GetTime();
-		gizmo.SetPosition(orbitCenter + glm::vec3(sin(angle), 0.f, cos(angle)));
+		// gizmo.SetScale(2.f * glm::vec3(0.05f * cos(0.005f * framepacer.GetDeltaTime()) + 1.f));
+		// glm::vec3 orbitCenter = {0.f, 1.f, 3.f};
+		// float angle = 0.005f * framepacer.GetTime();
+		// gizmo.SetPosition(orbitCenter + glm::vec3(sin(angle), 0.f, cos(angle)));
 
 		window.PollEvents();
 		viewport.Resize(window.GetFbWidth(), window.GetFbHeight());
@@ -130,9 +126,7 @@ int main() {
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		assetMan.Draw(mesh_phong, bb_default);
-
-		gizmo.Draw(bb_default);
+		assets.Draw(mesh_phong, bb_default);
 
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
@@ -174,10 +168,10 @@ int main() {
 		ImGui::Separator();
 
 		if (ImGui::Button("Reload Model Manifest")) {
-			assetMan.Reload();
+			assets.Reload();
 		}
 		if (ImGui::Button("Save Model Manifet")) {
-			assetMan.SaveCurrentArrangement();
+			assets.SaveCurrentArrangement();
 		}
 		ImGui::ListBox("Shaders", &selectedShader, shaderNames, IM_ARRAYSIZE(shaderNames));
 		if (ImGui::Button("Reload Selected Shader")) {

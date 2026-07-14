@@ -19,11 +19,11 @@ struct Entry {
 
 class AssetManager {
 public:
-    AssetManager(const std::string& manifestDir, TexturePool& texturePool);
+    AssetManager(const std::string& manifestDir);
     void Reload();
     void SaveCurrentArrangement(); 
-    // std::vector<std::unique_ptr<Model>> getModelList();
-    // std::vector<std::unique_ptr<Gizmo>> getGizmoList();
+    std::vector<std::unique_ptr<Model>>* getModelList();
+    std::vector<std::unique_ptr<Gizmo>>* getGizmoList();
     void Draw(Shader& mesh_shader, Shader& billboard_shader);
     ~AssetManager();
 private:
@@ -33,7 +33,7 @@ private:
     std::string modelDir;
     std::string imgDir;
 
-    TexturePool* const texturePool;
+    TexturePool texturepool;
     std::vector<std::unique_ptr<Model>> models;
     std::vector<std::unique_ptr<Gizmo>> gizmos;
 };

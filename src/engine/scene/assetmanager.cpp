@@ -1,10 +1,8 @@
 #include "assetmanager.h"
 
-AssetManager::AssetManager(const std::string &manifestDir, TexturePool& texturePool) 
-: 
-manifestDir(manifestDir),
-texturePool(&texturePool)
+AssetManager::AssetManager(const std::string& manifestDir)
 {
+    this->manifestDir = manifestDir;
     Reload();
 }
 
@@ -25,7 +23,7 @@ void AssetManager::Reload()
         auto& m = models.emplace_back(
             std::make_unique<Model> (
                 modelDir + std::string(entry.at("name")),
-                *texturePool
+                &this->texturepool  
             )
         );
         const auto& p = entry.at("position");
@@ -72,6 +70,16 @@ void AssetManager::SaveCurrentArrangement()
     std::ofstream file(manifestDir);
     if (!file) throw std::runtime_error("[AssetManager] can't write manifest: " + manifestDir);
     file << data.dump(2);
+}
+
+std::vector<std::unique_ptr<Model>>* AssetManager::getModelList()
+{
+    return &models;
+}
+
+std::vector<std::unique_ptr<Gizmo>>* AssetManager::getGizmoList()
+{
+    return &gizmos;
 }
 
 void AssetManager::Draw(Shader& mesh_shader, Shader& billboard_shader)

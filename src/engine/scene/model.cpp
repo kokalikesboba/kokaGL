@@ -1,16 +1,16 @@
 #include "model.h"
 
-Model::Model(const std::string &modelDir, TexturePool& textureCache)
+Model::Model(const std::string &modelDir, TexturePool* textureCache)
 {
 
     ParseGLTF parsed(modelDir);
 
     for (int i = 0; i < parsed.texHash.size(); ++i) {
-        if (textureCache.isCachedAndAlive(parsed.texHash[i])) {
-            textures.push_back(textureCache.Get(parsed.texHash[i]));
+        if (textureCache->isCachedAndAlive(parsed.texHash[i])) {
+            textures.push_back(textureCache->Get(parsed.texHash[i]));
         } else {
             textures.push_back(
-                textureCache.Add(
+                textureCache->Add(
                     parsed.texHash[i],
                     parsed.texType[i],
                     parsed.texData[i],

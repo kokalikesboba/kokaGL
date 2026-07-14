@@ -47,10 +47,11 @@ CPP_SRCS = \
 	src/opengl/drawable/billboard.cpp \
 	src/opengl/drawable/framebuffer.cpp \
 	src/window/input.cpp \
+	src/engine/parsers/gltf.cpp \
 	src/engine/runtime/framepacer.cpp \
 	src/engine/runtime/texturepool.cpp \
+	src/engine/runtime/rendermanager.cpp \
 	src/engine/scene/assetmanager.cpp \
-	src/engine/parsers/gltf.cpp \
 	src/engine/scene/model.cpp \
 	src/engine/scene/gizmo.cpp \
 	src/engine/scene/light.cpp \
