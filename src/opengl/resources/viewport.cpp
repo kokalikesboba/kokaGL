@@ -1,11 +1,8 @@
 #include "viewport.h"
 
-Viewport::Viewport(int fbWidth, int fbHeight)
+Viewport::Viewport()
 {
-	this->fbWidth = fbWidth;
-	this->fbHeight = fbHeight;
-
-	glViewport(0,0,fbWidth,fbHeight);
+    // Intentionally left blank
 }
 
 void Viewport::Resize(int width, int height)
@@ -59,4 +56,9 @@ glm::mat4 Viewport::GetViewportMatrix() const
 {
 	glm::mat4 viewportMatrix = GetProjectionMatrix() * GetViewMatrix();
     return viewportMatrix;
+}
+
+Viewport::~Viewport()
+{
+    // Intentionally left blank
 }

@@ -4,7 +4,7 @@ Input::Input(GLFWwindow *windowPtr)
 {
     this->windowPtr = windowPtr;
 	// TODO: This is broken
-	//glfwSetWindowUserPointer(windowPtr, this);
+	// glfwSetWindowUserPointer(windowPtr, this);
 	glfwSetScrollCallback(windowPtr, [](GLFWwindow* w, double x, double y) {
 		Input* input = static_cast<Input*>(glfwGetWindowUserPointer(w));
 		input->scrollX = x;

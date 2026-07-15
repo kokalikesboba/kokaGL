@@ -1,5 +1,10 @@
 #include "window.h"
 
+void error_callback(int error, const char* description)
+{
+    fprintf(stderr, "GLFW Error (%d): %s\n", error, description);
+}
+
 GlfwContext::GlfwContext()
 {
     if (!glfwInit()) {
@@ -17,14 +22,16 @@ Window::Window(unsigned int width, unsigned int height, const char *title, bool 
     this->width = width; 
     this->height = height;
 
+    glfwSetErrorCallback(error_callback);
     if (gl_debug_context) {
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
     } else {
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_FALSE);
     }
 
+    // TODO: Thank you Apple for abandoning OpenGL right before it was finished.
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     windowPtr = glfwCreateWindow(width, height, title, nullptr, nullptr);
@@ -125,9 +132,4 @@ void Window::FbSizeCallback(GLFWwindow *win, int w, int h)
     Window* self = static_cast<Window*>(glfwGetWindowUserPointer(win));
     self->fbWidth = w;
     self->fbHeight = h;
-}
-
-void error_callback(int error, const char* description)
-{
-    fprintf(stderr, "GLFW Error (%d): %s\n", error, description);
 }

@@ -22,9 +22,9 @@ public:
 	using Transform::GetLocalAxis;
 	using Transform::GetForwardAxis;
 
-	Viewport(int width, int height);
-	void Resize(int width, int height);
+	Viewport();
 
+	void Resize(int width, int height);
 	void SetNearPlane(float nearPlane);
 	void SetFarPlane(float farPlane);
 	void SetFOV(float eulerFOV);
@@ -34,6 +34,8 @@ public:
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetProjectionMatrix() const;
 	glm::mat4 GetViewportMatrix() const;
+
+    ~Viewport();
 private:
 	float fbWidth = 0.f;
 	float fbHeight = 0.f;
