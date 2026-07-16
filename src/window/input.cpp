@@ -12,7 +12,7 @@ Input::Input(GLFWwindow *windowPtr)
 	});
 }
 
-void Input::Update(Viewport &viewport, const float &dt)
+void Input::Update(Camera& camera, const float dt)
 {
 	// Trackpad input
 	if (scrollX != 0.0) {
@@ -24,7 +24,7 @@ void Input::Update(Viewport &viewport, const float &dt)
 		float pitch = -scrollY * trackpadSensitivity;
 		glm::quat qYaw = glm::angleAxis((float)yaw, glm::vec3(0.f,1.f,0.f));
 		glm::quat qPitch = glm::angleAxis((float)pitch, glm::vec3(1.f,0.f,0.f));
-		viewport.SetOrientation(qYaw * viewport.GetOrientation() * qPitch);
+		camera.SetOrientation(qYaw * camera.GetOrientation() * qPitch);
 		scrollX = 0.f;
 		scrollY = 0.f;
 	}	
@@ -51,7 +51,7 @@ void Input::Update(Viewport &viewport, const float &dt)
 		float pitch = cursorDelta.y * sensitivity;
 		glm::quat qYaw = glm::angleAxis((float)yaw, glm::vec3(0.f,1.f,0.f));
 		glm::quat qPitch = glm::angleAxis((float)pitch, glm::vec3(1.f,0.f,0.f));
-		viewport.SetOrientation(qYaw * viewport.GetOrientation() * qPitch);
+		camera.SetOrientation(qYaw * camera.GetOrientation() * qPitch);
 	} else {
 		glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		firstClick = true;
@@ -66,64 +66,64 @@ void Input::Update(Viewport &viewport, const float &dt)
 	// Forward and back, along Z from camera's pov.
 	if (glfwGetKey(windowPtr, GLFW_KEY_E) == GLFW_PRESS)
 	{
-		viewport.AddPosition(viewport.GetLocalAxis({0.0f, 0.0f, -1.0f}) * dt * movementSpeed);
+		camera.AddPosition(camera.GetLocalAxis({0.0f, 0.0f, -1.0f}) * dt * movementSpeed);
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		viewport.AddPosition(viewport.GetLocalAxis({0.0f, 0.0f, 1.0f}) * dt * movementSpeed);
+		camera.AddPosition(camera.GetLocalAxis({0.0f, 0.0f, 1.0f}) * dt * movementSpeed);
 	}
 	// Left and right, along X from camera's pov.
 	if (glfwGetKey(windowPtr, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		viewport.AddPosition(viewport.GetLocalAxis({-1.0f, 0.0f, 0.0f}) * dt * movementSpeed);
+		camera.AddPosition(camera.GetLocalAxis({-1.0f, 0.0f, 0.0f}) * dt * movementSpeed);
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_F) == GLFW_PRESS)
 	{
-		viewport.AddPosition(viewport.GetLocalAxis({1.0f, 0.0f, 0.0f}) * dt * movementSpeed);
+		camera.AddPosition(camera.GetLocalAxis({1.0f, 0.0f, 0.0f}) * dt * movementSpeed);
 	}
 	// Up and down, along Y from world space.
 	if (glfwGetKey(windowPtr, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		viewport.AddPosition(glm::vec3{0.0f, 1.0f, 0.0f} * dt * movementSpeed);
+		camera.AddPosition(glm::vec3{0.0f, 1.0f, 0.0f} * dt * movementSpeed);
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 	{
-		viewport.AddPosition(glm::vec3{0.0f, -1.0f, 0.0f} * dt * movementSpeed);
+		camera.AddPosition(glm::vec3{0.0f, -1.0f, 0.0f} * dt * movementSpeed);
 	}
 
 	// Rotation
 	if (glfwGetKey(windowPtr, GLFW_KEY_I) == GLFW_PRESS)
 	{
-		viewport.AddEulerRotation({movementSpeed * dt, 0.0f, 0.0f}); // pitch up
+		camera.AddEulerRotation({movementSpeed * dt, 0.0f, 0.0f}); // pitch up
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_K) == GLFW_PRESS)
 	{
-		viewport.AddEulerRotation({-movementSpeed * dt, 0.0f, 0.0f}); // pitch down
+		camera.AddEulerRotation({-movementSpeed * dt, 0.0f, 0.0f}); // pitch down
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_J) == GLFW_PRESS)
 	{
-		viewport.AddEulerRotation({0.0f, movementSpeed * dt, 0.0f}); // yaw left
+		camera.AddEulerRotation({0.0f, movementSpeed * dt, 0.0f}); // yaw left
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_L) == GLFW_PRESS)
 	{
-		viewport.AddEulerRotation({0.0f, -movementSpeed * dt, 0.0f}); // yaw right
+		camera.AddEulerRotation({0.0f, -movementSpeed * dt, 0.0f}); // yaw right
 	}
 		if (glfwGetKey(windowPtr, GLFW_KEY_U) == GLFW_PRESS)
 	{
-		viewport.AddEulerRotation({0.0f, 0.0f, movementSpeed * dt}); // yaw left
+		camera.AddEulerRotation({0.0f, 0.0f, movementSpeed * dt}); // yaw left
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_O) == GLFW_PRESS)
 	{
-		viewport.AddEulerRotation({0.0f, 0.0f, -movementSpeed * dt}); // yaw right
+		camera.AddEulerRotation({0.0f, 0.0f, -movementSpeed * dt}); // yaw right
 	}
 
 	// Resetters
 	if (glfwGetKey(windowPtr, GLFW_KEY_H) == GLFW_PRESS)
 	{
-		viewport.SetEulerRotation({0,0,0});
+		camera.SetEulerRotation({0,0,0});
 	}
 	if (glfwGetKey(windowPtr, GLFW_KEY_G) == GLFW_PRESS)
 	{
-		viewport.SetEulerRotation({0,0,0});
+		camera.SetEulerRotation({0,0,0});
 	}
 }

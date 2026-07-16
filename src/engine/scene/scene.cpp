@@ -72,24 +72,19 @@ void Scene::SaveCurrentArrangement()
     file << data.dump(2);
 }
 
-std::vector<std::unique_ptr<Model>>* Scene::getModelList()
+std::vector<std::unique_ptr<Camera>>* Scene::GetCameraList()
+{
+    return nullptr;
+}
+
+std::vector<std::unique_ptr<Model>>* Scene::GetModelList()
 {
     return &models;
 }
 
-std::vector<std::unique_ptr<Gizmo>>* Scene::getGizmoList()
+std::vector<std::unique_ptr<Gizmo>>* Scene::GetGizmoList()
 {
     return &gizmos;
-}
-
-void Scene::Draw(Shader& mesh_shader, Shader& billboard_shader)
-{
-    for (auto& models : models) {
-        models->Draw(mesh_shader);
-    }
-    for (auto& gizmos : gizmos) {
-        gizmos->Draw(billboard_shader);
-    }
 }
 
 Scene::~Scene()

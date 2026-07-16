@@ -37,8 +37,7 @@ int main() {
     GlfwContext glfw;
     Window window(800, 600, "kokaGL", true);
     window.MakeContextCurrent();
-
-	Input input(window.GetWindowPtr());
+	// Input input(window.GetWindowPtr());
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to init GLAD\n";
@@ -56,14 +55,12 @@ int main() {
 
     // TODO: abstract in this order.
     Framepacer framepacer;
-	Scene scene("scene.json");
+	Scene scene("scene.json");  
     Light light({0.4f, 0.4f, 0.4f});
-    Renderer renderer("renderer.json", scene.getModelList(), scene.getGizmoList());
+    Renderer renderer("renderer.json", scene.GetModelList(), scene.GetGizmoList());
+
     // temporary bad syntax
 	UBO vpubo(sizeof(viewportUBO), 0);
-    Viewport viewport(window.GetFbWidth(), window.GetFbHeight());
-	viewport.SetEulerRotation({0.f,315.f,0.f});
-	viewport.SetPosition({-6.5f, 3.f, 6.5f});
 	vpubo.LinkBlock(*renderer.shaders[0], "viewportUBO");
 	vpubo.LinkBlock(*renderer.shaders[6], "viewportUBO");
 	vpubo.LinkBlock(*renderer.shaders[2], "viewportUBO");
@@ -91,14 +88,8 @@ int main() {
 		// gizmo.SetPosition(orbitCenter + glm::vec3(sin(angle), 0.f, cos(angle)));
 
 		window.PollEvents();
-		viewport.Resize(window.GetFbWidth(), window.GetFbHeight());
-		input.Update(viewport, framepacer.GetDeltaTime());
+		// input.Update(viewport, framepacer.GetDeltaTime());
 		framepacer.Start();
-
-		vpUpload.matrix = viewport.GetViewportMatrix();
-		vpUpload.orientation = glm::mat4_cast(viewport.GetOrientation());
-		vpUpload.pos = viewport.GetPosition();
-		vpubo.Update(vpUpload);
 		
 		renderer.shaders[0]->UploadUni("lightColor", light.GetColor());
 		renderer.shaders[0]->UploadUni("lightDirection", light.GetForwardAxis());
@@ -109,9 +100,6 @@ int main() {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        // temporary bad syntax
-		scene.Draw(*renderer.shaders[0], *renderer.shaders[2]);
 
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
@@ -136,6 +124,7 @@ int main() {
 		else window.VerticalSync(false);
 		ImGui::Separator();
 
+        /*
 		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f", 
 			viewport.GetPosition().x, 
 			viewport.GetPosition().y, 
@@ -151,6 +140,7 @@ int main() {
 		if (ImGui::DragFloat("Far", &farPlane, 1.f, 1.f, 1000.f)) viewport.SetFarPlane(farPlane);
 		if (ImGui::DragFloat("FOV", &fov, 0.5f, 10.f, 170.f))  viewport.SetFOV(fov);
 		ImGui::Separator();
+        */
 
 		if (ImGui::Button("Reload Model Manifest")) {
 			scene.Reload();

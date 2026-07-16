@@ -1,61 +1,32 @@
 #include "viewport.h"
 
-Viewport::Viewport()
+Viewport::Viewport() : ubo(sizeof(viewportUBO), 0)
 {
     // Intentionally left blank
 }
 
+// Resizes viewport only if the window size has changed 
 void Viewport::Resize(int width, int height)
 {
-	this->fbWidth = width;
-	this->fbHeight = height;
-	this->aspect = (static_cast<float>(width)/static_cast<float>(height));
-	glViewport(0,0, width, height);
+    if ((prevWidth != width) || (prevHeight != height)) {
+        prevWidth = width;
+        prevHeight = height;
+        glViewport(0,0, width, height);
+    }
 }
 
-void Viewport::SetNearPlane(float nearPlane)
+void Viewport::LinkUniformBlock(Shader &shader, std::string&  blockName)
 {
-	this->nearPlane = nearPlane;
+    ubo.LinkBlock(shader, blockName.c_str());
 }
 
-void Viewport::SetFarPlane(float farPlane)
+void Viewport::UpdateUniformBlock(glm::mat4 matrix, glm::mat4 orientation, glm::vec3 pos)
 {
-	this->farPlane = farPlane;
-}
-
-void Viewport::SetFOV(float eulerFOV)
-{
-	this->eulerFOV = eulerFOV;
-}
-
-glm::mat4 Viewport::GetPositionInverseMatrix() const
-{
-    glm::mat4 inversePos = glm::translate(glm::mat4(1.0f),-position);
-	return inversePos;
-}
-
-glm::mat4 Viewport::GetRotationInverseMatrix() const
-{
-	glm::mat4 inverseRotation = glm::mat4_cast(glm::conjugate(orientation));
-    return inverseRotation;
-}
-
-glm::mat4 Viewport::GetViewMatrix() const
-{
-	glm::mat4 viewMatrix = GetRotationInverseMatrix() * GetPositionInverseMatrix();
-	return viewMatrix;
-}
-
-glm::mat4 Viewport::GetProjectionMatrix() const
-{
-	glm::mat4 projectionMatrix = glm::perspective(glm::radians(eulerFOV), fbWidth/fbHeight, nearPlane, farPlane);
-	return projectionMatrix;
-}
-
-glm::mat4 Viewport::GetViewportMatrix() const
-{
-	glm::mat4 viewportMatrix = GetProjectionMatrix() * GetViewMatrix();
-    return viewportMatrix;
+    ubo.Update(
+        viewportUBO(
+            {matrix, orientation, pos, float(0.f)}
+        )
+    );
 }
 
 Viewport::~Viewport()

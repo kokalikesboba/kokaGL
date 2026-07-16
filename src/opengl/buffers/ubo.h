@@ -6,13 +6,6 @@
 
 #include <iostream>
 
-struct viewportUBO {
-	glm::mat4 matrix;
-	glm::mat4 orientation;
-	glm::vec3 pos;
-	float pad0;
-};
-
 class UBO
 {
 public:

@@ -25,7 +25,6 @@ public:
 protected:
 	glm::vec3 up = {0.0, 1.f, 0.f};
 	glm::vec3 position = {0.f, 0.f, 0.f};
-	// identity quat
 	glm::quat orientation = {1.f, 0.f, 0.f, 0.f};
 	glm::vec3 scale = {1.f, 1.f, 1.f};
 };

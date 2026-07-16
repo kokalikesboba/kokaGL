@@ -3,14 +3,12 @@
 
 #include "nlohmann/json.hpp"
 
-// TODO: to be removed, only here for testing purposes.
-#include "opengl/resources/shader.h"
-
 #include "engine/runtime/texturepool.h"
 
 #include "engine/scene/model.h"
 #include "engine/scene/gizmo.h"
 #include "engine/scene/light.h"
+#include "engine/scene/camera.h"
 
 #include <fstream>
 #include <memory>
@@ -25,11 +23,10 @@ class Scene {
 public:
     Scene(const std::string& manifestDir);
     void Reload();
-    void SaveCurrentArrangement(); 
-    std::vector<std::unique_ptr<Model>>* getModelList();
-    std::vector<std::unique_ptr<Gizmo>>* getGizmoList();
-    // TODO: to be removed, only here for testing purposes.
-    void Draw(Shader& mesh_shader, Shader& billboard_shader);
+    void SaveCurrentArrangement();
+    std::vector<std::unique_ptr<Camera>>* GetCameraList();
+    std::vector<std::unique_ptr<Model>>* GetModelList();
+    std::vector<std::unique_ptr<Gizmo>>* GetGizmoList();
     ~Scene();
 private:
     std::string manifestDir;
@@ -39,6 +36,7 @@ private:
     std::string imgDir;
 
     TexturePool texturepool;
+    std::vector<std::unique_ptr<Camera>> cameras;
     std::vector<std::unique_ptr<Model>> models;
     std::vector<std::unique_ptr<Gizmo>> gizmos;
 };

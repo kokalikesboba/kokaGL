@@ -9,6 +9,10 @@ gizmos(gizmos)
         throw std::runtime_error("[FATAL][Renderer] can't open manifest: " + configDir);
     }
     auto source = nlohmann::ordered_json::parse(file);
+
+    for (const auto& entry : source.at("viewport")) {
+        viewports.emplace_back(std::make_unique<Viewport>());    
+    }
     shaderDir = std::string(source.at("shaderDir"));
     for (const auto& entry : source.at("shaders")) {
         shaders.emplace_back(
