@@ -52,8 +52,6 @@ int main() {
 	ImGui_ImplGlfw_InitForOpenGL(window.GetWindowPtr(), true);
 	ImGui_ImplOpenGL3_Init();
 
-
-    // TODO: abstract in this order.
     Framepacer framepacer;
 	Scene scene("scene.json");  
     Light light({0.4f, 0.4f, 0.4f});

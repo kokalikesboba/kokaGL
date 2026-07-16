@@ -3,7 +3,7 @@ EXTERN = extern
 CXX = clang++
 CC  = clang
 
-CXXFLAGS = -g -O2 -std=c++17 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc -I$(EXTERN)/simdjson
+CXXFLAGS = -g -O2 -std=c++23 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc -I$(EXTERN)/simdjson
 CFLAGS   = -g -O2 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc
 
 UNAME := $(shell uname)
