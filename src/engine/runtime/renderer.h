@@ -24,9 +24,9 @@ private:
     std::string configDir;
     std::string shaderDir;
 
-    std::vector<std::unique_ptr<Camera>>* const cameras;
-    std::vector<std::unique_ptr<Model>>* const models;
-    std::vector<std::unique_ptr<Gizmo>>* const gizmos;
+    std::vector<std::unique_ptr<Camera>>& cameras;
+    std::vector<std::unique_ptr<Model>>& models;
+    std::vector<std::unique_ptr<Gizmo>>& gizmos;
 
     std::vector<std::string> shaderNames;
     std::vector<std::unique_ptr<Viewport>> viewports;

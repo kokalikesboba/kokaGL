@@ -82,19 +82,19 @@ void Scene::SaveCurrentArrangement()
     file << data.dump(2);
 }
 
-std::vector<std::unique_ptr<Camera>>* Scene::GetCameraList()
+std::vector<std::unique_ptr<Camera>>& Scene::GetCameraList()
 {
-    return &cameras;
+    return cameras;
 }
 
-std::vector<std::unique_ptr<Model>>* Scene::GetModelList()
+std::vector<std::unique_ptr<Model>>& Scene::GetModelList()
 {
-    return &models;
+    return models;
 }
 
-std::vector<std::unique_ptr<Gizmo>>* Scene::GetGizmoList()
+std::vector<std::unique_ptr<Gizmo>>& Scene::GetGizmoList()
 {
-    return &gizmos;
+    return gizmos;
 }
 
 Scene::~Scene()

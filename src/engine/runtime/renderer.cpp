@@ -22,7 +22,7 @@ gizmos(scene.GetGizmoList())
     }
 
     // Creates a GPU object for the Camera
-    for (const auto& c : *this->cameras) {
+    for (const auto& c : cameras) {
         viewports.emplace_back(std::make_unique<Viewport>());
     }
 
@@ -42,13 +42,13 @@ void Renderer::Draw(int fbWidth, int fbHeight)
     for (auto& v : viewports) {
         v->Resize(fbWidth, fbHeight);
         v->UpdateUniformBlock(
-            (*cameras)[0]->GetCameraMatrix(fbWidth, fbHeight),
-            (*cameras)[0]->GetRotationMatrix(),
-            (*cameras)[0]->GetPosition()
+            cameras[0]->GetCameraMatrix(fbWidth, fbHeight),
+            cameras[0]->GetRotationMatrix(),
+            cameras[0]->GetPosition()
         );
     }
 
-    for (auto& m : *models) {
+    for (auto& m : models) {
         m->Draw(*shaders[0]);
     }
 }   

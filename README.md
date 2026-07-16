@@ -16,7 +16,7 @@ You can find design goals, quirks, and documentations on the [wiki](https://gith
 
 # Installation
 
-### You must have an OpenGL 4.6 capable GPU.
+### You must have an OpenGL 4.1 capable GPU.
 
 Included are Visual Studio Code profiles that work on Ubuntu 25.04 and MacOS Tahoe. Regardless of if you wish to use them or not, you must have the following packages installed system wide to build with `make`.
 

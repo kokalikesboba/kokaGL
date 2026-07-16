@@ -60,8 +60,7 @@ int main() {
     Renderer renderer("renderer.json", scene);
 
 	// For the UI
-    auto camera = scene.GetCameraList();
-    (*camera)[0]->GetPosition();
+    auto& cameras = scene.GetCameraList();
 
 	double cursorPosX, cursorPosY;
 	bool desired_vsync = true;
@@ -81,7 +80,7 @@ int main() {
 		// gizmo.SetPosition(orbitCenter + glm::vec3(sin(angle), 0.f, cos(angle)));
 
 		window.PollEvents();
-		input.Update(*(*camera)[0], framepacer.GetDeltaTime());
+		input.Update(*cameras[0], framepacer.GetDeltaTime());
 		framepacer.Start();
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -115,20 +114,20 @@ int main() {
 		else window.VerticalSync(false);
 		ImGui::Separator();
 
-		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f", 
-			(*camera)[0]->GetPosition().x, 
-			(*camera)[0]->GetPosition().y, 
-			(*camera)[0]->GetPosition().z
+		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f",
+			cameras[0]->GetPosition().x,
+			cameras[0]->GetPosition().y,
+			cameras[0]->GetPosition().z
 		);
-		ImGui::Text("rX: %.2f  rY: %.2f  rZ: %.2f", 
-			(*camera)[0]->GetEulerRotation().x, 
-			(*camera)[0]->GetEulerRotation().y, 
-			(*camera)[0]->GetEulerRotation().z
+		ImGui::Text("rX: %.2f  rY: %.2f  rZ: %.2f",
+			cameras[0]->GetEulerRotation().x,
+			cameras[0]->GetEulerRotation().y,
+			cameras[0]->GetEulerRotation().z
 		);
 		ImGui::Text("Framebuffer: %i, / %i", (int)window.GetFbWidth(), (int)window.GetFbHeight());
-		if (ImGui::DragFloat("Near", &nearPlane, 0.01f, 0.001f, 10.f)) (*camera)[0]->SetNearPlane(nearPlane);
-		if (ImGui::DragFloat("Far", &farPlane, 1.f, 1.f, 1000.f)) (*camera)[0]->SetFarPlane(farPlane);
-		if (ImGui::DragFloat("FOV", &fov, 0.5f, 10.f, 170.f))  (*camera)[0]->SetFOV(fov);
+		if (ImGui::DragFloat("Near", &nearPlane, 0.01f, 0.001f, 10.f)) cameras[0]->SetNearPlane(nearPlane);
+		if (ImGui::DragFloat("Far", &farPlane, 1.f, 1.f, 1000.f)) cameras[0]->SetFarPlane(farPlane);
+		if (ImGui::DragFloat("FOV", &fov, 0.5f, 10.f, 170.f))  cameras[0]->SetFOV(fov);
 		ImGui::Separator();
 
 

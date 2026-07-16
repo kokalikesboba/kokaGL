@@ -24,9 +24,9 @@ public:
     Scene(const std::string& manifestDir);
     void Reload();
     void SaveCurrentArrangement();
-    std::vector<std::unique_ptr<Camera>>* GetCameraList();
-    std::vector<std::unique_ptr<Model>>* GetModelList();
-    std::vector<std::unique_ptr<Gizmo>>* GetGizmoList();
+    std::vector<std::unique_ptr<Camera>>& GetCameraList();
+    std::vector<std::unique_ptr<Model>>& GetModelList();
+    std::vector<std::unique_ptr<Gizmo>>& GetGizmoList();
     ~Scene();
 private:
     std::string manifestDir;

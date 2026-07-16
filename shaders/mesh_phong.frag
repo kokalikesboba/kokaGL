@@ -1,4 +1,4 @@
-#version 460 core
+#version 410 core
 
 in vec3 vertPosition;
 in vec3 vertNormal;
@@ -6,7 +6,7 @@ in vec2 vertUV;
 
 uniform sampler2D baseColor;
 
-layout (std140, binding = 0) uniform viewportUBO {
+layout (std140) uniform viewportUBO {
     mat4 viewportMatrix;
     mat4 viewportOrientation;
     vec3 viewportPosition;
