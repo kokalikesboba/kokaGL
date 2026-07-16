@@ -2,14 +2,12 @@
 	#include <mach-o/dyld.h>  // macOS specific
 #endif
 
-#include "opengl/buffers/ubo.h"
-#include "opengl/drawable/framebuffer.h"
+#include "window/input.h"
 
 #include "engine/scene/scene.h"
 #include "engine/runtime/renderer.h"
 #include "engine/runtime/framepacer.h"
 
-#include "window/input.h"
 #include "imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
@@ -132,6 +130,7 @@ int main() {
 		if (ImGui::Button("Reload Model Manifest")) {
 			scene.Reload();
 		}
+        /*
 		if (ImGui::Button("Save Model Manifet")) {
 			scene.SaveCurrentArrangement();
 		}
@@ -139,6 +138,7 @@ int main() {
 		if (ImGui::Button("Reload Selected Shader")) {
 			shaders[selectedShader]->Reload();
 		}
+        */
 		ImGui::Separator();
 
 		ImGui::End();
