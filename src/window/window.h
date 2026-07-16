@@ -33,6 +33,10 @@ public:
     int GetFbWidth() const;
     int GetFbHeight() const;
 
+    // Returns scroll deltas accumulated since the last call, then zeroes them.
+    // Window owns the GLFW user pointer and all raw callbacks; consumers poll.
+    void ConsumeScroll(double& x, double& y);
+
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;
     ~Window();
@@ -49,7 +53,13 @@ private:
 
     bool GL_DEBUG = true;
 
+    // Scroll offsets accumulate across events between polls (trackpads can
+    // fire several per frame), and reset on ConsumeScroll().
+    double scrollX = 0.0;
+    double scrollY = 0.0;
+
     static void FbSizeCallback(GLFWwindow* win, int w, int h);
+    static void ScrollCallback(GLFWwindow* win, double x, double y);
 };
 
 #endif      

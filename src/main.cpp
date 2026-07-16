@@ -2,21 +2,19 @@
 	#include <mach-o/dyld.h>  // macOS specific
 #endif
 
-#include "window/input.h"
-
 #include "engine/scene/scene.h"
 #include "engine/runtime/renderer.h"
 #include "engine/runtime/framepacer.h"
 
+#include "window/input.h"
 #include "imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 
-#include <filesystem>
-
 int main() {
 
 	#ifdef __APPLE__
+        #include <filesystem>
 		uint32_t size = PATH_MAX;
 		char exePath[PATH_MAX];
 		_NSGetExecutablePath(exePath, &size);
@@ -32,15 +30,22 @@ int main() {
 		return -1;
 	}
 
+    // Variables here are independent from the rendering backend! Yay!
     GlfwContext glfw;
     Window window(800, 600, "kokaGL", true);
     window.MakeContextCurrent();
-	Input input(window.GetWindowPtr());
+	Input input(window);
+    Framepacer framepacer;
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to init GLAD\n";
         return -1;
     }
+
+    // Scene and Light have rendering backend components attatched to them that need to be refactored out
+	Scene scene("scene.json");  
+    Light light({0.4f, 0.4f, 0.4f});
+    Renderer renderer("renderer.json", scene);
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -50,23 +55,14 @@ int main() {
 	ImGui_ImplGlfw_InitForOpenGL(window.GetWindowPtr(), true);
 	ImGui_ImplOpenGL3_Init();
 
-    Framepacer framepacer;
-	Scene scene("scene.json");  
-    Light light({0.4f, 0.4f, 0.4f});
-    Renderer renderer("renderer.json", scene);
-
 	// For the UI
-    auto& cameras = scene.GetCameraList();
-
 	double cursorPosX, cursorPosY;
 	bool desired_vsync = true;
 	int desired_fps = 0;
 	float nearPlane = 1.f;
 	float farPlane = 40.f;
 	float fov = 70.f;
-	Shader* shaders[] = {  };
-	const char* shaderNames[] = { "mesh_phong", "light_default", "bb_default", "pp_edgeDetector", "pp_default", "mesh_depth_map", "pp_ssao" };
-	int selectedShader = 0;
+    auto& camera = scene.GetCameraList();
 	
 	while (!window.ShouldClose())
 	{
@@ -76,7 +72,7 @@ int main() {
 		// gizmo.SetPosition(orbitCenter + glm::vec3(sin(angle), 0.f, cos(angle)));
 
 		window.PollEvents();
-		input.Update(*cameras[0], framepacer.GetDeltaTime());
+		input.Update(*camera[0], framepacer.GetDeltaTime());
 		framepacer.Start();
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -110,20 +106,20 @@ int main() {
 		else window.VerticalSync(false);
 		ImGui::Separator();
 
-		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f",
-			cameras[0]->GetPosition().x,
-			cameras[0]->GetPosition().y,
-			cameras[0]->GetPosition().z
+		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f", 
+			camera[0]->GetPosition().x, 
+			camera[0]->GetPosition().y, 
+			camera[0]->GetPosition().z
 		);
-		ImGui::Text("rX: %.2f  rY: %.2f  rZ: %.2f",
-			cameras[0]->GetEulerRotation().x,
-			cameras[0]->GetEulerRotation().y,
-			cameras[0]->GetEulerRotation().z
+		ImGui::Text("rX: %.2f  rY: %.2f  rZ: %.2f", 
+			camera[0]->GetEulerRotation().x, 
+			camera[0]->GetEulerRotation().y, 
+			camera[0]->GetEulerRotation().z
 		);
 		ImGui::Text("Framebuffer: %i, / %i", (int)window.GetFbWidth(), (int)window.GetFbHeight());
-		if (ImGui::DragFloat("Near", &nearPlane, 0.01f, 0.001f, 10.f)) cameras[0]->SetNearPlane(nearPlane);
-		if (ImGui::DragFloat("Far", &farPlane, 1.f, 1.f, 1000.f)) cameras[0]->SetFarPlane(farPlane);
-		if (ImGui::DragFloat("FOV", &fov, 0.5f, 10.f, 170.f))  cameras[0]->SetFOV(fov);
+		if (ImGui::DragFloat("Near", &nearPlane, 0.01f, 0.001f, 10.f)) camera[0]->SetNearPlane(nearPlane);
+		if (ImGui::DragFloat("Far", &farPlane, 1.f, 1.f, 1000.f)) camera[0]->SetFarPlane(farPlane);
+		if (ImGui::DragFloat("FOV", &fov, 0.5f, 10.f, 170.f))  camera[0]->SetFOV(fov);
 		ImGui::Separator();
 
 

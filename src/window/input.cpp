@@ -1,20 +1,15 @@
 #include "input.h"
 
-Input::Input(GLFWwindow *windowPtr)
+Input::Input(Window& window) : window(window)
 {
-    this->windowPtr = windowPtr;
-	// TODO: This is broken
-	// glfwSetWindowUserPointer(windowPtr, this);
-	glfwSetScrollCallback(windowPtr, [](GLFWwindow* w, double x, double y) {
-		Input* input = static_cast<Input*>(glfwGetWindowUserPointer(w));
-		input->scrollX = x;
-		input->scrollY = y;
-	});
+    this->windowPtr = window.GetWindowPtr();
 }
 
 void Input::Update(Camera& camera, const float dt)
 {
-	// Trackpad input
+	// Trackpad input, accumulated by Window since last frame.
+	double scrollX, scrollY;
+	window.ConsumeScroll(scrollX, scrollY);
 	if (scrollX != 0.0) {
 		trackpadMode = true;
 	}
@@ -25,9 +20,7 @@ void Input::Update(Camera& camera, const float dt)
 		glm::quat qYaw = glm::angleAxis((float)yaw, glm::vec3(0.f,1.f,0.f));
 		glm::quat qPitch = glm::angleAxis((float)pitch, glm::vec3(1.f,0.f,0.f));
 		camera.SetOrientation(qYaw * camera.GetOrientation() * qPitch);
-		scrollX = 0.f;
-		scrollY = 0.f;
-	}	
+	}
 		// Mouse input	
 	if (glfwGetMouseButton(windowPtr, GLFW_MOUSE_BUTTON_RIGHT) && (!trackpadMode)) {
 		glfwFocusWindow(windowPtr);

@@ -42,6 +42,7 @@ Window::Window(unsigned int width, unsigned int height, const char *title, bool 
     glfwSetWindowSizeLimits(windowPtr, minWidth, minHeight, GLFW_DONT_CARE, GLFW_DONT_CARE);
     glfwSetWindowUserPointer(windowPtr, this);
     glfwSetFramebufferSizeCallback(windowPtr, FbSizeCallback);
+    glfwSetScrollCallback(windowPtr, ScrollCallback);
 
     // This is an icon loader, only works with Linux on X11 and Windows. 
     #if defined(__linux__) || defined(_WIN32)
@@ -132,4 +133,19 @@ void Window::FbSizeCallback(GLFWwindow *win, int w, int h)
     Window* self = static_cast<Window*>(glfwGetWindowUserPointer(win));
     self->fbWidth = w;
     self->fbHeight = h;
+}
+
+void Window::ScrollCallback(GLFWwindow *win, double x, double y)
+{
+    Window* self = static_cast<Window*>(glfwGetWindowUserPointer(win));
+    self->scrollX += x;
+    self->scrollY += y;
+}
+
+void Window::ConsumeScroll(double& x, double& y)
+{
+    x = scrollX;
+    y = scrollY;
+    scrollX = 0.0;
+    scrollY = 0.0;
 }

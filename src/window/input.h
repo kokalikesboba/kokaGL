@@ -9,13 +9,14 @@
 
 class Input {
 public:
-    Input(GLFWwindow* windowPtr);
+    Input(Window& window);
     void Update(Camera& camera, const float dt);
 private:
+    Window& window;
     GLFWwindow* windowPtr = nullptr;
 
     float movementSpeed = 10.f;
-    double sensitivity = 0.001f; 
+    double sensitivity = 0.001f;
 
     glm::dvec2 cursorPos = {0.f, 0.f};
     std::deque<glm::dvec2>cursorHistory;
@@ -24,6 +25,4 @@ private:
 
     bool trackpadMode = false;
     double trackpadSensitivity = 0.025f;
-    double scrollX = 0.f;
-    double scrollY = 0.f;
 };
