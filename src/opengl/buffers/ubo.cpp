@@ -12,15 +12,9 @@ UBO::UBO(GLsizeiptr byteSize, GLuint slot)
 	glBindBufferBase(GL_UNIFORM_BUFFER, slot, ID);
 }
 
-void UBO::LinkBlock(const Shader& shader, const char* blockName) const
+void UBO::LinkBlock(const Shader& shader, GLuint ID) const
 {
-	GLuint blockIndex = glGetUniformBlockIndex(shader.getID(), blockName);
-	if (blockIndex == GL_INVALID_INDEX) {
-		std::cerr << "[WARNING][UBO] Unknown uniform block (" << blockName
-			<< ") in shader program: " << shader.getID() << std::endl;
-		return;
-	}
-	glUniformBlockBinding(shader.getID(), blockIndex, slot);
+	glUniformBlockBinding(shader.GetID(), ID, slot);
 }
 
 void UBO::Bind() const

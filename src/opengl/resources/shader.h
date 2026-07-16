@@ -20,7 +20,8 @@ public:
 	void Reload();
 	template <typename T> void UploadUni(const std::string& uniformName, const T& value);
 	void Delete();
-	GLuint getID() const;
+    GLuint GetUniformBlockIndex(const std::string& uniformBlockName);
+	GLuint GetID() const;
 	~Shader();
 
 private:

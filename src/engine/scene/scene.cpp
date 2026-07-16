@@ -8,6 +8,7 @@ Scene::Scene(const std::string& manifestDir)
 
 void Scene::Reload()
 {
+    cameras.clear();
     models.clear();
     gizmos.clear();
 
@@ -17,6 +18,14 @@ void Scene::Reload()
 
     source = nlohmann::ordered_json::parse(file);
 
+    // TODO: Only supports one camera 
+    for (const auto& entry : source.at("camera")) {
+        cameras.emplace_back(std::make_unique<Camera>());
+        auto& p = entry.at("position");
+        auto& r = entry.at("rotation");
+        cameras[0]->SetPosition({p[0], p[1], p[2]});
+        cameras[0]->SetEulerRotation({r[0], r[1], r[2]});
+    }
     modelDir = source.at("modelDir");
     imgDir = source.at("imgDir");
     for (const auto& entry : source.at("models")) {
@@ -50,6 +59,7 @@ void Scene::SaveCurrentArrangement()
     data["models"] = nlohmann::ordered_json::array();
     data["gizmos"] = nlohmann::ordered_json::array();
 
+    // TODO: Pass through camera
     const auto& srcModels = source.at("models");
     for (size_t i = 0; i < models.size(); ++i) {
         nlohmann::ordered_json m = srcModels.at(i);
@@ -74,7 +84,7 @@ void Scene::SaveCurrentArrangement()
 
 std::vector<std::unique_ptr<Camera>>* Scene::GetCameraList()
 {
-    return nullptr;
+    return &cameras;
 }
 
 std::vector<std::unique_ptr<Model>>* Scene::GetModelList()

@@ -1,11 +1,11 @@
-#version 330 core
+#version 460 core
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec3 aColor;
 layout (location = 3) in vec2 aUV;
 
-layout (std140) uniform viewportUBO {
+layout (std140, binding = 0) uniform viewportUBO {
     mat4 viewportMatrix;
     mat4 viewportOrientation;
     vec3 viewportPosition;

@@ -14,7 +14,7 @@ public:
 	// Uploads a struct into the buffer. Struct layout must match the GLSL std140 block.
 	template <typename T> void Update(const T& data);
 	// Points a shader's named uniform block at this UBO's slot. Call once per shader (GL 3.3 has no binding= in GLSL).
-	void LinkBlock(const Shader& shader, const char* blockName) const;
+	void LinkBlock(const Shader& shader, GLuint ID) const;
 	void Bind() const;
 	void Unbind() const;
 	void Delete();

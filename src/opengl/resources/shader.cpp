@@ -48,13 +48,11 @@ Shader::Shader(const std::string& vertFile, const std::string& fragFile)
 	glDeleteShader(fragmentShader);
 }
 
-// Activates the Shader Program
 void Shader::Activate() const
 {
 	glUseProgram(ID);
 }
 
-// Reloads the Shader Program
 void Shader::Reload()
 {
 	uniformLocationCache.clear();
@@ -87,14 +85,17 @@ void Shader::Reload()
 	glDeleteShader(fragmentShader);
 }
 
-// Deletes the Shader Program on OpenGL's side
 void Shader::Delete()
 {
 	glDeleteProgram(ID);
 }
 
-// GLuint ID getter
-GLuint Shader::getID() const
+GLuint Shader::GetUniformBlockIndex(const std::string& uniformBlockName)
+{
+    return glGetUniformBlockIndex(ID, uniformBlockName.c_str());
+}
+
+GLuint Shader::GetID() const
 {
     return ID;
 }

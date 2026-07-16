@@ -15,9 +15,9 @@ void Viewport::Resize(int width, int height)
     }
 }
 
-void Viewport::LinkUniformBlock(Shader &shader, std::string&  blockName)
+void Viewport::LinkUniformBlock(Shader &shader, GLuint blockIndex)
 {
-    ubo.LinkBlock(shader, blockName.c_str());
+    ubo.LinkBlock(shader, blockIndex);
 }
 
 void Viewport::UpdateUniformBlock(glm::mat4 matrix, glm::mat4 orientation, glm::vec3 pos)

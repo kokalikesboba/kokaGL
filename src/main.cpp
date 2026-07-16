@@ -57,17 +57,7 @@ int main() {
     Framepacer framepacer;
 	Scene scene("scene.json");  
     Light light({0.4f, 0.4f, 0.4f});
-    Renderer renderer("renderer.json", scene.GetModelList(), scene.GetGizmoList());
-
-    // temporary bad syntax
-	UBO vpubo(sizeof(viewportUBO), 0);
-	vpubo.LinkBlock(*renderer.shaders[0], "viewportUBO");
-	vpubo.LinkBlock(*renderer.shaders[6], "viewportUBO");
-	vpubo.LinkBlock(*renderer.shaders[2], "viewportUBO");
-	vpubo.LinkBlock(*renderer.shaders[1],"viewportUBO");
-    renderer.shaders[4]->UploadUni("screenTexture", 0);
-	renderer.shaders[5]->UploadUni("screenTexture", 0);
-	viewportUBO vpUpload;
+    Renderer renderer("renderer.json", scene);
 
 	// For the UI
 	double cursorPosX, cursorPosY;
@@ -90,10 +80,6 @@ int main() {
 		window.PollEvents();
 		// input.Update(viewport, framepacer.GetDeltaTime());
 		framepacer.Start();
-		
-		renderer.shaders[0]->UploadUni("lightColor", light.GetColor());
-		renderer.shaders[0]->UploadUni("lightDirection", light.GetForwardAxis());
-		renderer.shaders[6]->UploadUni("lightColor", light.GetColor());
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glEnable(GL_DEPTH_TEST);

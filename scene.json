@@ -1,4 +1,10 @@
 {
+"camera": [
+    {
+        "position": [-6.5, 3.0, 6.5],
+        "rotation": [0, 315.0, 0]
+    }
+],
   "modelDir": "assets/models/",
   "imgDir": "assets/images/",
   "models": [

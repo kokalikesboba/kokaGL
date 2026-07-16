@@ -19,7 +19,7 @@ class Viewport
 public:
 	Viewport();
     void Resize(int width, int height);
-    void LinkUniformBlock(Shader& shader, std::string& blockName);
+    void LinkUniformBlock(Shader& shader, GLuint blockIndex);
     void UpdateUniformBlock(
         glm::mat4 matrix,
         glm::mat4 orientation,
