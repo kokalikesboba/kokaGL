@@ -17,7 +17,8 @@ enum class DrawMode {
 class Renderer {
 public:
     Renderer(std::string configDir, Scene& scene);
-    void UploadUniforms();
+    // Debug only
+    void Draw(int fbWidth, int fbHeight);
     ~Renderer();
 private:
     std::string configDir;

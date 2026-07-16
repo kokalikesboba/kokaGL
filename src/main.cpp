@@ -37,7 +37,7 @@ int main() {
     GlfwContext glfw;
     Window window(800, 600, "kokaGL", true);
     window.MakeContextCurrent();
-	// Input input(window.GetWindowPtr());
+	Input input(window.GetWindowPtr());
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to init GLAD\n";
@@ -60,6 +60,9 @@ int main() {
     Renderer renderer("renderer.json", scene);
 
 	// For the UI
+    auto camera = scene.GetCameraList();
+    (*camera)[0]->GetPosition();
+
 	double cursorPosX, cursorPosY;
 	bool desired_vsync = true;
 	int desired_fps = 0;
@@ -78,7 +81,7 @@ int main() {
 		// gizmo.SetPosition(orbitCenter + glm::vec3(sin(angle), 0.f, cos(angle)));
 
 		window.PollEvents();
-		// input.Update(viewport, framepacer.GetDeltaTime());
+		input.Update(*(*camera)[0], framepacer.GetDeltaTime());
 		framepacer.Start();
 
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -86,6 +89,8 @@ int main() {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        renderer.Draw(window.GetFbWidth(), window.GetFbHeight());
 
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
@@ -110,23 +115,22 @@ int main() {
 		else window.VerticalSync(false);
 		ImGui::Separator();
 
-        /*
 		ImGui::Text("X: %.2f  Y: %.2f  Z: %.2f", 
-			viewport.GetPosition().x, 
-			viewport.GetPosition().y, 
-			viewport.GetPosition().z
+			(*camera)[0]->GetPosition().x, 
+			(*camera)[0]->GetPosition().y, 
+			(*camera)[0]->GetPosition().z
 		);
 		ImGui::Text("rX: %.2f  rY: %.2f  rZ: %.2f", 
-			viewport.GetEulerRotation().x, 
-			viewport.GetEulerRotation().y, 
-			viewport.GetEulerRotation().z
+			(*camera)[0]->GetEulerRotation().x, 
+			(*camera)[0]->GetEulerRotation().y, 
+			(*camera)[0]->GetEulerRotation().z
 		);
 		ImGui::Text("Framebuffer: %i, / %i", (int)window.GetFbWidth(), (int)window.GetFbHeight());
-		if (ImGui::DragFloat("Near", &nearPlane, 0.01f, 0.001f, 10.f))  viewport.SetNearPlane(nearPlane);
-		if (ImGui::DragFloat("Far", &farPlane, 1.f, 1.f, 1000.f)) viewport.SetFarPlane(farPlane);
-		if (ImGui::DragFloat("FOV", &fov, 0.5f, 10.f, 170.f))  viewport.SetFOV(fov);
+		if (ImGui::DragFloat("Near", &nearPlane, 0.01f, 0.001f, 10.f)) (*camera)[0]->SetNearPlane(nearPlane);
+		if (ImGui::DragFloat("Far", &farPlane, 1.f, 1.f, 1000.f)) (*camera)[0]->SetFarPlane(farPlane);
+		if (ImGui::DragFloat("FOV", &fov, 0.5f, 10.f, 170.f))  (*camera)[0]->SetFOV(fov);
 		ImGui::Separator();
-        */
+
 
 		if (ImGui::Button("Reload Model Manifest")) {
 			scene.Reload();

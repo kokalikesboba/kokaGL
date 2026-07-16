@@ -18,8 +18,8 @@ void Camera::SetFOV(float eulerFOV)
 {
     this->eulerFOV = eulerFOV;
 }
-/*
-glm::mat4 Camera::GetCameraMatrix() const
+
+glm::mat4 Camera::GetCameraMatrix(int fbWidth, int fbHeight) const
 {
     return MatrixOps::PerspectiveView(
         eulerFOV,
@@ -34,9 +34,9 @@ glm::mat4 Camera::GetCameraMatrix() const
 
 glm::mat4 Camera::GetRotationMatrix() const
 {
-    // return glm::mat4(glm::rotate(orientation));
+    return MatrixOps::RotationInverseMatrix(orientation);
 }
-*/
+
 Camera::~Camera()
 {
     // Intentionally left blank

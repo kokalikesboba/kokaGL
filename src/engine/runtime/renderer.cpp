@@ -37,7 +37,23 @@ gizmos(scene.GetGizmoList())
     }
 }
 
+void Renderer::Draw(int fbWidth, int fbHeight)
+{
+    for (auto& v : viewports) {
+        v->Resize(fbWidth, fbHeight);
+        v->UpdateUniformBlock(
+            (*cameras)[0]->GetCameraMatrix(fbWidth, fbHeight),
+            (*cameras)[0]->GetRotationMatrix(),
+            (*cameras)[0]->GetPosition()
+        );
+    }
+
+    for (auto& m : *models) {
+        m->Draw(*shaders[0]);
+    }
+}   
+
 Renderer::~Renderer()
 {
-    
+
 }

@@ -24,8 +24,8 @@ public:
 	void SetNearPlane(float nearPlane);
 	void SetFarPlane(float farPlane);
 	void SetFOV(float eulerFOV);
-    // glm::mat4 GetCameraMatrix() const;
-    // glm::mat4 GetRotationMatrix() const;
+    glm::mat4 GetCameraMatrix(int fbWidth, int fbHeight) const;
+    glm::mat4 GetRotationMatrix() const;
     ~Camera();
 
 private:
