@@ -2,11 +2,12 @@
 	#include <mach-o/dyld.h>  // macOS specific
 #endif
 
+#include "window/input.h"
+
 #include "engine/scene/scene.h"
 #include "engine/runtime/renderer.h"
 #include "engine/runtime/framepacer.h"
 
-#include "window/input.h"
 #include "imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
