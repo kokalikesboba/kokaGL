@@ -37,11 +37,13 @@ private:
     nlohmann::ordered_json source;
     std::string shaderDir;
 
+    TexturePool texturePool;
+
     std::vector<std::string> shaderNames;
     std::vector<std::unique_ptr<Shader>> shaders;
     std::vector<std::unique_ptr<Viewport>> viewports;
-
     std::vector<std::unique_ptr<Mesh>> meshes;
+    std::vector<std::vector<std::shared_ptr<Texture>>> meshTextures;
     std::vector<std::unique_ptr<Gizmo>> gizmos;
 };
 

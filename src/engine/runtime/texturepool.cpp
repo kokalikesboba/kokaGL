@@ -9,7 +9,7 @@ TexturePool::TexturePool()
 }
 
 // Adds a texture to be observed by the pool while also buffering it to the GPU. Callers are responsible for keeping the returned pointer alive.
-std::shared_ptr<Texture> TexturePool::Add(unsigned int texHash, RenderFormat::TexType textype, std::vector<unsigned char>& bytes, int width, int height)
+std::shared_ptr<Texture> TexturePool::Add(unsigned int texHash, RenderFormat::TexType textype, const std::vector<unsigned char>& bytes, int width, int height)
 {
 	if (cache.find(texHash) == cache.end()) {
 		std::shared_ptr<Texture> buffer = std::make_shared<Texture>();

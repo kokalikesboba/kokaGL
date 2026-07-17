@@ -5,7 +5,7 @@ Texture::Texture()
 	glGenTextures(1, &ID);
 }
 
-void Texture::GenRGBATexture(RenderFormat::TexType textype, unsigned char* bytes, int width, int height)
+void Texture::GenRGBATexture(RenderFormat::TexType textype, const unsigned char* bytes, int width, int height)
 {
     texInfo.type = textype;
 	texInfo.width = width;
