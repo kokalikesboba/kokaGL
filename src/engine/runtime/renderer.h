@@ -35,7 +35,6 @@ private:
     const Scene* const scene;
 
     nlohmann::ordered_json source;
-    std::string configDir;
     std::string shaderDir;
 
     std::vector<std::string> shaderNames;

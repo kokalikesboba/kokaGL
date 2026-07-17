@@ -1,5 +1,7 @@
 #include "billboard.h"
 
+using RenderFormat::PNUVertex;
+
 Billboard::Billboard (
     Texture* texture)
     :

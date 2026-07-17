@@ -3,17 +3,17 @@
 TexturePool::TexturePool()
 {
 	// Initializes the black and magenta fallback texture.
-    errorTex = std::make_shared<Texture>(PBRTexType::BaseColor);
-	errorTex->genRGBATexture(fallbackPixels.data(), 2, 2);
+    errorTex = std::make_shared<Texture>();
+	errorTex->GenRGBATexture(RenderFormat::TexType::BaseColor, fallbackPixels.data(), 2, 2);
 	cache.insert({0, errorTex});
 }
 
 // Adds a texture to be observed by the pool while also buffering it to the GPU. Callers are responsible for keeping the returned pointer alive.
-std::shared_ptr<Texture> TexturePool::Add(unsigned int texHash, PBRTexType textype, std::vector<unsigned char>& bytes, int width, int height)
+std::shared_ptr<Texture> TexturePool::Add(unsigned int texHash, RenderFormat::TexType textype, std::vector<unsigned char>& bytes, int width, int height)
 {
 	if (cache.find(texHash) == cache.end()) {
-		std::shared_ptr<Texture> buffer = std::make_shared<Texture>(textype);
-		buffer->genRGBATexture(bytes.data(), width, height);
+		std::shared_ptr<Texture> buffer = std::make_shared<Texture>();
+		buffer->GenRGBATexture(textype, bytes.data(), width, height);
 		cache.insert({texHash, buffer});
 		std::cout << "[VERBOSE][Texturepool] Inserted a texture into cache with hash of: " << texHash << std::endl;
 		return buffer;

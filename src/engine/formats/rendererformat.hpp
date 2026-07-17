@@ -31,7 +31,7 @@ namespace RenderFormat {
     struct TextureInfo {
         int width;
         int height;
-        int hash;
+        unsigned int hash;
         TexType type;
     };
 

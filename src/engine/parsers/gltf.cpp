@@ -1,6 +1,8 @@
 #include "gltf.h"
 
-int hash(const std::vector<unsigned char>& data) {
+using namespace RenderFormat;
+
+unsigned int hash(const std::vector<unsigned char>& data) {
     unsigned int h = 5381;
     for (size_t i = 0; i < data.size(); ++i)
         h = h * 31 + data[i];
@@ -111,19 +113,29 @@ ParseGLTF::ParseGLTF(const std::string& modelDir) {
 
             // Absolute fucking magic to me
             auto* bufferViewSource = std::get_if<fastgltf::sources::BufferView>(&image.data);
-            if (!bufferViewSource) LoadShameTexture();
+            if (!bufferViewSource) {
+                LoadShameTexture();
+                continue;
+            }
 
             auto& bufferView = asset.bufferViews[bufferViewSource->bufferViewIndex];
             auto& buffer     = asset.buffers[bufferView.bufferIndex];
 
             auto* bufferArray = std::get_if<fastgltf::sources::Array>(&buffer.data);
-            if (!bufferArray) LoadShameTexture();
+            if (!bufferArray) {
+                LoadShameTexture();
+                continue;
+            }
 
             const unsigned char* base = reinterpret_cast<const unsigned char*>(bufferArray->bytes.data());
             const unsigned char* pngData = base + bufferView.byteOffset;
             size_t pngLength = bufferView.byteLength;
 
             ParsePNG png(pngData, pngLength);
+            if (png.data == nullptr) {
+                LoadShameTexture();
+                continue;
+            }
             std::vector<unsigned char> pixels(png.data, png.data + png.width * png.height * 4);
 
             texInfo.push_back(

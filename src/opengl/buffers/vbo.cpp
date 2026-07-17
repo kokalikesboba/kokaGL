@@ -1,5 +1,8 @@
 #include"vbo.h"
 
+using RenderFormat::PNCUVertex;
+using RenderFormat::PNUVertex;
+
 VBO::VBO()
 {
 	glGenBuffers(1, &ID);

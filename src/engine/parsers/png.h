@@ -10,6 +10,8 @@ public:
     ParsePNG(const std::string& pngDir);
     ParsePNG(const unsigned char* pngData, const int dataLength);
     ~ParsePNG();
+    ParsePNG(const ParsePNG&) = delete;
+    ParsePNG& operator=(const ParsePNG&) = delete;
     unsigned char* data;
     int width, height;
 };

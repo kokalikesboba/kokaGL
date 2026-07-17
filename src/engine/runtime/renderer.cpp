@@ -12,13 +12,11 @@ scene(&scene)
     CreateShaders();
     CreateViewport();
     CreateMesh();
+    LinkViewportUniformBlock();
 }
 
 void Renderer::DrawMesh(int fbWidth, int fbHeight)
 {
-
-    LinkViewportUniformBlock();
-
     for (auto& v : viewports) {
         v->Resize(fbWidth, fbHeight);
         v->UpdateUniformBlock(
@@ -62,8 +60,8 @@ void Renderer::CreateMesh()
     for (const auto& m : scene->GetModelList()) {
         meshes.emplace_back(
             std::make_unique<Mesh>(
-                m->GetVertices(),
-                m->GetIndices()
+                *m->GetVertices(),
+                *m->GetIndices()
             )
         );
     }

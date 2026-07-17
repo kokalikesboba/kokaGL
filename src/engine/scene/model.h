@@ -7,13 +7,15 @@
 class Model : public Transform {
 public:
     Model(const std::string& modelDir);
-    const std::vector<PNCUVertex>* GetVertices() const;
+    const std::vector<RenderFormat::PNCUVertex>* GetVertices() const;
     const std::vector<unsigned int>* GetIndices() const;
-    const std::vector<unsigned char*>* GetTexData() const;
+    const std::vector<RenderFormat::TextureInfo>* GetTexInfo() const;
+    const std::vector<std::vector<unsigned char>>* GetTexData() const;
 private:
-    std::vector<PNCUVertex> vertices;
+    std::vector<RenderFormat::PNCUVertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<unsigned char*> textures;
+    std::vector<RenderFormat::TextureInfo> texInfo;
+    std::vector<std::vector<unsigned char>> texData;
 };
 
 #endif

@@ -11,7 +11,7 @@
 #include "glm/mat3x3.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-inline std::vector<PNUVertex> squareVerts = {
+inline std::vector<RenderFormat::PNUVertex> squareVerts = {
     // position                  normal             uv
     {{ 0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}}, // top right
     {{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}}, // top left

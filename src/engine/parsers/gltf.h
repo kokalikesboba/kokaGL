@@ -14,14 +14,12 @@
 #include <filesystem>
 #include <memory>
 
-using namespace RenderFormat;
-
 class ParseGLTF {
-public: 
+public:
     ParseGLTF(const std::string& modelDir);
-    std::vector<PNCUVertex> vertices;
+    std::vector<RenderFormat::PNCUVertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<TextureInfo> texInfo;
+    std::vector<RenderFormat::TextureInfo> texInfo;
     std::vector<std::vector<unsigned char>> texData;
 private:
     void LoadShameMesh();

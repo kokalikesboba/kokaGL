@@ -9,14 +9,12 @@
 #include <vector>
 #include <iostream>
 
-using namespace RenderFormat;
-
 class VBO
 {
 public:
 	VBO();
-	VBO(const std::vector<PNCUVertex>& vertices);
-	VBO(const std::vector<PNUVertex>& vertices);
+	VBO(const std::vector<RenderFormat::PNCUVertex>& vertices);
+	VBO(const std::vector<RenderFormat::PNUVertex>& vertices);
 	void Bind() const;
 	void Unbind() const;
 	void Delete();

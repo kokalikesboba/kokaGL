@@ -1,7 +1,6 @@
 #ifndef TEXTUREPOOL_H
 #define TEXTUREPOOL_H
 
-#include "stb/stb_img.h"
 #include "opengl/resources/texture.h"
 
 #include <memory>
@@ -21,7 +20,7 @@ class TexturePool
 {
 public:
     TexturePool();
-    std::shared_ptr<Texture> Add(unsigned int texHash, PBRTexType textype, std::vector<unsigned char>& bytes, int width, int height);
+    std::shared_ptr<Texture> Add(unsigned int texHash, RenderFormat::TexType textype, std::vector<unsigned char>& bytes, int width, int height);
     bool isCachedAndAlive(unsigned int texHash);
     std::shared_ptr<Texture> Get(unsigned int texHash);
 private:

@@ -1,5 +1,7 @@
     #include "mesh.h"
 
+    using RenderFormat::PNCUVertex;
+
     Mesh::Mesh(
         const std::vector<RenderFormat::PNCUVertex>& vertices,
         const std::vector<GLuint>& indices

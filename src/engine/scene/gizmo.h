@@ -4,6 +4,8 @@
 #include "math/transform.h"
 #include "engine/parsers/png.h"
 
+#include <vector>
+
 class Gizmo : private Transform {
 public:
     using Transform::SetPosition;
@@ -14,8 +16,9 @@ public:
     using Transform::GetScale;
 
     Gizmo(const std::string& imgDir);
-    const unsigned char* GetTexData();
+    const unsigned char* GetTexData() const;
 private:
-    unsigned char* data;
+    std::vector<unsigned char> data;
+    int width = 0, height = 0;
 };
 #endif

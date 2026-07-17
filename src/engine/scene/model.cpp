@@ -2,20 +2,29 @@
 
 Model::Model(const std::string& modelDir)
 {
-    ParseGLTF model(modelDir);
+    ParseGLTF parsed(modelDir);
+    vertices = std::move(parsed.vertices);
+    indices = std::move(parsed.indices);
+    texInfo = std::move(parsed.texInfo);
+    texData = std::move(parsed.texData);
 }
 
-const std::vector<PNCUVertex> *Model::GetVertices() const
+const std::vector<RenderFormat::PNCUVertex>* Model::GetVertices() const
 {
     return &vertices;
 }
 
-const std::vector<unsigned int> *Model::GetIndices() const
+const std::vector<unsigned int>* Model::GetIndices() const
 {
     return &indices;
 }
 
-const std::vector<unsigned char*>* Model::GetTexData() const
+const std::vector<RenderFormat::TextureInfo>* Model::GetTexInfo() const
 {
-    return &textures;
+    return &texInfo;
+}
+
+const std::vector<std::vector<unsigned char>>* Model::GetTexData() const
+{
+    return &texData;
 }
