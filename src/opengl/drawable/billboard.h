@@ -3,13 +3,13 @@
 
 #include <opengl/buffers/vao.h>
 #include <opengl/buffers/ebo.h>
+// TODO: implement texturepool
 #include <opengl/resources/texture.h>
+#include <opengl/resources/shader.h>
 
 #include "glm/gtc/quaternion.hpp"
 #include "glm/mat3x3.hpp"
 #include "glm/gtc/type_ptr.hpp"
-
-#include <memory>
 
 inline std::vector<PNUVertex> squareVerts = {
     // position                  normal             uv

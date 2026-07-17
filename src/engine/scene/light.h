@@ -2,10 +2,6 @@
 #define LIGHT_H
 
 #include "math/transform.h"
-#include "engine/runtime/texturepool.h"
-#include "engine/scene/model.h"
-
-#include <string>
 
 class Light : private Transform {
 public:

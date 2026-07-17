@@ -48,6 +48,7 @@ CPP_SRCS = \
 	src/opengl/drawable/framebuffer.cpp \
 	src/window/input.cpp \
 	src/engine/parsers/gltf.cpp \
+	src/engine/parsers/png.cpp \
 	src/engine/runtime/framepacer.cpp \
 	src/engine/runtime/texturepool.cpp \
 	src/engine/runtime/renderer.cpp \

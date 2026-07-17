@@ -1,13 +1,11 @@
     #include "mesh.h"
 
     Mesh::Mesh(
-        std::vector<PNCUVertex>& vertices,
-        std::vector<GLuint>& indices,
-        std::vector <std::shared_ptr<Texture>> textures
+        const std::vector<RenderFormat::PNCUVertex>& vertices,
+        const std::vector<GLuint>& indices
     ) :
-        textures(std::move(textures)),
-        vbo(vertices), 
-        ebo(indices)
+        vbo(std::move(vertices)), 
+        ebo(std::move(indices))
     {
         indicesCount = indices.size();
         vao.Bind();
@@ -28,11 +26,6 @@
         ebo.Bind();
         shader.Activate();
 
-        // Converts enum to int for shader slots.
-        for (auto& tex : textures) {
-            tex->Bind(int(tex->getType()));
-        }
-
         glm::mat4 translationMatrix = glm::mat4(1.0f);
         translationMatrix = glm::translate(translationMatrix, position);
         glm::mat4 rotationMatrix = glm::mat4(1.0f);
@@ -47,6 +40,6 @@
     }
 
     Mesh::~Mesh()
-    {
-        // Intentionally left blank.
+    {    
+        
     }

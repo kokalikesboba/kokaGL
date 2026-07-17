@@ -2,10 +2,7 @@
 #define GIZMO_H
 
 #include "math/transform.h"
-#include "opengl/drawable/billboard.h"
-#include "opengl/resources/shader.h"
-
-#include "stb/stb_img.h"
+#include "engine/parsers/png.h"
 
 class Gizmo : private Transform {
 public:
@@ -16,12 +13,9 @@ public:
     using Transform::SetScale;
     using Transform::GetScale;
 
-    Gizmo(const std::string imgDir);
-    void Draw(Shader& shader);
+    Gizmo(const std::string& imgDir);
+    const unsigned char* GetTexData();
 private:
-    std::unique_ptr<Texture> texture;
-    std::unique_ptr<Billboard> billboard;
-
-    int width, height = 0;
+    unsigned char* data;
 };
 #endif

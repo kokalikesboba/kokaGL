@@ -2,23 +2,18 @@
 #define MODEL_H
 
 #include "math/transform.h"
-#include "opengl/drawable/mesh.h"
-#include "engine/runtime/texturepool.h"
 #include "engine/parsers/gltf.h"
-
-#include <iostream>
-#include <memory>
 
 class Model : public Transform {
 public:
-    Model(const std::string& modelDir, TexturePool* textureCache);
-    void Draw(Shader& shader) const;
+    Model(const std::string& modelDir);
+    const std::vector<PNCUVertex>* GetVertices() const;
+    const std::vector<unsigned int>* GetIndices() const;
+    const std::vector<unsigned char*>* GetTexData() const;
 private:
-    std::unique_ptr<Mesh> mesh = nullptr;
-
     std::vector<PNCUVertex> vertices;
-    std::vector<GLuint> indices;
-    std::vector<std::shared_ptr<Texture>> textures;
+    std::vector<unsigned int> indices;
+    std::vector<unsigned char*> textures;
 };
 
 #endif

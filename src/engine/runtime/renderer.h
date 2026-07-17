@@ -5,7 +5,13 @@
 
 #include "engine/scene/scene.h"
 #include "engine/runtime/texturepool.h"
- 
+
+#include "opengl/resources/viewport.h"
+#include "opengl/resources/shader.h"
+#include "opengl/drawable/mesh.h"
+#include "opengl/drawable/billboard.h"
+#include "opengl/drawable/framebuffer.h"
+
 enum class DrawMode {
     Default,
     Mesh,
@@ -16,21 +22,28 @@ enum class DrawMode {
 
 class Renderer {
 public:
-    Renderer(std::string configDir, Scene& scene);
-    // Debug only
-    void Draw(int fbWidth, int fbHeight);
+    Renderer(const std::string& configDir, const Scene& scene);
+    void DrawMesh(int fbWidth, int fbHeight);
     ~Renderer();
 private:
+    void CreateShaders();
+    void CreateViewport();
+    void CreateMesh();
+
+    void LinkViewportUniformBlock();
+
+    const Scene* const scene;
+
+    nlohmann::ordered_json source;
     std::string configDir;
     std::string shaderDir;
 
-    std::vector<std::unique_ptr<Camera>>& cameras;
-    std::vector<std::unique_ptr<Model>>& models;
-    std::vector<std::unique_ptr<Gizmo>>& gizmos;
-
     std::vector<std::string> shaderNames;
-    std::vector<std::unique_ptr<Viewport>> viewports;
     std::vector<std::unique_ptr<Shader>> shaders;
+    std::vector<std::unique_ptr<Viewport>> viewports;
+
+    std::vector<std::unique_ptr<Mesh>> meshes;
+    std::vector<std::unique_ptr<Gizmo>> gizmos;
 };
 
 #endif

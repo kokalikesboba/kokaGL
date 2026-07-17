@@ -1,23 +1,23 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "opengl/buffers/vao.h"
-#include "opengl/buffers/ebo.h"
-#include "opengl/resources/texture.h"
-
 #include "glm/gtc/quaternion.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include <string>
-#include <vector>
+#include "opengl/buffers/vao.h"
+#include "opengl/buffers/ebo.h"
+#include "opengl/resources/shader.h"
+#include "opengl/resources/texture.h"
+
+#include "engine/formats/rendererformat.hpp"
+
 #include <memory>
 
 class Mesh {
 public:
     Mesh(
-        std::vector<PNCUVertex>& vertices,
-        std::vector<unsigned int>& indices,
-        std::vector <std::shared_ptr<Texture>> textures
+        const std::vector<RenderFormat::PNCUVertex>& vertices,
+        const std::vector<unsigned int>& indices
     );
     void Draw(
         Shader& shader,
@@ -27,11 +27,10 @@ public:
     );
     ~Mesh();
 private:
-    unsigned int indicesCount = 0;
-    std::vector <std::shared_ptr<Texture>> textures;
     VAO vao; 
     VBO vbo;
     EBO ebo;
+    unsigned int indicesCount = 0;
 };
 
 #endif

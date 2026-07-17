@@ -1,29 +1,15 @@
 #include "texture.h"
 
-Texture::Texture(PBRTexType type)
+Texture::Texture()
 {
-	this->type = type;
 	glGenTextures(1, &ID);
 }
 
-void Texture::Bind(GLuint texUnit) const
+void Texture::GenRGBATexture(RenderFormat::TexType textype, unsigned char* bytes, int width, int height)
 {
-	GLuint unit = GL_TEXTURE0 + texUnit;
-    glActiveTexture(unit);
-    glBindTexture(GL_TEXTURE_2D,ID);
-	// quick hack
-	if (!textureGenerated) std::cerr << "[WARN][Texture] Texture:" << ID << " was bound, but not generated." << std::endl;
-}
-
-void Texture::Unbind() const
-{
-    glBindTexture(GL_TEXTURE_2D,0);
-}
-
-void Texture::genRGBATexture(unsigned char* bytes, int width, int height)
-{
-	this->width = width;
-	this->height = height;
+    texInfo.type = textype;
+	texInfo.width = width;
+	texInfo.height = height;
 
 	if (!bytes) {
 		std::cout << "empty bytes" << std::endl;
@@ -55,12 +41,25 @@ void Texture::genRGBATexture(unsigned char* bytes, int width, int height)
 		bytes
 	);
 
-	textureGenerated = true;
+	generationCheck = true;
 }
 
-PBRTexType Texture::getType() const
+RenderFormat::TextureInfo Texture::GetType() const
 {
-	return type;
+	return texInfo;
+}
+
+void Texture::Bind(GLuint texUnit) const
+{
+	GLuint unit = GL_TEXTURE0 + texUnit;
+    glActiveTexture(unit);
+    glBindTexture(GL_TEXTURE_2D,ID);
+	if (!generationCheck) std::cerr << "[WARN][Texture] Texture:" << ID << " was bound, but not generated." << std::endl;
+}
+
+void Texture::Unbind() const
+{
+    glBindTexture(GL_TEXTURE_2D,0);
 }
 
 void Texture::Delete()

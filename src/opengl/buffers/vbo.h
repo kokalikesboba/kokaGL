@@ -4,10 +4,12 @@
 #include <glm/glm.hpp>
 #include <glad/glad.h>
 
-#include "opengl/format.h"
+#include "engine/formats/rendererformat.hpp"
 
 #include <vector>
 #include <iostream>
+
+using namespace RenderFormat;
 
 class VBO
 {
@@ -19,7 +21,6 @@ public:
 	void Unbind() const;
 	void Delete();
 	~VBO();
-	// Makes this class non-copyable
 	VBO(const VBO&) = delete;
 	VBO& operator=(const VBO&) = delete;
 

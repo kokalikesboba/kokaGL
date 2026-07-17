@@ -1,31 +1,39 @@
 #include "gltf.h"
 
-unsigned int hash(const std::vector<unsigned char>& data) {
+int hash(const std::vector<unsigned char>& data) {
     unsigned int h = 5381;
     for (size_t i = 0; i < data.size(); ++i)
         h = h * 31 + data[i];
     return h;
 }
 
+void ParseGLTF::LoadShameTexture() {
+    texInfo.push_back(
+        {
+            2,
+            2,
+            0,
+            TexType::BaseColor
+        }
+    );
+    texData.push_back(std::vector<unsigned char>{});
+}
+
 void ParseGLTF::LoadShameMesh() {
     vertices = errorVertices;
     indices = errorIndices;
-    texHash.push_back(0);
-    texType.push_back(PBRTexType::BaseColor);
+    texInfo.push_back(
+        {
+            2,
+            2,
+            0,
+            TexType::BaseColor
+        }
+    );
     texData.push_back(std::vector<unsigned char>{});
-    texWidth.push_back(2);
-    texHeight.push_back(2);
 }
 
-void ParseGLTF::LoadShameTexture(PBRTexType errorType) {
-    texHash.push_back(0);
-    texType.push_back(errorType);
-    texData.push_back(std::vector<unsigned char>{});
-    texWidth.push_back(2);
-    texHeight.push_back(2);
-}
-
-ParseGLTF::ParseGLTF(std::string modelDir) {
+ParseGLTF::ParseGLTF(const std::string& modelDir) {
 
     // Placeholder on file path fail
     std::filesystem::path path = modelDir;
@@ -103,30 +111,34 @@ ParseGLTF::ParseGLTF(std::string modelDir) {
 
             // Absolute fucking magic to me
             auto* bufferViewSource = std::get_if<fastgltf::sources::BufferView>(&image.data);
-            if (!bufferViewSource) LoadShameTexture(PBRTexType::BaseColor);
+            if (!bufferViewSource) LoadShameTexture();
 
             auto& bufferView = asset.bufferViews[bufferViewSource->bufferViewIndex];
             auto& buffer     = asset.buffers[bufferView.bufferIndex];
 
             auto* bufferArray = std::get_if<fastgltf::sources::Array>(&buffer.data);
-            if (!bufferArray) LoadShameTexture(PBRTexType::BaseColor);
+            if (!bufferArray) LoadShameTexture();
 
             const unsigned char* base = reinterpret_cast<const unsigned char*>(bufferArray->bytes.data());
             const unsigned char* pngData = base + bufferView.byteOffset;
             size_t pngLength = bufferView.byteLength;
 
-            int width, height;
-            unsigned char* data = stbi_load_from_memory(pngData, (int)pngLength, &width, &height, nullptr, 4);
+            ParsePNG png(pngData, pngLength);
+            std::vector<unsigned char> pixels(png.data, png.data + png.width * png.height * 4);
 
-            std::vector<unsigned char> pixels(data, data + width * height * 4);
+            texInfo.push_back(
+                {
+                    png.width,
+                    png.height,
+                    hash(pixels),
+                    TexType::BaseColor
+                }
+            );
 
-            texHash.push_back(hash(pixels));
-            texType.push_back(PBRTexType::BaseColor);
             texData.push_back(pixels);
-            texWidth.push_back(width);
-            texHeight.push_back(height);
+            
         } else {
-            LoadShameTexture(PBRTexType::BaseColor);
+            LoadShameTexture();
         }
     } 
 }

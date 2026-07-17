@@ -37,15 +37,13 @@ int main() {
     window.MakeContextCurrent();
 	Input input(window);
     Framepacer framepacer;
+	Scene scene("scene.json");
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to init GLAD\n";
         return -1;
     }
 
-    // Scene and Light have rendering backend components attatched to them that need to be refactored out
-	Scene scene("scene.json");  
-    Light light({0.4f, 0.4f, 0.4f});
     Renderer renderer("renderer.json", scene);
 
 	IMGUI_CHECKVERSION();
@@ -82,7 +80,7 @@ int main() {
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        renderer.Draw(window.GetFbWidth(), window.GetFbHeight());
+        renderer.DrawMesh(window.GetFbWidth(), window.GetFbHeight());
 
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
