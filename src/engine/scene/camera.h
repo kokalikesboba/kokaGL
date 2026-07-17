@@ -3,7 +3,6 @@
 
 #include "math/matrixops.hpp"
 #include "math/transform.h"
-#include "opengl/resources/viewport.h"
 
 class Camera : public Transform
 {
