@@ -3,28 +3,23 @@
 Model::Model(const std::string& modelDir)
 {
     ParseGLTF parsed(modelDir);
-    vertices = std::move(parsed.vertices);
-    indices = std::move(parsed.indices);
-    texInfo = std::move(parsed.texInfo);
-    texData = std::move(parsed.texData);
+    meshData.push_back({
+        std::move(parsed.vertices),
+        std::move(parsed.indices),
+        std::move(parsed.texData)
+    });
 }
-
 const std::vector<RenderFormat::PNCUVertex>* Model::GetVertices() const
 {
-    return &vertices;
+    return &meshData[0].vertices;
 }
 
 const std::vector<unsigned int>* Model::GetIndices() const
 {
-    return &indices;
+    return &meshData[0].indices;
 }
 
-const std::vector<RenderFormat::TextureInfo>* Model::GetTexInfo() const
+const std::vector<RenderFormat::TextureData>* Model::GetTexInfo() const
 {
-    return &texInfo;
-}
-
-const std::vector<std::vector<unsigned char>>* Model::GetTexData() const
-{
-    return &texData;
+    return &meshData[0].texInfo;
 }

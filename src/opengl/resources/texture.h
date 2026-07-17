@@ -12,7 +12,7 @@ class Texture
 public:
     Texture();
     void GenRGBATexture(RenderFormat::TexType textype, const unsigned char* bytes, int imgWidth, int imgHeight);
-    RenderFormat::TextureInfo GetType() const;
+    RenderFormat::TextureData GetType() const;
 
     void Bind(GLuint texUnit) const;
     void Unbind() const;
@@ -23,7 +23,7 @@ public:
     Texture& operator=(const Texture&) = delete;
 private:
     GLuint ID = 0;
-    RenderFormat::TextureInfo texInfo;
+    RenderFormat::TextureData texData;
     bool generationCheck = false;
 };
 

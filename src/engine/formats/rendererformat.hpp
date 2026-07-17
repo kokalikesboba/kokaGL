@@ -28,11 +28,12 @@ namespace RenderFormat {
         Normal
     };
 
-    struct TextureInfo {
+    struct TextureData {
         int width;
         int height;
         unsigned int hash;
         TexType type;
+        std::vector<unsigned char> bytes;
     };
 
     inline const std::vector<PNCUVertex> errorVertices = {

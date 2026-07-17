@@ -7,9 +7,9 @@ Texture::Texture()
 
 void Texture::GenRGBATexture(RenderFormat::TexType textype, const unsigned char* bytes, int width, int height)
 {
-    texInfo.type = textype;
-	texInfo.width = width;
-	texInfo.height = height;
+	texData.width = width;
+	texData.height = height;
+    texData.type = textype;
 
 	if (!bytes) {
 		std::cout << "empty bytes" << std::endl;
@@ -44,9 +44,9 @@ void Texture::GenRGBATexture(RenderFormat::TexType textype, const unsigned char*
 	generationCheck = true;
 }
 
-RenderFormat::TextureInfo Texture::GetType() const
+RenderFormat::TextureData Texture::GetType() const
 {
-	return texInfo;
+	return texData;
 }
 
 void Texture::Bind(GLuint texUnit) const

@@ -10,29 +10,29 @@ unsigned int hash(const std::vector<unsigned char>& data) {
 }
 
 void ParseGLTF::LoadShameTexture() {
-    texInfo.push_back(
+    texData.push_back(
         {
             2,
             2,
             0,
-            TexType::BaseColor
+            TexType::BaseColor,
+            std::vector<unsigned char>{}
         }
     );
-    texData.push_back(std::vector<unsigned char>{});
 }
 
 void ParseGLTF::LoadShameMesh() {
     vertices = errorVertices;
     indices = errorIndices;
-    texInfo.push_back(
+    texData.push_back(
         {
             2,
             2,
             0,
-            TexType::BaseColor
+            TexType::BaseColor,
+            std::vector<unsigned char>{}
         }
     );
-    texData.push_back(std::vector<unsigned char>{});
 }
 
 ParseGLTF::ParseGLTF(const std::string& modelDir) {
@@ -138,17 +138,15 @@ ParseGLTF::ParseGLTF(const std::string& modelDir) {
             }
             std::vector<unsigned char> pixels(png.data, png.data + png.width * png.height * 4);
 
-            texInfo.push_back(
+            texData.push_back(
                 {
                     png.width,
                     png.height,
                     hash(pixels),
-                    TexType::BaseColor
+                    TexType::BaseColor,
+                    pixels
                 }
-            );
-
-            texData.push_back(pixels);
-            
+            );            
         } else {
             LoadShameTexture();
         }

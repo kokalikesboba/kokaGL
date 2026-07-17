@@ -15,7 +15,7 @@ scene(&scene)
     LinkViewportUniformBlock();
 }
 
-void Renderer::DrawMesh(int fbWidth, int fbHeight)
+void Renderer::DrawModels(int fbWidth, int fbHeight)
 {
     for (auto& v : viewports) {
         v->Resize(fbWidth, fbHeight);
@@ -30,7 +30,13 @@ void Renderer::DrawMesh(int fbWidth, int fbHeight)
         for (const auto& tex : meshTextures[i]) {
             tex->Bind(static_cast<GLuint>(tex->GetType().type));
         }
-        meshes[i]->Draw(*shaders[0]);
+        // TODO: Needs multimesh loading, capped to first mesh
+        meshes[i]->Draw(
+            *shaders[0],
+            scene->GetModelList()[i]->GetPosition(),
+            scene->GetModelList()[i]->GetOrientation(),
+            scene->GetModelList()[i]->GetScale()
+        );
     }
 }
 
@@ -71,22 +77,21 @@ void Renderer::CreateMesh()
         // Resolve the model's parsed texture data into GPU textures,
         // deduplicated by content hash through the pool. Hash 0 (shame
         // texture) is pre-cached by the pool's constructor.
-        const auto& texInfo = *m->GetTexInfo();
-        const auto& texData = *m->GetTexData();
-
+        const auto& texData = *m->GetTexInfo();
+        
         std::vector<std::shared_ptr<Texture>> textures;
-        textures.reserve(texInfo.size());
-        for (size_t i = 0; i < texInfo.size(); ++i) {
-            if (texturePool.isCachedAndAlive(texInfo[i].hash)) {
-                textures.push_back(texturePool.Get(texInfo[i].hash));
+        textures.reserve(texData.size());
+        for (size_t i = 0; i < texData.size(); ++i) {
+            if (texturePool.isCachedAndAlive(texData[i].hash)) {
+                textures.push_back(texturePool.Get(texData[i].hash));
             } else {
                 textures.push_back(
                     texturePool.Add(
-                        texInfo[i].hash,
-                        texInfo[i].type,
-                        texData[i],
-                        texInfo[i].width,
-                        texInfo[i].height
+                        texData[i].hash,
+                        texData[i].type,
+                        texData[i].bytes,
+                        texData[i].width,
+                        texData[i].height
                     )
                 );
             }

@@ -19,8 +19,7 @@ public:
     ParseGLTF(const std::string& modelDir);
     std::vector<RenderFormat::PNCUVertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<RenderFormat::TextureInfo> texInfo;
-    std::vector<std::vector<unsigned char>> texData;
+    std::vector<RenderFormat::TextureData> texData;
 private:
     void LoadShameMesh();
     void LoadShameTexture();

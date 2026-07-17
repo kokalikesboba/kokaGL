@@ -5,6 +5,12 @@
         "rotation": [0, 315.0, 0]
     }
 ],
+"lights": [
+    {
+        "position": [0.0, 1.0, 0.0],
+        "rotation": [0.0, 1.0, 0.0]
+    }
+],
   "modelDir": "assets/models/",
   "imgDir": "assets/images/",
   "models": [
