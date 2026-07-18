@@ -43,7 +43,6 @@ CPP_SRCS = \
 	src/opengl/resources/texture.cpp \
 	src/opengl/resources/shader.cpp \
 	src/opengl/resources/viewport.cpp \
-	src/opengl/resources/light.cpp \
 	src/opengl/drawable/mesh.cpp \
 	src/opengl/drawable/billboard.cpp \
 	src/opengl/drawable/framebuffer.cpp \

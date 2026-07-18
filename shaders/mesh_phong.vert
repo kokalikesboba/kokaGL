@@ -9,14 +9,13 @@ layout (std140) uniform viewportUBO {
     mat4 viewportMatrix;
     mat4 viewportOrientation;
     vec3 viewportPosition;
-    float pad0;
 };
 
 layout (std140) uniform lightUBO {
     vec4 color0;
     vec3 direction0;
-    float padding0;
 };
+
 
 uniform mat4 modelMatrix;
 

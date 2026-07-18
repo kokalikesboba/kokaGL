@@ -1,7 +1,9 @@
 #include "renderer.h"
 
 Renderer::Renderer(const std::string& configDir, const Scene& scene) :
-scene(&scene)
+scene(&scene),
+viewportBlock(sizeof(viewportUBO), 0),
+lightBlock(sizeof(lightUBO), 1)
 {
     std::ifstream file(configDir);
     if (!file.is_open()) {
@@ -13,25 +15,26 @@ scene(&scene)
     CreateViewport();
     CreateMesh();
     LinkViewportUniformBlock();
-    lights.emplace_back(std::make_unique<Light>());
-    LinkViewportUniformBlock();
+    LinkLightUniformBlock();
 }
 
 void Renderer::DrawModels(int fbWidth, int fbHeight)
 {
     for (auto& v : viewports) {
         v->Resize(fbWidth, fbHeight);
-        v->UpdateUniformBlock(
+        viewportBlock.Update(viewportUBO{
             scene->GetCameraList()[0]->GetCameraMatrix(fbWidth, fbHeight),
             scene->GetCameraList()[0]->GetRotationMatrix(),
-            scene->GetCameraList()[0]->GetPosition()
-        );
+            scene->GetCameraList()[0]->GetPosition(),
+            0.f
+        });
     }
-
 
     glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
     glm::vec3 direction = {0.f, 1.f, 0.f};
-    lights[0]->UpdateUniformBlock(color, direction);
+    lightBlock.Update(lightUBO{
+        color, direction, 0
+    });
 
     for (size_t i = 0; i < meshes.size(); ++i) {
         for (const auto& tex : meshTextures[i]) {
@@ -109,24 +112,20 @@ void Renderer::CreateMesh()
 
 void Renderer::LinkViewportUniformBlock()
 {
-    for (auto& v : this->viewports) {
-        for (int i = 0; i < shaders.size(); ++i) {
-            GLuint blockIndex = shaders[i]->GetUniformBlockIndex("viewportUBO");
-            if (blockIndex != GL_INVALID_INDEX) {
-                v->LinkUniformBlock(*shaders[i], blockIndex);
-            }
+    for (int i = 0; i < shaders.size(); ++i) {
+        GLuint blockIndex = shaders[i]->GetUniformBlockIndex("viewportUBO");
+        if (blockIndex != GL_INVALID_INDEX) {
+            viewportBlock.LinkBlock(*shaders[i], blockIndex);
         }
     }
 }
 
 void Renderer::LinkLightUniformBlock()
 {
-    for (auto& l : this->lights) {
-        for (int i = 0; i < shaders.size(); ++i) {
-            GLuint blockIndex = shaders[i]->GetUniformBlockIndex("lightUBO");
-            if (blockIndex != GL_INVALID_INDEX) {
-                l->LinkUniformBlock(*shaders[i], blockIndex);
-            }
+    for (int i = 0; i < shaders.size(); ++i) {
+        GLuint blockIndex = shaders[i]->GetUniformBlockIndex("lightUBO");
+        if (blockIndex != GL_INVALID_INDEX) {
+            lightBlock.LinkBlock(*shaders[i], blockIndex);
         }
     }
 }
