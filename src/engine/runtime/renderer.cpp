@@ -26,6 +26,9 @@ void Renderer::DrawModels(int fbWidth, int fbHeight)
         );
     }
 
+    shaders[0]->UploadUni("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+    shaders[0]->UploadUni("lightDirection", glm::vec3(1.0f, 1.0f, 1.0f));
+
     for (size_t i = 0; i < meshes.size(); ++i) {
         for (const auto& tex : meshTextures[i]) {
             tex->Bind(static_cast<GLuint>(tex->GetType().type));
