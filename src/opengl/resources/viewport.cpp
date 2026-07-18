@@ -2,7 +2,6 @@
 
 Viewport::Viewport() : ubo(sizeof(viewportUBO), 0)
 {
-    // Intentionally left blank
 }
 
 // Resizes viewport only if the window size has changed 
@@ -31,5 +30,4 @@ void Viewport::UpdateUniformBlock(glm::mat4 matrix, glm::mat4 orientation, glm::
 
 Viewport::~Viewport()
 {
-    // Intentionally left blank
 }

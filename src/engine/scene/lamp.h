@@ -1,9 +1,9 @@
-#ifndef LIGHT_H
-#define LIGHT_H
+#ifndef LAMP_H
+#define LAMP_H
 
 #include "math/transform.h"
 
-class Light : private Transform {
+class Lamp : private Transform {
 public:
     using Transform::SetPosition;
     using Transform::AddPosition;
@@ -16,7 +16,7 @@ public:
     using Transform::GetLocalAxis;
     using Transform::GetForwardAxis;
 
-    Light(glm::vec3 color);
+    Lamp(glm::vec3 color);
     // Kind of pointless when shaders exist, but whatever.
     void ChangeColor(glm::vec3 color);
     glm::vec3 GetColor();

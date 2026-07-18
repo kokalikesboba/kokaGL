@@ -6,8 +6,9 @@
 #include "engine/scene/scene.h"
 #include "engine/runtime/texturepool.h"
 
-#include "opengl/resources/viewport.h"
 #include "opengl/resources/shader.h"
+#include "opengl/resources/viewport.h"
+#include "opengl/resources/light.h"
 #include "opengl/drawable/mesh.h"
 #include "opengl/drawable/billboard.h"
 #include "opengl/drawable/framebuffer.h"
@@ -31,6 +32,7 @@ private:
     void CreateMesh();
 
     void LinkViewportUniformBlock();
+    void LinkLightUniformBlock();
 
     const Scene* const scene;
 
@@ -42,7 +44,7 @@ private:
     std::vector<std::string> shaderNames;
     std::vector<std::unique_ptr<Shader>> shaders;
     std::vector<std::unique_ptr<Viewport>> viewports;
-
+    std::vector<std::unique_ptr<Light>> lights;
     std::vector<std::unique_ptr<Mesh>> meshes;
     std::vector<std::vector<std::shared_ptr<Texture>>> meshTextures;
     std::vector<std::unique_ptr<Gizmo>> gizmos;

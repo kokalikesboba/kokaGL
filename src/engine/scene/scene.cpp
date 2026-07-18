@@ -71,11 +71,6 @@ const std::vector<std::unique_ptr<Gizmo>>& Scene::GetGizmoList() const
     return gizmos;
 }
 
-const std::vector<std::unique_ptr<Light>>& Scene::GetLightList() const
-{
-    return lights;
-}
-
 Scene::~Scene()
 {
 }

@@ -43,6 +43,7 @@ CPP_SRCS = \
 	src/opengl/resources/texture.cpp \
 	src/opengl/resources/shader.cpp \
 	src/opengl/resources/viewport.cpp \
+	src/opengl/resources/light.cpp \
 	src/opengl/drawable/mesh.cpp \
 	src/opengl/drawable/billboard.cpp \
 	src/opengl/drawable/framebuffer.cpp \
@@ -54,7 +55,7 @@ CPP_SRCS = \
 	src/engine/runtime/renderer.cpp \
 	src/engine/scene/model.cpp \
 	src/engine/scene/gizmo.cpp \
-	src/engine/scene/light.cpp \
+	src/engine/scene/lamp.cpp \
 	src/engine/scene/scene.cpp \
 	src/engine/scene/camera.cpp \
 	src/main.cpp

@@ -13,6 +13,8 @@ scene(&scene)
     CreateViewport();
     CreateMesh();
     LinkViewportUniformBlock();
+    lights.emplace_back(std::make_unique<Light>());
+    LinkViewportUniformBlock();
 }
 
 void Renderer::DrawModels(int fbWidth, int fbHeight)
@@ -26,8 +28,10 @@ void Renderer::DrawModels(int fbWidth, int fbHeight)
         );
     }
 
-    shaders[0]->UploadUni("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-    shaders[0]->UploadUni("lightDirection", glm::vec3(1.0f, 1.0f, 1.0f));
+
+    glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
+    glm::vec3 direction = {0.f, 1.f, 0.f};
+    lights[0]->UpdateUniformBlock(color, direction);
 
     for (size_t i = 0; i < meshes.size(); ++i) {
         for (const auto& tex : meshTextures[i]) {
@@ -110,6 +114,18 @@ void Renderer::LinkViewportUniformBlock()
             GLuint blockIndex = shaders[i]->GetUniformBlockIndex("viewportUBO");
             if (blockIndex != GL_INVALID_INDEX) {
                 v->LinkUniformBlock(*shaders[i], blockIndex);
+            }
+        }
+    }
+}
+
+void Renderer::LinkLightUniformBlock()
+{
+    for (auto& l : this->lights) {
+        for (int i = 0; i < shaders.size(); ++i) {
+            GLuint blockIndex = shaders[i]->GetUniformBlockIndex("lightUBO");
+            if (blockIndex != GL_INVALID_INDEX) {
+                l->LinkUniformBlock(*shaders[i], blockIndex);
             }
         }
     }

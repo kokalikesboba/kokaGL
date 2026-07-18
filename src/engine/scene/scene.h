@@ -6,7 +6,7 @@
 #include "engine/scene/camera.h"
 #include "engine/scene/model.h"
 #include "engine/scene/gizmo.h"
-#include "engine/scene/light.h"
+#include "engine/scene/lamp.h"
 
 #include <fstream>
 #include <memory>
@@ -20,7 +20,7 @@ public:
     const std::vector<std::unique_ptr<Camera>>& GetCameraList() const;
     const std::vector<std::unique_ptr<Model>>& GetModelList() const;
     const std::vector<std::unique_ptr<Gizmo>>& GetGizmoList() const;
-    const std::vector<std::unique_ptr<Light>>& GetLightList() const;
+    const std::vector<std::unique_ptr<Lamp>>& GetLightList() const;
     ~Scene();
 private:
     void LoadCamera();
@@ -35,7 +35,7 @@ private:
     std::vector<std::unique_ptr<Camera>> cameras;
     std::vector<std::unique_ptr<Model>> models;
     std::vector<std::unique_ptr<Gizmo>> gizmos;
-    std::vector<std::unique_ptr<Light>> lights;
+    // std::vector<std::unique_ptr<Lamp>> lights;
 
 };
 
