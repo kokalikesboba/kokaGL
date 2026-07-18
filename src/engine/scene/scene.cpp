@@ -9,6 +9,7 @@ Scene::Scene(const std::string& manifestDir)
 void Scene::Reload()
 {
     cameras.clear();
+    lamps.clear();
     models.clear();
     gizmos.clear();
 
