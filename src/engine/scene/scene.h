@@ -18,13 +18,15 @@ public:
     void Reload();
     void SaveCurrentArrangement();
     const std::vector<std::unique_ptr<Camera>>& GetCameraList() const;
+    const std::vector<std::unique_ptr<Lamp>>& GetLampList() const;
     const std::vector<std::unique_ptr<Model>>& GetModelList() const;
     const std::vector<std::unique_ptr<Gizmo>>& GetGizmoList() const;
-    const std::vector<std::unique_ptr<Lamp>>& GetLightList() const;
     ~Scene();
 private:
-    void LoadCamera();
-    void LoadModel();
+    // TODO: Only one cameras supported
+    void LoadCameras();
+    void LoadLamps();
+    void LoadModels();
     void LoadGizmos();
 
     std::string manifestDir;
@@ -33,10 +35,9 @@ private:
     std::string imgDir;
 
     std::vector<std::unique_ptr<Camera>> cameras;
+    std::vector<std::unique_ptr<Lamp>> lamps;
     std::vector<std::unique_ptr<Model>> models;
     std::vector<std::unique_ptr<Gizmo>> gizmos;
-    // std::vector<std::unique_ptr<Lamp>> lights;
-
 };
 
 #endif

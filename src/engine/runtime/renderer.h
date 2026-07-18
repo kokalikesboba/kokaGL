@@ -21,20 +21,17 @@ struct viewportUBO {
 	float pad0;
 };
 
+struct Light {
+    glm::vec4 color     = glm::vec4(0.f);
+    glm::vec3 position  = glm::vec3(0.f);
+    unsigned int pad    = 0;
+    glm::vec3 direction = glm::vec3(0.f);
+    unsigned int type   = 0;
+};
+
 // Binding 1
 struct lightUBO {
-    glm::vec4 color0        = glm::vec4(0.f);
-    glm::vec3 direction0    = glm::vec3(0.f);
-    unsigned int pad0       = 0;
-    glm::vec4 color1        = glm::vec4(0.f);
-    glm::vec3 direction1    = glm::vec3(0.f);
-    unsigned int pad1       = 0;
-    glm::vec4 color2        = glm::vec4(0.f);
-    glm::vec3 direction2    = glm::vec3(0.f);
-    unsigned int pad2       = 0;
-    glm::vec4 color3        = glm::vec4(0.f);
-    glm::vec3 direction3    = glm::vec3(0.f);
-    unsigned int pad3       = 0;
+    Light lights[4];
 };
 
 enum class DrawMode {
@@ -48,7 +45,8 @@ enum class DrawMode {
 class Renderer {
 public:
     Renderer(const std::string& configDir, const Scene& scene);
-    void DrawModels(int fbWidth, int fbHeight);
+    void DrawModels();
+    void UpdateUniforms(int fbWidth, int fbHeight);
     ~Renderer();
 private:
     void CreateShaders();
@@ -57,6 +55,9 @@ private:
 
     void LinkViewportUniformBlock();
     void LinkLightUniformBlock();
+
+    void UpdateViewportUBO(int fbWidth, int fbHeight);
+    void UpdateLightUBO();
 
     const Scene* const scene;
 

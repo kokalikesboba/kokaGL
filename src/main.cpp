@@ -80,7 +80,8 @@ int main() {
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        renderer.DrawModels(window. GetFbWidth(), window.GetFbHeight());
+        renderer.UpdateUniforms(window.GetFbWidth(), window.GetFbHeight());
+        renderer.DrawModels();
 
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();

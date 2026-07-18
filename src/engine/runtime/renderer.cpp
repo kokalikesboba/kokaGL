@@ -15,27 +15,11 @@ lightBlock(sizeof(lightUBO), 1)
     CreateViewport();
     CreateMesh();
     LinkViewportUniformBlock();
-    LinkLightUniformBlock();
+    LinkLightUniformBlock();    
 }
 
-void Renderer::DrawModels(int fbWidth, int fbHeight)
+void Renderer::DrawModels()
 {
-    for (auto& v : viewports) {
-        v->Resize(fbWidth, fbHeight);
-        viewportBlock.Update(viewportUBO{
-            scene->GetCameraList()[0]->GetCameraMatrix(fbWidth, fbHeight),
-            scene->GetCameraList()[0]->GetRotationMatrix(),
-            scene->GetCameraList()[0]->GetPosition(),
-            0.f
-        });
-    }
-
-    glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
-    glm::vec3 direction = {0.f, 1.f, 0.f};
-    lightBlock.Update(lightUBO{
-        color, direction, 0
-    });
-
     for (size_t i = 0; i < meshes.size(); ++i) {
         for (const auto& tex : meshTextures[i]) {
             tex->Bind(static_cast<GLuint>(tex->GetType().type));
@@ -48,6 +32,13 @@ void Renderer::DrawModels(int fbWidth, int fbHeight)
             scene->GetModelList()[i]->GetScale()
         );
     }
+}
+
+void Renderer::UpdateUniforms(int fbWidth, int fbHeight)
+{
+    // TODO: To reiterate, only the targets the first camera in a scene.
+    UpdateViewportUBO(fbWidth, fbHeight);
+    UpdateLightUBO();
 }
 
 Renderer::~Renderer()
@@ -128,4 +119,38 @@ void Renderer::LinkLightUniformBlock()
             lightBlock.LinkBlock(*shaders[i], blockIndex);
         }
     }
+}
+
+void Renderer::UpdateViewportUBO(int fbWidth, int fbHeight)
+{
+    for (auto& v : viewports) {
+        v->Resize(fbWidth, fbHeight);
+        viewportBlock.Update(viewportUBO{
+            scene->GetCameraList()[0]->GetCameraMatrix(fbWidth, fbHeight),
+            scene->GetCameraList()[0]->GetRotationMatrix(),
+            scene->GetCameraList()[0]->GetPosition(),
+            0.f
+        });
+    }
+}
+
+void Renderer::UpdateLightUBO()
+{
+    int i = 0;
+    Light light[4];
+    for (const auto& entry : scene->GetLampList()) {
+        light[i] = {
+            entry->GetColor(),
+            entry->GetPosition(),
+            0,
+            entry->GetEulerRotation(),
+            0
+        };
+        ++i;
+    }
+    lightBlock.Update(light);
+    Light rb[4];
+    lightBlock.Bind();
+    glGetBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(rb), rb);
+    // breakpoint here — does rb[0].direction say (0,1,0)?
 }

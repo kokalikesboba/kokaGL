@@ -20,8 +20,9 @@ void Scene::Reload()
     modelDir = source.at("modelDir");
     imgDir = source.at("imgDir");
 
-    LoadCamera();
-    LoadModel();
+    LoadCameras();
+    LoadLamps();
+    LoadModels();
     LoadGizmos();
 }
 void Scene::SaveCurrentArrangement()
@@ -71,13 +72,17 @@ const std::vector<std::unique_ptr<Gizmo>>& Scene::GetGizmoList() const
     return gizmos;
 }
 
+const std::vector<std::unique_ptr<Lamp>> &Scene::GetLampList() const
+{
+    return lamps;
+}
+
 Scene::~Scene()
 {
 }
 
-void Scene::LoadCamera()
+void Scene::LoadCameras()
 {
-    // TODO: Only one cameras supported
     for (const auto& entry : source.at("camera")) {
         cameras.emplace_back(std::make_unique<Camera>());
         auto& p = entry.at("position");
@@ -87,7 +92,23 @@ void Scene::LoadCamera()
     }
 }
 
-void Scene::LoadModel()
+void Scene::LoadLamps()
+{
+
+    for (const auto& entry : source.at("lamps")) {
+        auto& l = lamps.emplace_back(std::make_unique<Lamp>());
+        auto& c = entry.at("color");
+        auto& p = entry.at("position");
+        auto& r = entry.at("rotation");
+        auto& t = entry.at("type");
+        l->SetColor({c[0], c[1], c[2], c[3]});
+        l->SetPosition({p[0], p[1], p[2]});
+        l->SetEulerRotation({r[0], r[1], r[2]});
+        l->SetType(t);
+    }
+}
+
+void Scene::LoadModels()
 {
     for (const auto& entry : source.at("models")) {
         auto& m = models.emplace_back(

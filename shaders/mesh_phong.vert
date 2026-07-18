@@ -11,11 +11,17 @@ layout (std140) uniform viewportUBO {
     vec3 viewportPosition;
 };
 
-layout (std140) uniform lightUBO {
-    vec4 color0;
-    vec3 direction0;
+struct Light {
+    vec4 color;
+    vec3 position;
+    int  pad;
+    vec3 direction;
+    int  type;
 };
 
+layout (std140) uniform lightUBO {
+    Light lights[4];
+};
 
 uniform mat4 modelMatrix;
 
