@@ -80,7 +80,7 @@ int main() {
 		glCullFace(GL_BACK);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        renderer.DrawModels(window.GetFbWidth(), window.GetFbHeight());
+        renderer.DrawModels(window. GetFbWidth(), window.GetFbHeight());
 
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();
@@ -90,6 +90,12 @@ int main() {
 		ImGui::Text("Window: %i, /  %i", (int)window.GetWidth(),(int)window.GetHeight());
 		glfwGetCursorPos(window.GetWindowPtr(), &cursorPosX, &cursorPosY);
 		ImGui::Text("Cursor Position X: %.i  Y: %.i", (int)cursorPosX, (int)cursorPosY);
+        if (ImGui::Button("Enable Fullscreen")) {
+            window.EnableFullscreen();
+        };
+        if (ImGui::Button("Disable Fullscreen")) {
+            window.DisableFullscreen();
+        }; 
 		ImGui::Separator();
 
 		ImGui::Text("FPS: %.2f",

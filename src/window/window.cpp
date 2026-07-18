@@ -60,6 +60,10 @@ Window::Window(unsigned int width, unsigned int height, const char *title, bool 
         glfwSetWindowIcon(windowPtr, 1, &icon);
         stbi_image_free(imgPixels);
     #endif
+
+    monitor = glfwGetPrimaryMonitor();
+    mode = glfwGetVideoMode(monitor);
+
 }
 
 void Window::MakeContextCurrent() const
@@ -82,6 +86,16 @@ void Window::PollEvents()
 void Window::RenameWindow(const char* title) const
 {
     glfwSetWindowTitle(windowPtr, title);
+}
+
+void Window::EnableFullscreen() const
+{
+    glfwSetWindowMonitor(windowPtr, monitor, 0, 0, width, height, GLFW_DONT_CARE); 
+}
+
+void Window::DisableFullscreen() const
+{
+    glfwSetWindowMonitor(windowPtr, NULL, 0, 0, width, height, GLFW_DONT_CARE); 
 }
 
 void Window::VerticalSync(bool state) const

@@ -25,6 +25,8 @@ public:
     void PollEvents();
     void VerticalSync(bool state) const;
     void RenameWindow(const char* title) const;
+    void EnableFullscreen() const;
+    void DisableFullscreen() const;
 
     bool ShouldClose() const;
     GLFWwindow* GetWindowPtr() const;
@@ -41,7 +43,10 @@ public:
     Window& operator=(const Window&) = delete;
     ~Window();
 private:
+    GLFWmonitor* monitor = nullptr;
+    const GLFWvidmode* mode = nullptr;
     GLFWwindow* windowPtr = nullptr;
+
     int width = 800;
     int height = 600;
 
