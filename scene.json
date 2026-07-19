@@ -1,33 +1,93 @@
 {
   "camera": [
     {
-      "position": [-13.0, 8.0, 13.0],
-      "rotation": [-12.0, 315.0, 0.0]
+      "position": [
+        -13.0,
+        8.0,
+        13.0
+      ],
+      "rotation": [
+        -12.0,
+        315.0,
+        0.0
+      ]
     }
   ],
   "lamps": [
     {
-      "color": [1.0, 0.0, 1.0, 1.0],
-      "position": [0.0, 6.0, 0.0],
-      "rotation": [90.0, 0.0, 0.0],
+      "color": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "position": [
+        0.0,
+        6.0,
+        0.0
+      ],
+      "rotation": [
+        90.0,
+        0.0,
+        0.0
+      ],
       "type": 1
     },
     {
-      "color": [0.0, 1.0, 1.0, 1.0],
-      "position": [8.0, 4.0, 8.0],
-      "rotation": [45.0, 225.0, 0.0],
+      "color": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "position": [
+        8.0,
+        4.0,
+        8.0
+      ],
+      "rotation": [
+        45.0,
+        225.0,
+        0.0
+      ],
       "type": 1
     },
     {
-      "color": [1.0, 0.6, 0.0, 1.0],
-      "position": [-8.0, 4.0, -8.0],
-      "rotation": [45.0, 45.0, 0.0],
+      "color": [
+        1.0,
+        0.6,
+        0.0,
+        1.0
+      ],
+      "position": [
+        -8.0,
+        4.0,
+        -8.0
+      ],
+      "rotation": [
+        45.0,
+        45.0,
+        0.0
+      ],
       "type": 1
     },
     {
-      "color": [0.2, 0.4, 1.0, 1.0],
-      "position": [0.0, 10.0, 0.0],
-      "rotation": [180.0, 0.0, 0.0],
+      "color": [
+        0.2,
+        0.4,
+        1.0,
+        1.0
+      ],
+      "position": [
+        0.0,
+        10.0,
+        0.0
+      ],
+      "rotation": [
+        180.0,
+        0.0,
+        0.0
+      ],
       "type": 1
     }
   ],
@@ -36,239 +96,1880 @@
   "models": [
     {
       "name": "plane.glb",
-      "position": [0.0, 0.0, 0.0],
-      "rotation": [0.0, 0.0, 0.0]
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
-
     {
       "name": "error.glb",
-      "position": [0.0, 3.2, 0.0],
-      "rotation": [0.0, 45.0, 0.0]
-    },
-
-    {
-      "name": "sword.glb",
-      "position": [4.0, 0.5, 0.0],
-      "rotation": [0.0, 45.0, 180.0]
-    },
-    {
-      "name": "sword.glb",
-      "position": [3.464, 0.95, 2.0],
-      "rotation": [0.0, 15.0, 180.0]
+      "position": [
+        0.0,
+        3.2,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        45.0,
+        0.0
+      ]
     },
     {
       "name": "sword.glb",
-      "position": [2.0, 1.4, 3.464],
-      "rotation": [0.0, -15.0, 180.0]
+      "position": [
+        4.0,
+        0.5,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        45.0,
+        180.0
+      ]
     },
     {
       "name": "sword.glb",
-      "position": [0.0, 1.85, 4.0],
-      "rotation": [0.0, -45.0, 180.0]
+      "position": [
+        3.464,
+        0.95,
+        2.0
+      ],
+      "rotation": [
+        0.0,
+        15.0,
+        180.0
+      ]
     },
     {
       "name": "sword.glb",
-      "position": [-2.0, 2.3, 3.464],
-      "rotation": [0.0, -75.0, 180.0]
+      "position": [
+        2.0,
+        1.4,
+        3.464
+      ],
+      "rotation": [
+        0.0,
+        -15.0,
+        180.0
+      ]
     },
     {
       "name": "sword.glb",
-      "position": [-3.464, 2.75, 2.0],
-      "rotation": [0.0, -105.0, 180.0]
+      "position": [
+        0.0,
+        1.85,
+        4.0
+      ],
+      "rotation": [
+        0.0,
+        -45.0,
+        180.0
+      ]
     },
     {
       "name": "sword.glb",
-      "position": [-4.0, 3.2, 0.0],
-      "rotation": [0.0, -135.0, 180.0]
+      "position": [
+        -2.0,
+        2.3,
+        3.464
+      ],
+      "rotation": [
+        0.0,
+        -75.0,
+        180.0
+      ]
     },
     {
       "name": "sword.glb",
-      "position": [-3.464, 3.65, -2.0],
-      "rotation": [0.0, -165.0, 180.0]
+      "position": [
+        -3.464,
+        2.75,
+        2.0
+      ],
+      "rotation": [
+        0.0,
+        -105.0,
+        180.0
+      ]
     },
     {
       "name": "sword.glb",
-      "position": [-2.0, 4.1, -3.464],
-      "rotation": [0.0, -195.0, 180.0]
+      "position": [
+        -4.0,
+        3.2,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -135.0,
+        180.0
+      ]
     },
     {
       "name": "sword.glb",
-      "position": [0.0, 4.55, -4.0],
-      "rotation": [0.0, -225.0, 180.0]
+      "position": [
+        -3.464,
+        3.65,
+        -2.0
+      ],
+      "rotation": [
+        0.0,
+        -165.0,
+        180.0
+      ]
     },
     {
       "name": "sword.glb",
-      "position": [2.0, 5.0, -3.464],
-      "rotation": [0.0, -255.0, 180.0]
+      "position": [
+        -2.0,
+        4.1,
+        -3.464
+      ],
+      "rotation": [
+        0.0,
+        -195.0,
+        180.0
+      ]
     },
     {
       "name": "sword.glb",
-      "position": [3.464, 5.45, -2.0],
-      "rotation": [0.0, -285.0, 180.0]
+      "position": [
+        -0.0,
+        4.55,
+        -4.0
+      ],
+      "rotation": [
+        0.0,
+        -225.0,
+        180.0
+      ]
     },
-
+    {
+      "name": "sword.glb",
+      "position": [
+        2.0,
+        5.0,
+        -3.464
+      ],
+      "rotation": [
+        0.0,
+        -255.0,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        3.464,
+        5.45,
+        -2.0
+      ],
+      "rotation": [
+        0.0,
+        -285.0,
+        180.0
+      ]
+    },
     {
       "name": "pointer.glb",
-      "position": [2.5, 1.0, 0.0],
-      "rotation": [45.0, 0.0, 0.0]
+      "position": [
+        2.5,
+        1.0,
+        0.0
+      ],
+      "rotation": [
+        45.0,
+        -0.0,
+        0.0
+      ]
     },
     {
       "name": "pointer.glb",
-      "position": [0.773, 1.0, 2.378],
-      "rotation": [45.0, -72.0, 0.0]
+      "position": [
+        0.773,
+        1.0,
+        2.378
+      ],
+      "rotation": [
+        45.0,
+        -72.0,
+        0.0
+      ]
     },
     {
       "name": "pointer.glb",
-      "position": [-2.023, 1.0, 1.469],
-      "rotation": [45.0, -144.0, 0.0]
+      "position": [
+        -2.023,
+        1.0,
+        1.469
+      ],
+      "rotation": [
+        45.0,
+        -144.0,
+        0.0
+      ]
     },
     {
       "name": "pointer.glb",
-      "position": [-2.023, 1.0, -1.469],
-      "rotation": [45.0, -216.0, 0.0]
+      "position": [
+        -2.023,
+        1.0,
+        -1.469
+      ],
+      "rotation": [
+        45.0,
+        -216.0,
+        0.0
+      ]
     },
     {
       "name": "pointer.glb",
-      "position": [0.773, 1.0, -2.378],
-      "rotation": [45.0, -288.0, 0.0]
-    },
-
-    {
-      "name": "chest.glb",
-      "position": [9.0, 0.1, 0.0],
-      "rotation": [0.0, -90.0, 0.0]
-    },
-    {
-      "name": "chest.glb",
-      "position": [4.5, 0.1, 7.794],
-      "rotation": [0.0, -150.0, 0.0]
+      "position": [
+        0.773,
+        1.0,
+        -2.378
+      ],
+      "rotation": [
+        45.0,
+        -288.0,
+        0.0
+      ]
     },
     {
       "name": "chest.glb",
-      "position": [-4.5, 0.1, 7.794],
-      "rotation": [0.0, -210.0, 0.0]
+      "position": [
+        9.0,
+        0.1,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -90.0,
+        0.0
+      ]
     },
     {
       "name": "chest.glb",
-      "position": [-9.0, 0.1, 0.0],
-      "rotation": [0.0, -270.0, 0.0]
+      "position": [
+        4.5,
+        0.1,
+        7.794
+      ],
+      "rotation": [
+        0.0,
+        -150.0,
+        0.0
+      ]
     },
     {
       "name": "chest.glb",
-      "position": [-4.5, 0.1, -7.794],
-      "rotation": [0.0, -330.0, 0.0]
+      "position": [
+        -4.5,
+        0.1,
+        7.794
+      ],
+      "rotation": [
+        0.0,
+        -210.0,
+        0.0
+      ]
     },
     {
       "name": "chest.glb",
-      "position": [4.5, 0.1, -7.794],
-      "rotation": [0.0, -30.0, 0.0]
-    },
-
-    {
-      "name": "sphere.glb",
-      "position": [6.5, 7.0, 0.0],
-      "rotation": [0.0, 0.0, 0.0]
-    },
-    {
-      "name": "sphere.glb",
-      "position": [4.596, 7.0, 4.596],
-      "rotation": [0.0, 0.0, 0.0]
+      "position": [
+        -9.0,
+        0.1,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -270.0,
+        0.0
+      ]
     },
     {
-      "name": "sphere.glb",
-      "position": [0.0, 7.0, 6.5],
-      "rotation": [0.0, 0.0, 0.0]
+      "name": "chest.glb",
+      "position": [
+        -4.5,
+        0.1,
+        -7.794
+      ],
+      "rotation": [
+        0.0,
+        -330.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        4.5,
+        0.1,
+        -7.794
+      ],
+      "rotation": [
+        0.0,
+        -390.0,
+        0.0
+      ]
     },
     {
       "name": "sphere.glb",
-      "position": [-4.596, 7.0, 4.596],
-      "rotation": [0.0, 0.0, 0.0]
+      "position": [
+        6.5,
+        7.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     {
       "name": "sphere.glb",
-      "position": [-6.5, 7.0, 0.0],
-      "rotation": [0.0, 0.0, 0.0]
+      "position": [
+        4.596,
+        7.0,
+        4.596
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     {
       "name": "sphere.glb",
-      "position": [-4.596, 7.0, -4.596],
-      "rotation": [0.0, 0.0, 0.0]
+      "position": [
+        0.0,
+        7.0,
+        6.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     {
       "name": "sphere.glb",
-      "position": [0.0, 7.0, -6.5],
-      "rotation": [0.0, 0.0, 0.0]
+      "position": [
+        -4.596,
+        7.0,
+        4.596
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     {
       "name": "sphere.glb",
-      "position": [4.596, 7.0, -4.596],
-      "rotation": [0.0, 0.0, 0.0]
+      "position": [
+        -6.5,
+        7.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
-
+    {
+      "name": "sphere.glb",
+      "position": [
+        -4.596,
+        7.0,
+        -4.596
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -0.0,
+        7.0,
+        -6.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        4.596,
+        7.0,
+        -4.596
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
     {
       "name": "icoStack.glb",
-      "position": [11.0, 0.1, 11.0],
-      "rotation": [0.0, 0.0, 0.0]
+      "position": [
+        11.0,
+        0.1,
+        11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     {
       "name": "icoStack.glb",
-      "position": [-11.0, 0.1, 11.0],
-      "rotation": [0.0, 90.0, 0.0]
+      "position": [
+        -11.0,
+        0.1,
+        11.0
+      ],
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ]
     },
     {
       "name": "icoStack.glb",
-      "position": [-11.0, 0.1, -11.0],
-      "rotation": [180.0, 20.0, 180.0]
+      "position": [
+        -11.0,
+        0.1,
+        -11.0
+      ],
+      "rotation": [
+        180.0,
+        20.0,
+        180.0
+      ]
     },
     {
       "name": "icoStack.glb",
-      "position": [11.0, 0.1, -11.0],
-      "rotation": [0.0, 270.0, 0.0]
+      "position": [
+        11.0,
+        0.1,
+        -11.0
+      ],
+      "rotation": [
+        0.0,
+        270.0,
+        0.0
+      ]
     },
-
     {
       "name": "cubeStack.glb",
-      "position": [7.0, 0.1, -4.0],
-      "rotation": [0.0, 15.0, 0.0]
+      "position": [
+        7.0,
+        0.1,
+        -4.0
+      ],
+      "rotation": [
+        0.0,
+        15.0,
+        0.0
+      ]
     },
     {
       "name": "cubeStack.glb",
-      "position": [-7.0, 0.1, 4.0],
-      "rotation": [0.0, 195.0, 0.0]
+      "position": [
+        -7.0,
+        0.1,
+        4.0
+      ],
+      "rotation": [
+        0.0,
+        195.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        12.0,
+        1.2,
+        0.0
+      ],
+      "rotation": [
+        15.0,
+        -0.0,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        11.087,
+        1.2,
+        4.592
+      ],
+      "rotation": [
+        -15.0,
+        -22.5,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        8.485,
+        1.2,
+        8.485
+      ],
+      "rotation": [
+        15.0,
+        -45.0,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        4.592,
+        1.2,
+        11.087
+      ],
+      "rotation": [
+        -15.0,
+        -67.5,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        0.0,
+        1.2,
+        12.0
+      ],
+      "rotation": [
+        15.0,
+        -90.0,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        -4.592,
+        1.2,
+        11.087
+      ],
+      "rotation": [
+        -15.0,
+        -112.5,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        -8.485,
+        1.2,
+        8.485
+      ],
+      "rotation": [
+        15.0,
+        -135.0,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        -11.087,
+        1.2,
+        4.592
+      ],
+      "rotation": [
+        -15.0,
+        -157.5,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        -12.0,
+        1.2,
+        0.0
+      ],
+      "rotation": [
+        15.0,
+        -180.0,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        -11.087,
+        1.2,
+        -4.592
+      ],
+      "rotation": [
+        -15.0,
+        -202.5,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        -8.485,
+        1.2,
+        -8.485
+      ],
+      "rotation": [
+        15.0,
+        -225.0,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        -4.592,
+        1.2,
+        -11.087
+      ],
+      "rotation": [
+        -15.0,
+        -247.5,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        -0.0,
+        1.2,
+        -12.0
+      ],
+      "rotation": [
+        15.0,
+        -270.0,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        4.592,
+        1.2,
+        -11.087
+      ],
+      "rotation": [
+        -15.0,
+        -292.5,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        8.485,
+        1.2,
+        -8.485
+      ],
+      "rotation": [
+        15.0,
+        -315.0,
+        180.0
+      ]
+    },
+    {
+      "name": "sword.glb",
+      "position": [
+        11.087,
+        1.2,
+        -4.592
+      ],
+      "rotation": [
+        -15.0,
+        -337.5,
+        180.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        9.176,
+        10.0,
+        2.459
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        6.718,
+        10.0,
+        6.718
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        2.459,
+        10.0,
+        9.176
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -2.459,
+        10.0,
+        9.176
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -6.718,
+        10.0,
+        6.718
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -9.176,
+        10.0,
+        2.459
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -9.176,
+        10.0,
+        -2.459
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -6.718,
+        10.0,
+        -6.718
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -2.459,
+        10.0,
+        -9.176
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        2.459,
+        10.0,
+        -9.176
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        6.718,
+        10.0,
+        -6.718
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        9.176,
+        10.0,
+        -2.459
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        11.0,
+        2.0,
+        11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        11.0,
+        3.4,
+        11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        11.0,
+        4.8,
+        11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        11.0,
+        6.199999999999999,
+        11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        11.0,
+        7.6,
+        11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -11.0,
+        2.0,
+        11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -11.0,
+        3.4,
+        11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -11.0,
+        4.8,
+        11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -11.0,
+        6.199999999999999,
+        11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -11.0,
+        7.6,
+        11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -11.0,
+        2.0,
+        -11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -11.0,
+        3.4,
+        -11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -11.0,
+        4.8,
+        -11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -11.0,
+        6.199999999999999,
+        -11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        -11.0,
+        7.6,
+        -11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        11.0,
+        2.0,
+        -11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        11.0,
+        3.4,
+        -11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        11.0,
+        4.8,
+        -11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        11.0,
+        6.199999999999999,
+        -11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sphere.glb",
+      "position": [
+        11.0,
+        7.6,
+        -11.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        13.523,
+        0.1,
+        3.623
+      ],
+      "rotation": [
+        0.0,
+        -105.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        9.899,
+        0.1,
+        9.899
+      ],
+      "rotation": [
+        0.0,
+        -135.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        3.623,
+        0.1,
+        13.523
+      ],
+      "rotation": [
+        0.0,
+        -165.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        -3.623,
+        0.1,
+        13.523
+      ],
+      "rotation": [
+        0.0,
+        -195.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        -9.899,
+        0.1,
+        9.899
+      ],
+      "rotation": [
+        0.0,
+        -225.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        -13.523,
+        0.1,
+        3.623
+      ],
+      "rotation": [
+        0.0,
+        -255.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        -13.523,
+        0.1,
+        -3.623
+      ],
+      "rotation": [
+        0.0,
+        -285.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        -9.899,
+        0.1,
+        -9.899
+      ],
+      "rotation": [
+        0.0,
+        -315.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        -3.623,
+        0.1,
+        -13.523
+      ],
+      "rotation": [
+        0.0,
+        -345.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        3.623,
+        0.1,
+        -13.523
+      ],
+      "rotation": [
+        0.0,
+        -375.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        9.899,
+        0.1,
+        -9.899
+      ],
+      "rotation": [
+        0.0,
+        -405.0,
+        0.0
+      ]
+    },
+    {
+      "name": "chest.glb",
+      "position": [
+        13.523,
+        0.1,
+        -3.623
+      ],
+      "rotation": [
+        0.0,
+        -435.0,
+        0.0
+      ]
+    },
+    {
+      "name": "pointer.glb",
+      "position": [
+        10.163,
+        0.8,
+        4.21
+      ],
+      "rotation": [
+        60.0,
+        -22.5,
+        0.0
+      ]
+    },
+    {
+      "name": "pointer.glb",
+      "position": [
+        4.21,
+        0.8,
+        10.163
+      ],
+      "rotation": [
+        60.0,
+        -67.5,
+        0.0
+      ]
+    },
+    {
+      "name": "pointer.glb",
+      "position": [
+        -4.21,
+        0.8,
+        10.163
+      ],
+      "rotation": [
+        60.0,
+        -112.5,
+        0.0
+      ]
+    },
+    {
+      "name": "pointer.glb",
+      "position": [
+        -10.163,
+        0.8,
+        4.21
+      ],
+      "rotation": [
+        60.0,
+        -157.5,
+        0.0
+      ]
+    },
+    {
+      "name": "pointer.glb",
+      "position": [
+        -10.163,
+        0.8,
+        -4.21
+      ],
+      "rotation": [
+        60.0,
+        -202.5,
+        0.0
+      ]
+    },
+    {
+      "name": "pointer.glb",
+      "position": [
+        -4.21,
+        0.8,
+        -10.163
+      ],
+      "rotation": [
+        60.0,
+        -247.5,
+        0.0
+      ]
+    },
+    {
+      "name": "pointer.glb",
+      "position": [
+        4.21,
+        0.8,
+        -10.163
+      ],
+      "rotation": [
+        60.0,
+        -292.5,
+        0.0
+      ]
+    },
+    {
+      "name": "pointer.glb",
+      "position": [
+        10.163,
+        0.8,
+        -4.21
+      ],
+      "rotation": [
+        60.0,
+        -337.5,
+        0.0
+      ]
+    },
+    {
+      "name": "error.glb",
+      "position": [
+        3.889,
+        5.0,
+        3.889
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "error.glb",
+      "position": [
+        -3.889,
+        5.0,
+        3.889
+      ],
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ]
+    },
+    {
+      "name": "error.glb",
+      "position": [
+        -3.889,
+        5.0,
+        -3.889
+      ],
+      "rotation": [
+        0.0,
+        180.0,
+        0.0
+      ]
+    },
+    {
+      "name": "error.glb",
+      "position": [
+        3.889,
+        5.0,
+        -3.889
+      ],
+      "rotation": [
+        0.0,
+        270.0,
+        0.0
+      ]
+    },
+    {
+      "name": "cubeStack.glb",
+      "position": [
+        16.424,
+        0.1,
+        -3.32
+      ],
+      "rotation": [
+        0.0,
+        184.3,
+        0.0
+      ]
+    },
+    {
+      "name": "cubeStack.glb",
+      "position": [
+        8.857,
+        0.1,
+        13.032
+      ],
+      "rotation": [
+        0.0,
+        80.4,
+        0.0
+      ]
+    },
+    {
+      "name": "cubeStack.glb",
+      "position": [
+        -0.893,
+        0.1,
+        16.868
+      ],
+      "rotation": [
+        0.0,
+        282.0,
+        0.0
+      ]
+    },
+    {
+      "name": "cubeStack.glb",
+      "position": [
+        -12.554,
+        0.1,
+        11.941
+      ],
+      "rotation": [
+        0.0,
+        276.5,
+        0.0
+      ]
+    },
+    {
+      "name": "cubeStack.glb",
+      "position": [
+        -16.82,
+        0.1,
+        -2.224
+      ],
+      "rotation": [
+        0.0,
+        86.4,
+        0.0
+      ]
+    },
+    {
+      "name": "cubeStack.glb",
+      "position": [
+        -10.469,
+        0.1,
+        -11.803
+      ],
+      "rotation": [
+        0.0,
+        294.0,
+        0.0
+      ]
+    },
+    {
+      "name": "cubeStack.glb",
+      "position": [
+        -0.462,
+        0.1,
+        -17.531
+      ],
+      "rotation": [
+        0.0,
+        246.7,
+        0.0
+      ]
+    },
+    {
+      "name": "cubeStack.glb",
+      "position": [
+        12.345,
+        0.1,
+        -10.219
+      ],
+      "rotation": [
+        0.0,
+        90.5,
+        0.0
+      ]
+    },
+    {
+      "name": "icoStack.glb",
+      "position": [
+        17.0,
+        0.1,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "icoStack.glb",
+      "position": [
+        12.021,
+        0.1,
+        12.021
+      ],
+      "rotation": [
+        180.0,
+        45.0,
+        180.0
+      ]
+    },
+    {
+      "name": "icoStack.glb",
+      "position": [
+        0.0,
+        0.1,
+        17.0
+      ],
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ]
+    },
+    {
+      "name": "icoStack.glb",
+      "position": [
+        -12.021,
+        0.1,
+        12.021
+      ],
+      "rotation": [
+        180.0,
+        135.0,
+        180.0
+      ]
+    },
+    {
+      "name": "icoStack.glb",
+      "position": [
+        -17.0,
+        0.1,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        180.0,
+        0.0
+      ]
+    },
+    {
+      "name": "icoStack.glb",
+      "position": [
+        -12.021,
+        0.1,
+        -12.021
+      ],
+      "rotation": [
+        180.0,
+        225.0,
+        180.0
+      ]
+    },
+    {
+      "name": "icoStack.glb",
+      "position": [
+        -0.0,
+        0.1,
+        -17.0
+      ],
+      "rotation": [
+        0.0,
+        270.0,
+        0.0
+      ]
+    },
+    {
+      "name": "icoStack.glb",
+      "position": [
+        12.021,
+        0.1,
+        -12.021
+      ],
+      "rotation": [
+        180.0,
+        315.0,
+        180.0
+      ]
     }
   ],
   "gizmos": [
     {
       "name": "buge.png",
-      "position": [0.0, 9.0, 0.0]
+      "position": [
+        0.0,
+        9.0,
+        0.0
+      ]
     },
     {
       "name": "marz_boub.png",
-      "position": [-5.0, 5.0, 5.0]
+      "position": [
+        -5.0,
+        5.0,
+        5.0
+      ]
     },
     {
       "name": "marz_bread.png",
-      "position": [5.0, 5.0, 5.0]
+      "position": [
+        5.0,
+        5.0,
+        5.0
+      ]
     },
     {
       "name": "marz_boudle.png",
-      "position": [-5.0, 5.0, -5.0]
+      "position": [
+        -5.0,
+        5.0,
+        -5.0
+      ]
     },
     {
       "name": "sammy_pixelvap.png",
-      "position": [5.0, 5.0, -5.0]
+      "position": [
+        5.0,
+        5.0,
+        -5.0
+      ]
     },
     {
       "name": "sammy_stoneandores.png",
-      "position": [0.0, 2.0, 8.0]
+      "position": [
+        0.0,
+        2.0,
+        8.0
+      ]
     },
     {
       "name": "sammy_stone.png",
-      "position": [0.0, 2.0, -8.0]
+      "position": [
+        0.0,
+        2.0,
+        -8.0
+      ]
     },
     {
       "name": "images.jpeg",
-      "position": [0.0, 11.0, 0.0]
+      "position": [
+        0.0,
+        11.0,
+        0.0
+      ]
+    },
+    {
+      "name": "buge.png",
+      "position": [
+        7.356,
+        4.0,
+        1.463
+      ]
+    },
+    {
+      "name": "marz_boub.png",
+      "position": [
+        6.236,
+        4.0,
+        4.167
+      ]
+    },
+    {
+      "name": "marz_bread.png",
+      "position": [
+        4.167,
+        4.0,
+        6.236
+      ]
+    },
+    {
+      "name": "marz_boudle.png",
+      "position": [
+        1.463,
+        4.0,
+        7.356
+      ]
+    },
+    {
+      "name": "sammy_pixelvap.png",
+      "position": [
+        -1.463,
+        4.0,
+        7.356
+      ]
+    },
+    {
+      "name": "sammy_stoneandores.png",
+      "position": [
+        -4.167,
+        4.0,
+        6.236
+      ]
+    },
+    {
+      "name": "sammy_stone.png",
+      "position": [
+        -6.236,
+        4.0,
+        4.167
+      ]
+    },
+    {
+      "name": "wood.jpg",
+      "position": [
+        -7.356,
+        4.0,
+        1.463
+      ]
+    },
+    {
+      "name": "buge.png",
+      "position": [
+        -7.356,
+        4.0,
+        -1.463
+      ]
+    },
+    {
+      "name": "marz_boub.png",
+      "position": [
+        -6.236,
+        4.0,
+        -4.167
+      ]
+    },
+    {
+      "name": "marz_bread.png",
+      "position": [
+        -4.167,
+        4.0,
+        -6.236
+      ]
+    },
+    {
+      "name": "marz_boudle.png",
+      "position": [
+        -1.463,
+        4.0,
+        -7.356
+      ]
+    },
+    {
+      "name": "sammy_pixelvap.png",
+      "position": [
+        1.463,
+        4.0,
+        -7.356
+      ]
+    },
+    {
+      "name": "sammy_stoneandores.png",
+      "position": [
+        4.167,
+        4.0,
+        -6.236
+      ]
+    },
+    {
+      "name": "sammy_stone.png",
+      "position": [
+        6.236,
+        4.0,
+        -4.167
+      ]
+    },
+    {
+      "name": "wood.jpg",
+      "position": [
+        7.356,
+        4.0,
+        -1.463
+      ]
+    },
+    {
+      "name": "buge.png",
+      "position": [
+        0.0,
+        12.5,
+        0.0
+      ]
+    },
+    {
+      "name": "buge.png",
+      "position": [
+        0.0,
+        13.7,
+        0.0
+      ]
+    },
+    {
+      "name": "buge.png",
+      "position": [
+        0.0,
+        14.9,
+        0.0
+      ]
+    },
+    {
+      "name": "buge.png",
+      "position": [
+        0.0,
+        16.1,
+        0.0
+      ]
     }
   ]
 }

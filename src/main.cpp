@@ -62,17 +62,41 @@ int main() {
 	float farPlane = 40.f;
 	float fov = 70.f;
     auto& camera = scene.GetCameraList();
+
+    auto& models = scene.GetModelList();
+
+    camera[0]->SetPosition({-2.74, 7.36, 12.33});
+    camera[0]->SetEulerRotation({-9.19f, -4.26f, 0.f});
 	
 	while (!window.ShouldClose())
 	{
-		// gizmo.SetScale(2.f * glm::vec3(0.05f * cos(0.005f * framepacer.GetDeltaTime()) + 1.f));
-		// glm::vec3 orbitCenter = {0.f, 1.f, 3.f};
-		// float angle = 0.005f * framepacer.GetTime();
-		// gizmo.SetPosition(orbitCenter + glm::vec3(sin(angle), 0.f, cos(angle)));
 
 		window.PollEvents();
 		input.Update(*camera[0], framepacer.GetDeltaTime());
 		framepacer.Start();
+
+
+        float t = static_cast<float>(glfwGetTime());
+        auto& _m = scene.GetModelList();
+
+        // error god bob + spin
+        _m[1]->SetEulerRotation({0.f, 3.2f + 0.4f * std::sin(3.14159f * t), 0.f});
+        _m[1]->SetEulerRotation({0.f, 45.f + 60.f * t, 0.f});
+
+        // sword helix
+        for (int i = 0; i < 12; ++i) {
+            float a = (30.f * i + 25.f * t) * 0.0174533f;
+            _m[2 + i]->SetEulerRotation({4.f * std::cos(a), 0.5f + 0.45f * i, 4.f * std::sin(a)});
+            _m[2 + i]->SetEulerRotation({0.f, 45.f - 30.f * i - 25.f * t, 180.f});
+        }
+
+        // sphere halo, counter-rotating + ripple
+        for (int i = 0; i < 8; ++i) {
+            float a = (45.f * i - 40.f * t) * 0.0174533f;
+            _m[25 + i]->SetPosition({6.5f * std::cos(a),
+            7.f + 0.3f * std::sin(2.f * t + 0.8f * i),
+            6.5f * std::sin(a)});
+        }
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
