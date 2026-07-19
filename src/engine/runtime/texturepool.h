@@ -1,7 +1,7 @@
 #ifndef TEXTUREPOOL_H
 #define TEXTUREPOOL_H
 
-#include "engine/formats/rendererformat.hpp"
+#include "formats/rendererformat.hpp"
 
 #include "opengl/resources/texture.h"
 

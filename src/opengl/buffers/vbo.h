@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <glad/glad.h>
 
-#include "engine/formats/rendererformat.hpp"
+#include "formats/rendererformat.hpp"
 
 #include <vector>
 #include <iostream>
