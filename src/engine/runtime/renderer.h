@@ -48,7 +48,7 @@ struct MeshEntry {
     std::vector<std::shared_ptr<Texture>> textures;
 };
 struct BillboardEntry {
-    const Gizmo* gizmo;   // scene-owned; supplies the position at draw time
+    const Gizmo* gizmo;
     std::unique_ptr<Billboard> billboard;
     std::shared_ptr<Texture> texture;
 };
@@ -58,8 +58,6 @@ public:
     Renderer(const std::string& configDir, const Scene& scene);
     void DrawModels();
     void DrawGizmo();
-    // Call after Scene::Reload(): drops the old drawables (freeing unused
-    // pooled textures) and rebuilds them from the reloaded scene objects.
     void RebuildScene();
     void UpdateUniforms(int fbWidth, int fbHeight);
     ~Renderer();

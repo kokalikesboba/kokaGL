@@ -24,8 +24,6 @@ void Renderer::DrawModels()
 {
     Shader& shader = GetShaderByName("mesh_phong");
     for (const auto& entry : meshes) {
-        // TexType doubles as the texture unit (BaseColor -> 0, etc.),
-        // which matches the sampler defaults in the shaders.
         for (const auto& tex : entry.textures) {
             tex->Bind(static_cast<GLuint>(tex->GetType().type));
         }
@@ -102,9 +100,6 @@ void Renderer::CreateMesh()
                 renderData.vertices,
                 renderData.indices
             );
-
-            // Resolve each TextureData through the pool: duplicates dedupe
-            // by hash, and the resulting shared_ptrs live with this entry.
             entry.textures.reserve(renderData.texData.size());
             for (const auto& td : renderData.texData) {
                 entry.textures.push_back(texturePool.GetOrAdd(td));
@@ -183,8 +178,4 @@ void Renderer::UpdateLightUBO()
         ++i;
     }
     lightBlock.Update(light);
-    Light rb[4];
-    lightBlock.Bind();
-    glGetBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(rb), rb);
-    // breakpoint here — does rb[0].direction say (0,1,0)?
 }
