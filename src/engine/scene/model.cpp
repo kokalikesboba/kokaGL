@@ -19,7 +19,7 @@ const std::vector<unsigned int>* Model::GetIndices() const
     return &meshData[0].indices;
 }
 
-const std::vector<RenderFormat::TextureData>* Model::GetTexInfo() const
+const std::vector<RenderFormat::TextureData>* Model::GetTexData() const
 {
-    return &meshData[0].texInfo;
+    return &meshData[0].texData;
 }

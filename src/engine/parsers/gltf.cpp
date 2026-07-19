@@ -129,7 +129,7 @@ ParseGLTF::ParseGLTF(const std::string& modelDir) {
                 LoadShameTexture();
                 continue;
             }
-            std::vector<unsigned char> pixels(png.data, png.data + png.width * png.height * 4);
+            std::vector<unsigned char> bytes(png.data, png.data + png.width * png.height * 4);
 
             texData.push_back(
                 {
@@ -137,7 +137,7 @@ ParseGLTF::ParseGLTF(const std::string& modelDir) {
                     png.height,
                     png.hash,
                     TexType::BaseColor,
-                    pixels
+                    bytes
                 }
             );            
         } else {

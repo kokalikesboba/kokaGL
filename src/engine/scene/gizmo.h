@@ -17,7 +17,7 @@ public:
     using Transform::GetScale;
 
     Gizmo(const std::string& imgDir);
-    const RenderFormat::TextureData* GetTexInfo() const;
+    const RenderFormat::TextureData* GetTexData() const;
 private:
     RenderFormat::TextureData textureData;
 };

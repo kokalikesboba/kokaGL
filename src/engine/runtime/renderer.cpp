@@ -42,7 +42,7 @@ void Renderer::DrawGizmo()
 {
     for (size_t i = 0; i < billboards.size(); ++i) {
 
-        std::cout << scene->GetGizmoList()[i]->GetTexInfo()->hash << std::endl;
+        std::cout << scene->GetGizmoList()[i]->GetTexData()->hash << std::endl;
 
         billboards[i]->Draw(
             *shaders[0],
@@ -93,7 +93,7 @@ void Renderer::CreateMesh()
         ));
 
         std::vector<std::shared_ptr<Texture>> texs;
-        const auto& texData = *m->GetTexInfo();   // vector of TextureData
+        const auto& texData = *m->GetTexData();   // vector of TextureData
         texs.reserve(texData.size());
         for (const auto& td : texData) {
             texs.push_back(texturePool.GetOrAdd(td));   // whole struct, one per slot
@@ -110,7 +110,7 @@ void Renderer::CreateGizmo()
         );
 
         textures.push_back(
-            texturePool.GetOrAdd(*g->GetTexInfo())
+            texturePool.GetOrAdd(*g->GetTexData())
         );
     }
 }

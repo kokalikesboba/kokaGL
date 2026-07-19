@@ -12,7 +12,7 @@ Gizmo::Gizmo(const std::string& imgDir)
     textureData.bytes.assign(png.data, png.data + (png.width * png.height * 4));
 }
 
-    const RenderFormat::TextureData *Gizmo::GetTexInfo() const
+const RenderFormat::TextureData *Gizmo::GetTexData() const
 {
     return &textureData;
 }

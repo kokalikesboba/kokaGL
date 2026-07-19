@@ -7,7 +7,7 @@
 struct ModelRenderData {
     std::vector<RenderFormat::PNCUVertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<RenderFormat::TextureData> texInfo;
+    std::vector<RenderFormat::TextureData> texData;
 };
 
 class Model : public Transform {
@@ -15,7 +15,7 @@ public:
     Model(const std::string& modelDir);
     const std::vector<RenderFormat::PNCUVertex>* GetVertices() const;
     const std::vector<unsigned int>* GetIndices() const;
-    const std::vector<RenderFormat::TextureData>* GetTexInfo() const;
+    const std::vector<RenderFormat::TextureData>* GetTexData() const;
 private:
     std::vector<ModelRenderData> meshData;
 };

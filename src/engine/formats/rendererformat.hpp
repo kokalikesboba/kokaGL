@@ -37,7 +37,7 @@ namespace RenderFormat {
     };
 
     // Default missing texture.
-    inline std::vector<unsigned char> fallbackPixels = {
+    inline std::vector<unsigned char> fallbackBytes = {
         227, 66, 107, 255,  
         66, 94, 135, 255,
         66, 94, 135, 255,

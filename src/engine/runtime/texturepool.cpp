@@ -4,7 +4,7 @@ TexturePool::TexturePool()
 {
 	// Initializes the black and magenta fallback texture.
     errorTex = std::make_shared<Texture>();
-	errorTex->GenRGBATexture(RenderFormat::TexType::BaseColor, RenderFormat::fallbackPixels.data(), 2, 2);
+	errorTex->GenRGBATexture(RenderFormat::TexType::BaseColor, RenderFormat::fallbackBytes.data(), 2, 2);
 	cache.insert({0, errorTex});
 }
 
