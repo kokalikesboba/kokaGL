@@ -5,16 +5,14 @@
 Gizmo::Gizmo(const std::string& imgDir)
 {
     ParsePNG png(imgDir);
-    if (png.data != nullptr) {
-        data.assign(png.data, png.data + static_cast<size_t>(png.width) * png.height * 4);
-        width = png.width;
-        height = png.height;
-    } else {
-        std::cerr << "[WARN][Gizmo] No pixel data for: " << imgDir << std::endl;
-    }
+    textureData.width = png.width;
+    textureData.height = png.height;
+    // TODO: missing texturepool integration;
+    textureData.hash = 0;
+    textureData.bytes.assign(png.data, png.data + (png.width * png.height * 4));
 }
 
-const unsigned char* Gizmo::GetTexData() const
+    const RenderFormat::TextureData *Gizmo::GetTexInfo() const
 {
-    return data.empty() ? nullptr : data.data();
+    return &textureData;
 }

@@ -2,10 +2,7 @@
 
 using RenderFormat::PNUVertex;
 
-Billboard::Billboard (
-    Texture* texture)
-    :
-    texture(texture),
+Billboard::Billboard () :
     vbo(squareVerts),
     ebo(squareIndices)
 {
@@ -24,7 +21,6 @@ void Billboard::Draw(
     vao.Bind();
     ebo.Bind();
     shader.Activate();
-    this->texture->Bind(0);
 
     glm::mat4 translationMatrix = glm::mat4(1.0f);
     translationMatrix = glm::translate(translationMatrix, position);

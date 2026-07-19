@@ -36,6 +36,15 @@ namespace RenderFormat {
         std::vector<unsigned char> bytes;
     };
 
+    // Default missing texture.
+    inline std::vector<unsigned char> fallbackPixels = {
+        227, 66, 107, 255,  
+        66, 94, 135, 255,
+        66, 94, 135, 255,
+        227, 66, 107, 255
+    };
+
+    // Default missing cube vertices
     inline const std::vector<PNCUVertex> errorVertices = {
         // position              // normal           // color (magenta)    // uv
         // Front
@@ -70,6 +79,7 @@ namespace RenderFormat {
         {{ 0.5f, -0.5f,  0.5f}, { 0.f, -1.f,  0.f}, {1.f, 0.f, 1.f}, {1.f, 1.f}},
     };
 
+    // Default missing cube indices
     inline const std::vector<unsigned int> errorIndices = {
         0,  1,  2,   0,  2,  3,  // front
         4,  6,  5,   4,  7,  6,  // back

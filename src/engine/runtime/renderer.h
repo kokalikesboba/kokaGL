@@ -21,7 +21,7 @@ struct viewportUBO {
 	float pad0;
 };
 
-struct Light {
+    struct Light {
     glm::vec4 color     = glm::vec4(0.f);
     glm::vec3 position  = glm::vec3(0.f);
     unsigned int pad    = 0;
@@ -45,13 +45,15 @@ enum class DrawMode {
 class Renderer {
 public:
     Renderer(const std::string& configDir, const Scene& scene);
-    void DrawModels();
+    //void DrawModels();
+    void DrawGizmo();
     void UpdateUniforms(int fbWidth, int fbHeight);
     ~Renderer();
 private:
     void CreateShaders();
     void CreateViewport();
-    void CreateMesh();
+    //void CreateMesh();
+    void CreateGizmo();
 
     void LinkViewportUniformBlock();
     void LinkLightUniformBlock();
@@ -64,16 +66,20 @@ private:
     nlohmann::ordered_json source;
     std::string shaderDir;
 
-    TexturePool texturePool;
     UBO viewportBlock;
     UBO lightBlock;
 
     std::vector<std::string> shaderNames;
     std::vector<std::unique_ptr<Shader>> shaders;
     std::vector<std::unique_ptr<Viewport>> viewports;
+
+    TexturePool texturePool;
+    std::vector<std::shared_ptr<Texture>> textures;
+
     std::vector<std::unique_ptr<Mesh>> meshes;
-    std::vector<std::vector<std::shared_ptr<Texture>>> meshTextures;
-    std::vector<std::unique_ptr<Gizmo>> gizmos;
+    std::vector<std::unique_ptr<Billboard>> billboards;
+
+
 };
 
 #endif

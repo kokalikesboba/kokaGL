@@ -2,6 +2,7 @@
 #define PNG_H
 
 #include "stb/stb_img.h"
+#include "math/hash.hpp"
 
 #include <string>
 
@@ -14,6 +15,7 @@ public:
     ParsePNG& operator=(const ParsePNG&) = delete;
     unsigned char* data;
     int width, height;
+    unsigned int hash;
 };
 
 #endif

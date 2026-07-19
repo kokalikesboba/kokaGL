@@ -27,9 +27,7 @@ inline std::vector<unsigned int> squareIndices = {
 class Billboard {
 public:
     // Constructor Intakes raw image bytes and uploads it to the GPU
-    Billboard(
-        Texture* texture
-    );
+    Billboard();
     void Draw(
         Shader& shader,
         const glm::vec3& position = {0.f, 0.f, 0.f},
@@ -42,8 +40,6 @@ private:
     VAO vao; 
     VBO vbo;
     EBO ebo;
-
-    Texture* texture;
 };
 
 #endif

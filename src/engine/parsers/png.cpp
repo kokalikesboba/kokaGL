@@ -13,8 +13,11 @@ ParsePNG::ParsePNG(const std::string &pngDir)
     if (data == nullptr) {
         width = 0;
         height = 0;
+        hash = 0;
         std::cerr << "[WARN][ParsePNG] Failed to decode PNG file: " << pngDir << std::endl;
     }
+
+    hash = Hash::djb2(data, static_cast<size_t>(width) * height * 4);
 }
 
 ParsePNG::ParsePNG(const unsigned char *pngData, const int dataLength)
@@ -28,8 +31,11 @@ ParsePNG::ParsePNG(const unsigned char *pngData, const int dataLength)
     if (data == nullptr) {
         width = 0;
         height = 0;
+        hash = 0;
         std::cerr << "[WARN][ParsePNG] Failed to decode PNG from memory (" << dataLength << " bytes)" << std::endl;
     }
+    
+    hash = Hash::djb2(data, static_cast<size_t>(width) * height * 4);
 }
 
 ParsePNG::~ParsePNG()

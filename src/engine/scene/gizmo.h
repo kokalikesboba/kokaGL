@@ -1,6 +1,7 @@
 #ifndef GIZMO_H
 #define GIZMO_H
 
+#include "engine/formats/rendererformat.hpp"
 #include "math/transform.h"
 #include "engine/parsers/png.h"
 
@@ -16,9 +17,8 @@ public:
     using Transform::GetScale;
 
     Gizmo(const std::string& imgDir);
-    const unsigned char* GetTexData() const;
+    const RenderFormat::TextureData* GetTexInfo() const;
 private:
-    std::vector<unsigned char> data;
-    int width = 0, height = 0;
+    RenderFormat::TextureData textureData;
 };
 #endif

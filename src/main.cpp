@@ -81,7 +81,8 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         renderer.UpdateUniforms(window.GetFbWidth(), window.GetFbHeight());
-        renderer.DrawModels();
+        //renderer.DrawModels();
+        renderer.DrawGizmo();
 
 		ImGui_ImplOpenGL3_NewFrame(); 
 		ImGui_ImplGlfw_NewFrame();

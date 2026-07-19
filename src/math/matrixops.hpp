@@ -1,5 +1,5 @@
-#ifndef MATRIXOPS_H
-#define MATRIXOPS_H
+#ifndef MATRIXOPS_HPP
+#define MATRIXOPS_HPP
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"

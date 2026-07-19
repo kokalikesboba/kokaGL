@@ -2,13 +2,6 @@
 
 using namespace RenderFormat;
 
-unsigned int hash(const std::vector<unsigned char>& data) {
-    unsigned int h = 5381;
-    for (size_t i = 0; i < data.size(); ++i)
-        h = h * 31 + data[i];
-    return h;
-}
-
 void ParseGLTF::LoadShameTexture() {
     texData.push_back(
         {
@@ -142,7 +135,7 @@ ParseGLTF::ParseGLTF(const std::string& modelDir) {
                 {
                     png.width,
                     png.height,
-                    hash(pixels),
+                    png.hash,
                     TexType::BaseColor,
                     pixels
                 }
