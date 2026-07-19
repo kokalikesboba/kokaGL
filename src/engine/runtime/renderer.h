@@ -42,21 +42,37 @@ enum class DrawMode {
     Mesh_On_Top
 };
 
+struct MeshEntry {
+    const Model* model;
+    std::unique_ptr<Mesh> mesh;
+    std::vector<std::shared_ptr<Texture>> textures;
+};
+struct BillboardEntry {
+    const Gizmo* gizmo;   // scene-owned; supplies the position at draw time
+    std::unique_ptr<Billboard> billboard;
+    std::shared_ptr<Texture> texture;
+};
+    
 class Renderer {
 public:
     Renderer(const std::string& configDir, const Scene& scene);
-    //void DrawModels();
+    void DrawModels();
     void DrawGizmo();
+    // Call after Scene::Reload(): drops the old drawables (freeing unused
+    // pooled textures) and rebuilds them from the reloaded scene objects.
+    void RebuildScene();
     void UpdateUniforms(int fbWidth, int fbHeight);
     ~Renderer();
 private:
     void CreateShaders();
     void CreateViewport();
-    //void CreateMesh();
+    void CreateMesh();
     void CreateGizmo();
 
     void LinkViewportUniformBlock();
     void LinkLightUniformBlock();
+
+    Shader& GetShaderByName(const std::string& name);
 
     void UpdateViewportUBO(int fbWidth, int fbHeight);
     void UpdateLightUBO();
@@ -74,10 +90,8 @@ private:
     std::vector<std::unique_ptr<Viewport>> viewports;
 
     TexturePool texturePool;
-    std::vector<std::shared_ptr<Texture>> textures;
-
-    std::vector<std::unique_ptr<Mesh>> meshes;
-    std::vector<std::unique_ptr<Billboard>> billboards;
+    std::vector<MeshEntry> meshes;
+    std::vector<BillboardEntry> billboards;
 
 
 };

@@ -15,6 +15,7 @@ ParsePNG::ParsePNG(const std::string &pngDir)
         height = 0;
         hash = 0;
         std::cerr << "[WARN][ParsePNG] Failed to decode PNG file: " << pngDir << std::endl;
+        return; // keep hash at 0 so the pool serves the fallback texture
     }
 
     hash = Hash::djb2(data, static_cast<size_t>(width) * height * 4);
@@ -33,8 +34,9 @@ ParsePNG::ParsePNG(const unsigned char *pngData, const int dataLength)
         height = 0;
         hash = 0;
         std::cerr << "[WARN][ParsePNG] Failed to decode PNG from memory (" << dataLength << " bytes)" << std::endl;
+        return; // keep hash at 0 so the pool serves the fallback texture
     }
-    
+
     hash = Hash::djb2(data, static_cast<size_t>(width) * height * 4);
 }
 

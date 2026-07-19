@@ -13,9 +13,7 @@ struct ModelRenderData {
 class Model : public Transform {
 public:
     Model(const std::string& modelDir);
-    const std::vector<RenderFormat::PNCUVertex>* GetVertices() const;
-    const std::vector<unsigned int>* GetIndices() const;
-    const std::vector<RenderFormat::TextureData>* GetTexData() const;
+    const std::vector<ModelRenderData>* GetModelRenderData() const;
 private:
     std::vector<ModelRenderData> meshData;
 };

@@ -9,17 +9,7 @@ Model::Model(const std::string& modelDir)
         std::move(parsed.texData)
     });
 }
-const std::vector<RenderFormat::PNCUVertex>* Model::GetVertices() const
+const std::vector<ModelRenderData>* Model::GetModelRenderData() const
 {
-    return &meshData[0].vertices;
-}
-
-const std::vector<unsigned int>* Model::GetIndices() const
-{
-    return &meshData[0].indices;
-}
-
-const std::vector<RenderFormat::TextureData>* Model::GetTexData() const
-{
-    return &meshData[0].texData;
+    return &meshData;
 }

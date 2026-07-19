@@ -13,43 +13,52 @@ lightBlock(sizeof(lightUBO), 1)
 
     CreateShaders();
     CreateViewport();
-    // CreateMesh();
+    CreateMesh();
     CreateGizmo();
     
     LinkViewportUniformBlock();
     LinkLightUniformBlock();    
 }
 
-/*
 void Renderer::DrawModels()
 {
-    for (size_t i = 0; i < meshes.size(); ++i) {
-        for (const auto& tex : meshTextures[i]) {
+    Shader& shader = GetShaderByName("mesh_phong");
+    for (const auto& entry : meshes) {
+        // TexType doubles as the texture unit (BaseColor -> 0, etc.),
+        // which matches the sampler defaults in the shaders.
+        for (const auto& tex : entry.textures) {
             tex->Bind(static_cast<GLuint>(tex->GetType().type));
         }
 
-        // TODO: Needs multimesh loading, capped to first mesh
-        meshes[i]->Draw(
-            *shaders[0],
-            scene->GetModelList()[i]->GetPosition(),
-            scene->GetModelList()[i]->GetOrientation(),
-            scene->GetModelList()[i]->GetScale()
+        entry.mesh->Draw(
+            shader,
+            entry.model->GetPosition(),
+            entry.model->GetOrientation(),
+            entry.model->GetScale()
         );
     }
 }
-*/
+
 void Renderer::DrawGizmo()
 {
-    for (size_t i = 0; i < billboards.size(); ++i) {
+    Shader& shader = GetShaderByName("bb_default");
+    for (const auto& entry : billboards) {
+        entry.texture->Bind(static_cast<GLuint>(entry.texture->GetType().type));
 
-        std::cout << scene->GetGizmoList()[i]->GetTexData()->hash << std::endl;
-
-        billboards[i]->Draw(
-            *shaders[0],
-            scene->GetGizmoList()[i]->GetPosition(),
+        entry.billboard->Draw(
+            shader,
+            entry.gizmo->GetPosition(),
             glm::vec2({1, 1})
         );
     }
+}
+
+void Renderer::RebuildScene()
+{
+    meshes.clear();
+    billboards.clear();
+    CreateMesh();
+    CreateGizmo();
 }
 
 void Renderer::UpdateUniforms(int fbWidth, int fbHeight)
@@ -83,36 +92,47 @@ void Renderer::CreateViewport()
     }
 }
 
-/*
 void Renderer::CreateMesh()
 {
     for (const auto& m : scene->GetModelList()) {
-        meshes.emplace_back(std::make_unique<Mesh>(
-            *m->GetVertices(),
-            *m->GetIndices()
-        ));
+        for (const auto& renderData : *m->GetModelRenderData()) {
+            MeshEntry entry;
+            entry.model = m.get();
+            entry.mesh = std::make_unique<Mesh>(
+                renderData.vertices,
+                renderData.indices
+            );
 
-        std::vector<std::shared_ptr<Texture>> texs;
-        const auto& texData = *m->GetTexData();   // vector of TextureData
-        texs.reserve(texData.size());
-        for (const auto& td : texData) {
-            texs.push_back(texturePool.GetOrAdd(td));   // whole struct, one per slot
+            // Resolve each TextureData through the pool: duplicates dedupe
+            // by hash, and the resulting shared_ptrs live with this entry.
+            entry.textures.reserve(renderData.texData.size());
+            for (const auto& td : renderData.texData) {
+                entry.textures.push_back(texturePool.GetOrAdd(td));
+            }
+
+            meshes.push_back(std::move(entry));
         }
-        textures.push_back(texs);
     }
-}*/
+}
 
 void Renderer::CreateGizmo()
 {
     for (const auto& g : scene->GetGizmoList()) {
-        billboards.emplace_back(
-            std::make_unique<Billboard>()
-        );
-
-        textures.push_back(
-            texturePool.GetOrAdd(*g->GetTexData())
-        );
+        BillboardEntry entry;
+        entry.gizmo = g.get();
+        entry.billboard = std::make_unique<Billboard>();
+        entry.texture = texturePool.GetOrAdd(*g->GetTexData());
+        billboards.push_back(std::move(entry));
     }
+}
+
+Shader& Renderer::GetShaderByName(const std::string& name)
+{
+    for (size_t i = 0; i < shaderNames.size(); ++i) {
+        if (shaderNames[i] == name) return *shaders[i];
+    }
+    std::cerr << "[ERROR][Renderer] Unknown shader requested: " << name << ", defaulting to: " << shaderNames[0] << std::endl;
+    return *shaders[0];
 }
 
 void Renderer::LinkViewportUniformBlock()
