@@ -7,6 +7,7 @@ You can find design goals, quirks, and documentations on the [wiki](https://gith
 
 # Features:
 - GLTF File Parsing and loading.
+- Deduplicated uploaded textures on GPU.
 - Viewport manipulation with trackpad support.
 - Deltatime implementation.
 - Variable window refresh rate.
