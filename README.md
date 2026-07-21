@@ -3,7 +3,7 @@ This project supersedes [koka3d](https://github.com/kokalikesboba/koka3D) in spi
 
 You can find design goals, quirks, and documentations on the [wiki](https://github.com/kokalikesboba/kokaGL/wiki) tab.
 
-<img src="kokagl.gif" width="400"/>
+<img width="400" height="416" alt="Image" src="https://github.com/user-attachments/assets/326000a6-cd83-44fa-8741-7a57d06d14a8" />
 
 # Features:
 - GLTF File Parsing and loading.
