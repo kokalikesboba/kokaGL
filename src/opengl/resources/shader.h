@@ -19,14 +19,16 @@ public:
 	void Activate() const;
 	void Reload();
 	template <typename T> void UploadUni(const std::string& uniformName, const T& value);
-	void Delete();
-    GLuint GetUniformBlockIndex(const std::string& uniformBlockName);
-	GLuint GetID() const;
-	~Shader();
 
+    const GLuint GetUniformBlockIndex(const std::string& uniformBlockName);
+	const GLuint GetID() const;
+    const std::string GetName() const;
+
+    void Delete();
+	~Shader();
 private:
 	GLuint ID;
-	std::string shaderName;
+	std::string name;
 	std::string vertFile;
 	std::string fragFile;
 	void compileErrors(unsigned int shader, const char* type);
@@ -51,12 +53,12 @@ inline void Shader::UploadUni(const std::string &uniformName, const T &value)
 		loc = glGetUniformLocation(ID, uniformName.c_str());
 		if (loc == -1) {	
 			if (printConsole) {
-				std::cerr << "[WARNING][SHADER] Unknown uniform (" << uniformName << ") in: " << shaderName << std::endl;
+				std::cerr << "[WARNING][SHADER] Unknown uniform (" << uniformName << ") in: " << name << std::endl;
 				printConsole = false;
 			}
 			return;
 		}
-		std::cerr << "[VERBOSE][SHADER] Uniform: " << uniformName << " inserted into " << shaderName << std::endl;
+		std::cerr << "[VERBOSE][SHADER] Uniform: " << uniformName << " inserted into " << name << std::endl;
 		uniformLocationCache.insert({uniformName, loc});
 	} else {
 		loc = it->second;

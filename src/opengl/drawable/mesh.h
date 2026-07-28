@@ -24,7 +24,7 @@ public:
         const glm::vec3& position = {0.f, 0.f, 0.f},
         const glm::quat& orientation = {1.f, 0.f, 0.f, 0.f},
         const glm::vec3& scale = {1.f, 1.f, 1.f}
-    );
+    ); 
     ~Mesh();
 private:
     VAO vao; 

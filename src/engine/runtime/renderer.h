@@ -11,7 +11,9 @@
 #include "opengl/drawable/framebuffer.h"
 
 #include "engine/scene/scene.h"
-#include "engine/runtime/texturepool.h"
+#include "engine/runtime/texturemap.h"
+
+#include <utility>
 
 // Binding 0
 struct viewportUBO {
@@ -21,7 +23,7 @@ struct viewportUBO {
 	float pad0;
 };
 
-    struct Light {
+struct Light {
     glm::vec4 color     = glm::vec4(0.f);
     glm::vec3 position  = glm::vec3(0.f);
     unsigned int pad    = 0;
@@ -42,17 +44,19 @@ enum class DrawMode {
     Mesh_On_Top
 };
 
-struct MeshEntry {
-    const Model* model;
-    std::unique_ptr<Mesh> mesh;
-    std::vector<std::shared_ptr<Texture>> textures;
+struct MeshRenderInstance {
+    const Model* owner;
+    Shader* shader;
+    size_t meshOffset;
+    size_t textureGroupOffset;
+    glm::mat4 localTransform;
 };
-struct BillboardEntry {
-    const Gizmo* gizmo;
-    std::unique_ptr<Billboard> billboard;
-    std::shared_ptr<Texture> texture;
+
+struct BillboardRenderInstance {
+    const Gizmo* owner;
+    Shader* shader;
 };
-    
+
 class Renderer {
 public:
     Renderer(const std::string& configDir, const Scene& scene);
@@ -61,37 +65,45 @@ public:
     void RebuildScene();
     void UpdateUniforms(int fbWidth, int fbHeight);
     ~Renderer();
-private:
+protected:
+    void ParseConfig(const std::string& configDir);
+
     void CreateShaders();
     void CreateViewport();
     void CreateMesh();
-    void CreateGizmo();
+    void CreateBillboard();
 
     void LinkViewportUniformBlock();
     void LinkLightUniformBlock();
 
-    Shader& GetShaderByName(const std::string& name);
-
     void UpdateViewportUBO(int fbWidth, int fbHeight);
     void UpdateLightUBO();
-
+    
+    Shader& GetShaderByName(const std::string& name);
+private:
+    nlohmann::ordered_json source;
     const Scene* const scene;
 
-    nlohmann::ordered_json source;
-    std::string shaderDir;
-
+    // Uniform blocks`
     UBO viewportBlock;
     UBO lightBlock;
 
-    std::vector<std::string> shaderNames;
+    // Rendering resources
     std::vector<std::unique_ptr<Shader>> shaders;
     std::vector<std::unique_ptr<Viewport>> viewports;
+    std::vector<std::unique_ptr<Framebuffer>> framebuffers;
 
-    TexturePool texturePool;
-    std::vector<MeshEntry> meshes;
-    std::vector<BillboardEntry> billboards;
+    // Meshes
+    std::vector<std::unique_ptr<Mesh>> meshes;
+    TextureMap meshTextureMap;
+    std::vector<std::vector<std::shared_ptr<Texture>>>  meshTextureGroups;
+    std::vector<MeshRenderInstance> meshRenderQueue;
 
-
+    // Billboards
+    std::vector<std::unique_ptr<Billboard>> billboards;
+    TextureMap billboardTextureMap;
+    std::vector<std::shared_ptr<Texture>> billboardTextures;
+    std::vector<BillboardRenderInstance> billboardRenderQueue;
 };
 
 #endif

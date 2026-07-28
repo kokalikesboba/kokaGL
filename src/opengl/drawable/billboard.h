@@ -3,7 +3,6 @@
 
 #include <opengl/buffers/vao.h>
 #include <opengl/buffers/ebo.h>
-// TODO: implement texturepool
 #include <opengl/resources/texture.h>
 #include <opengl/resources/shader.h>
 
@@ -11,18 +10,7 @@
 #include "glm/mat3x3.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-inline std::vector<RenderFormat::PNUVertex> squareVerts = {
-    // position                  normal             uv
-    {{ 0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}}, // top right
-    {{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}}, // top left
-    {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}}, // bottom left
-    {{ 0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}}, // bottom right
-};
-
-inline std::vector<unsigned int> squareIndices = {
-    0, 1, 2,
-    2, 3, 0
-};
+#include "formats/rendererformat.hpp"
 
 class Billboard {
 public:

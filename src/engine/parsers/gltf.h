@@ -17,12 +17,13 @@
 class ParseGLTF {
 public:
     ParseGLTF(const std::string& modelDir);
-    std::vector<RenderFormat::PNCUVertex> vertices;
-    std::vector<unsigned int> indices;
-    std::vector<RenderFormat::TextureData> texData;
+    std::vector<std::vector<RenderFormat::PNCUVertex>> vertices;
+    std::vector<std::vector<unsigned int>> indices;
+    std::vector<std::vector<RenderFormat::TextureData>> texData;
+    int meshCount;
 private:
-    void LoadShameMesh();
-    void LoadShameTexture();
-};
+    void LoadShameModel();
+    void LoadShameTexture(int meshIndex, int texIndex);
+};  
 
 #endif

@@ -3,8 +3,8 @@
 using RenderFormat::PNUVertex;
 
 Billboard::Billboard () :
-    vbo(squareVerts),
-    ebo(squareIndices)
+    vbo(RenderFormat::quadVerts),
+    ebo(RenderFormat::quadIndices)
 {
     vao.Bind();
     ebo.Bind();
@@ -30,7 +30,7 @@ void Billboard::Draw(
 
     shader.UploadUni("modelMatrix", modelMatrix);
 
-    glDrawElements(GL_TRIANGLES, squareIndices.size(), GL_UNSIGNED_INT,0);
+    glDrawElements(GL_TRIANGLES, RenderFormat::quadIndices.size(), GL_UNSIGNED_INT,0);
 }
 
 Billboard::~Billboard()

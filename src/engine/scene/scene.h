@@ -11,24 +11,26 @@
 #include <fstream>
 #include <memory>
 #include <vector>
+#include <thread>
 
 class Scene {
 public:
     Scene(const std::string& manifestDir);
     void Reload();
     void SaveCurrentArrangement();
+    void PurgeModels();
     const std::vector<std::unique_ptr<Camera>>& GetCameraList() const;
     const std::vector<std::unique_ptr<Lamp>>& GetLampList() const;
     const std::vector<std::unique_ptr<Model>>& GetModelList() const;
     const std::vector<std::unique_ptr<Gizmo>>& GetGizmoList() const;
     ~Scene();
-private:
+protected:
     // TODO: Only one cameras supported
     void LoadCameras();
     void LoadLamps();
     void LoadModels();
     void LoadGizmos();
-
+private:
     std::string manifestDir;
     nlohmann::ordered_json source;
     std::string modelDir;

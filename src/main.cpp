@@ -65,11 +65,6 @@ int main() {
 	
 	while (!window.ShouldClose())
 	{
-		// gizmo.SetScale(2.f * glm::vec3(0.05f * cos(0.005f * framepacer.GetDeltaTime()) + 1.f));
-		// glm::vec3 orbitCenter = {0.f, 1.f, 3.f};
-		// float angle = 0.005f * framepacer.GetTime();
-		// gizmo.SetPosition(orbitCenter + glm::vec3(sin(angle), 0.f, cos(angle)));
-
 		window.PollEvents();
 		input.Update(*camera[0], framepacer.GetDeltaTime());
 		framepacer.Start();

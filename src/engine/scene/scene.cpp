@@ -58,6 +58,14 @@ void Scene::SaveCurrentArrangement()
     file << data.dump(2);
 }
 
+// Saves some memory by clearing out CPU copy of parsed models.
+void Scene::PurgeModels()
+{
+    for (auto& m : models) {
+        m->DeleteRenderData();
+    }
+}
+
 const std::vector<std::unique_ptr<Camera>>& Scene::GetCameraList() const
 {
     return cameras;
@@ -109,20 +117,32 @@ void Scene::LoadLamps()
     }
 }
 
-void Scene::LoadModels()
-{
-    for (const auto& entry : source.at("models")) {
-        auto& m = models.emplace_back(
-            std::make_unique<Model> (
-                modelDir + std::string(entry.at("name"))
-            )
-        );
-        const auto& p = entry.at("position");
-        const auto& r = entry.at("rotation");
-        m->SetPosition({p[0], p[1], p[2]});
-        m->SetEulerRotation({r[0], r[1], r[2]});
+    void Scene::LoadModels()
+    {
+        /*
+        std::vector<std::unique_ptr<Model>> mtBuffer(source.at("models"));
+        
+        std::vector<std::thread> threads(std::thread::hardware_concurrency());
+
+        for (auto& workers : mtBuffer) {
+            for (int i = 0; i < threads.size(); ++i) {
+                threads[i].detach()
+            }
+        }
+        */
+
+        for (const auto& entry : source.at("models")) {
+            auto& m = models.emplace_back(
+                std::make_unique<Model> (
+                    modelDir + std::string(entry.at("name"))
+                )
+            );
+            const auto& p = entry.at("position");
+            const auto& r = entry.at("rotation");
+            m->SetPosition({p[0], p[1], p[2]});
+            m->SetEulerRotation({r[0], r[1], r[2]});
+        }
     }
-}
 
 void Scene::LoadGizmos()
 {

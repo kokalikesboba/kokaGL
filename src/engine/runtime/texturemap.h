@@ -1,5 +1,5 @@
-#ifndef TEXTUREPOOL_H
-#define TEXTUREPOOL_H
+#ifndef TEXTUREMAP_H
+#define TEXTUREMAP_H
 
 #include "formats/rendererformat.hpp"
 
@@ -9,19 +9,18 @@
 #include <unordered_map>
 #include <iostream>
 
- // This class is an observer that stores and gets textures from a texHash key. It is meant to decrease the amount of duplicates textures in video memory regardless of where they were sourced from.
-class TexturePool
+class TextureMap
 {
 public:
-    TexturePool();
+    TextureMap();
     std::shared_ptr<Texture> GetOrAdd(const RenderFormat::TextureData& textureData);
-private:
+protected:
     bool isCachedAndAlive(unsigned int texHash);
     std::shared_ptr<Texture> Add(
         const RenderFormat::TextureData& textureData
     );
     std::shared_ptr<Texture> Get(unsigned int texHash);
-
+private:
     std::unordered_map<unsigned int, std::weak_ptr<Texture>> cache;
 
     std::shared_ptr<Texture> errorTex;

@@ -12,7 +12,7 @@ class Texture
 public:
     Texture();
     void GenRGBATexture(RenderFormat::TexType textype, const unsigned char* bytes, int imgWidth, int imgHeight);
-    RenderFormat::TextureData GetType() const;
+    RenderFormat::TexType GetType() const;
 
     void Bind(GLuint texUnit) const;
     void Unbind() const;

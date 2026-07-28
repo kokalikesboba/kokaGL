@@ -11,7 +11,7 @@ namespace RenderFormat {
         glm::vec3 position;
         glm::vec3 normal;
         glm::vec2 uv;
-    };
+    };  
 
     // Vertex struct that contains Position, Normal, Color, UV 
     struct PNCUVertex {
@@ -35,9 +35,9 @@ namespace RenderFormat {
         TexType type;
         std::vector<unsigned char> bytes;
     };
-
+ 
     // Default missing texture.
-    inline std::vector<unsigned char> fallbackBytes = {
+    inline std::vector<unsigned char> fallbackTexture = {
         227, 66, 107, 255,  
         66, 94, 135, 255,
         66, 94, 135, 255,
@@ -87,6 +87,19 @@ namespace RenderFormat {
         12, 14, 13,  12, 15, 14, // right
         16, 17, 18,  16, 18, 19, // top
         20, 22, 21,  20, 23, 22, // bottom
+    };
+
+    inline std::vector<RenderFormat::PNUVertex> quadVerts = {
+    // position                  normal             uv
+    {{ 0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}}, // top right
+    {{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}}, // top left
+    {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}}, // bottom left
+    {{ 0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}}, // bottom right
+    };
+
+    inline std::vector<unsigned int> quadIndices = {
+        0, 1, 2,
+        2, 3, 0
     };
 }
 

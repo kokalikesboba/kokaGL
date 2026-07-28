@@ -1,14 +1,14 @@
-#include "texturepool.h"
+#include "texturemap.h"
 
-TexturePool::TexturePool()
+TextureMap::TextureMap()
 {
 	// Initializes the black and magenta fallback texture.
     errorTex = std::make_shared<Texture>();
-	errorTex->GenRGBATexture(RenderFormat::TexType::BaseColor, RenderFormat::fallbackBytes.data(), 2, 2);
+	errorTex->GenRGBATexture(RenderFormat::TexType::BaseColor, RenderFormat::fallbackTexture.data(), 2, 2);
 	cache.insert({0, errorTex});
 }
 
-std::shared_ptr<Texture> TexturePool::GetOrAdd(const RenderFormat::TextureData &textureData)
+std::shared_ptr<Texture> TextureMap::GetOrAdd(const RenderFormat::TextureData &textureData)
 {
     if (isCachedAndAlive(textureData.hash)) {
         return Get(textureData.hash);
@@ -18,7 +18,7 @@ std::shared_ptr<Texture> TexturePool::GetOrAdd(const RenderFormat::TextureData &
 }
 
 // Checks if the hash exists in the map, also checks if the stored pointer has expired and deletes it. 
-bool TexturePool::isCachedAndAlive(unsigned int texHash)
+bool TextureMap::isCachedAndAlive(unsigned int texHash)
 {
 	auto it = cache.find(texHash);
 	if (it == cache.end()) {
@@ -32,7 +32,7 @@ bool TexturePool::isCachedAndAlive(unsigned int texHash)
 }
 
 // Adds a texture to be observed by the pool while buffering it to the GPU
-std::shared_ptr<Texture> TexturePool::Add(const RenderFormat::TextureData& textureData)
+std::shared_ptr<Texture> TextureMap::Add(const RenderFormat::TextureData& textureData)
 {
 	if (cache.find(textureData.hash) == cache.end()) {
 		std::shared_ptr<Texture> buffer = std::make_shared<Texture>();
@@ -41,24 +41,24 @@ std::shared_ptr<Texture> TexturePool::Add(const RenderFormat::TextureData& textu
 		std::cout << "[VERBOSE][Texturepool] Inserted a texture into cache with hash of: " << textureData.hash << std::endl;
 		return buffer;
 	} else {
-		std::cerr << "[ERROR][TexturePool] Attempted to add a texture whose texHash already exists: " << textureData.hash << std::endl;
+		std::cerr << "[ERROR][TextureMap] Attempted to add a texture whose texHash already exists: " << textureData.hash << std::endl;
 		++errorTexInstances;
 		return errorTex;
 	}
 }
 
 // Gets a live Texture for the hash, or the fallback if missing/expired.
-std::shared_ptr<Texture> TexturePool::Get(unsigned int texHash)
+std::shared_ptr<Texture> TextureMap::Get(unsigned int texHash)
 {
-	if (!texHash) std::cerr << "[WARN][TexturePool] A model requested a hash of 0, this is likely from a failed parse." << std::endl; 
+	if (!texHash) std::cerr << "[WARN][TextureMap] A model requested a hash of 0, this is likely from a failed parse." << std::endl; 
 
     auto it = cache.find(texHash);
     if (it != cache.end()) {
         std::shared_ptr<Texture> tex = it->second.lock();
-		std::cout << "[VERBOSE][TexturePool] Hit cache: " << texHash << std::endl;
+		std::cout << "[VERBOSE][TextureMap] Hit cache: " << texHash << std::endl;
         if (tex) return tex; // present and alive
     }
-    std::cerr << "[ERROR][TexturePool] Tried to get a Texture with an invalid hash: " << texHash << std::endl;
+    std::cerr << "[ERROR][TextureMap] Tried to get a Texture with an invalid hash: " << texHash << std::endl;
     ++errorTexInstances;
     return errorTex;
 }

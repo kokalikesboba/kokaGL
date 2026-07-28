@@ -44,9 +44,9 @@ void Texture::GenRGBATexture(RenderFormat::TexType textype, const unsigned char*
 	generationCheck = true;
 }
 
-RenderFormat::TextureData Texture::GetType() const
+RenderFormat::TexType Texture::GetType() const
 {
-	return texData;
+	return texData.type;
 }
 
 void Texture::Bind(GLuint texUnit) const

@@ -5,16 +5,11 @@ scene(&scene),
 viewportBlock(sizeof(viewportUBO), 0),
 lightBlock(sizeof(lightUBO), 1)
 {
-    std::ifstream file(configDir);
-    if (!file.is_open()) {
-        throw std::runtime_error("[FATAL][Renderer] can't open manifest: " + configDir);
-    }
-    source = nlohmann::ordered_json::parse(file);
-
+    ParseConfig(configDir);
     CreateShaders();
     CreateViewport();
     CreateMesh();
-    CreateGizmo();
+    CreateBillboard();
     
     LinkViewportUniformBlock();
     LinkLightUniformBlock();    
@@ -22,17 +17,15 @@ lightBlock(sizeof(lightUBO), 1)
 
 void Renderer::DrawModels()
 {
-    Shader& shader = GetShaderByName("mesh_phong");
-    for (const auto& entry : meshes) {
-        for (const auto& tex : entry.textures) {
-            tex->Bind(static_cast<GLuint>(tex->GetType().type));
+    for (auto& instance : meshRenderQueue) {
+        for (const auto& texture : meshTextureGroups[instance.textureGroupOffset]) {
+            texture->Bind(std::to_underlying(texture->GetType()));
         }
-
-        entry.mesh->Draw(
-            shader,
-            entry.model->GetPosition(),
-            entry.model->GetOrientation(),
-            entry.model->GetScale()
+        meshes[instance.meshOffset]->Draw(
+            *instance.shader,
+            instance.owner->GetPosition(),
+            instance.owner->GetOrientation(),
+            instance.owner->GetScale()
         );
     }
 }
@@ -40,12 +33,12 @@ void Renderer::DrawModels()
 void Renderer::DrawGizmo()
 {
     Shader& shader = GetShaderByName("bb_default");
-    for (const auto& entry : billboards) {
-        entry.texture->Bind(static_cast<GLuint>(entry.texture->GetType().type));
+    for (size_t i = 0; i < billboards.size(); ++i) {
+        billboardTextures[i]->Bind(std::to_underlying(billboardTextures[i]->GetType()));
 
-        entry.billboard->Draw(
+        billboards[i]->Draw(
             shader,
-            entry.gizmo->GetPosition(),
+            scene->GetGizmoList()[i]->GetPosition(),
             glm::vec2({1, 1})
         );
     }
@@ -55,8 +48,15 @@ void Renderer::RebuildScene()
 {
     meshes.clear();
     billboards.clear();
+
+    meshTextureGroups.clear();
+    billboardTextures.clear();
+
+    meshRenderQueue.clear();
+    billboardRenderQueue.clear();
+
     CreateMesh();
-    CreateGizmo();
+    CreateBillboard();
 }
 
 void Renderer::UpdateUniforms(int fbWidth, int fbHeight)
@@ -69,11 +69,19 @@ void Renderer::UpdateUniforms(int fbWidth, int fbHeight)
 Renderer::~Renderer()
 {}
 
+void Renderer::ParseConfig(const std::string &configDir)
+{
+    std::ifstream file(configDir);
+    if (!file.is_open()) {
+        throw std::runtime_error("[FATAL][Renderer] can't open manifest: " + configDir);
+    }
+    source = nlohmann::ordered_json::parse(file);
+}
+
 void Renderer::CreateShaders()
 {
-    shaderDir = std::string(source.at("shaderDir"));
+    auto shaderDir = std::string(source.at("shaderDir"));
     for (const auto& entry : source.at("shaders")) {
-        shaderNames.emplace_back(entry.at("name"));
         shaders.emplace_back(
             std::make_unique<Shader>(
                 shaderDir + std::string(entry.at("name")) + std::string(".vert"),
@@ -92,41 +100,50 @@ void Renderer::CreateViewport()
 
 void Renderer::CreateMesh()
 {
-    for (const auto& m : scene->GetModelList()) {
-        for (const auto& renderData : *m->GetModelRenderData()) {
-            MeshEntry entry;
-            entry.model = m.get();
-            entry.mesh = std::make_unique<Mesh>(
+    for (const auto& model : scene->GetModelList()) {
+        // for every mesh
+        for (const auto& renderData : *model->GetRenderData()) {
+            // push back into a mesh group's vertices and indices
+            auto mesh = std::make_unique<Mesh> (
                 renderData.vertices,
                 renderData.indices
             );
-            entry.textures.reserve(renderData.texData.size());
-            for (const auto& td : renderData.texData) {
-                entry.textures.push_back(texturePool.GetOrAdd(td));
+            meshes.emplace_back(std::move(mesh));
+            
+            // create a group for each texture of a mesh.
+            std::vector<std::shared_ptr<Texture>> textureGroup;
+            for (const auto texture : renderData.texData) {
+                // Run through deduplicator
+                textureGroup.emplace_back(meshTextureMap.GetOrAdd(texture));
             }
+            meshTextureGroups.emplace_back(std::move(textureGroup));
 
-            meshes.push_back(std::move(entry));
+            MeshRenderInstance entry{};
+            entry.owner = &*model;
+            // TODO: hardcoded to phong shader
+            entry.shader = &GetShaderByName("mesh_phong");
+            entry.meshOffset = meshes.size() - 1;
+            entry.textureGroupOffset = meshTextureGroups.size() - 1;
+            meshRenderQueue.push_back(entry);
         }
+        // next model parsed here
     }
 }
 
-void Renderer::CreateGizmo()
+void Renderer::CreateBillboard()
 {
     for (const auto& g : scene->GetGizmoList()) {
-        BillboardEntry entry;
-        entry.gizmo = g.get();
-        entry.billboard = std::make_unique<Billboard>();
-        entry.texture = texturePool.GetOrAdd(*g->GetTexData());
-        billboards.push_back(std::move(entry));
+        billboardTextures.push_back(billboardTextureMap.GetOrAdd(*g->GetTexData()));
+        billboards.emplace_back(std::make_unique<Billboard>());
     }
 }
 
 Shader& Renderer::GetShaderByName(const std::string& name)
 {
-    for (size_t i = 0; i < shaderNames.size(); ++i) {
-        if (shaderNames[i] == name) return *shaders[i];
+    for (size_t i = 0; i < shaders.size(); ++i) {
+        if (shaders[i]->GetName() == name) return *shaders[i];
     }
-    std::cerr << "[ERROR][Renderer] Unknown shader requested: " << name << ", defaulting to: " << shaderNames[0] << std::endl;
+    std::cerr << "[ERROR][Renderer] Unknown shader requested: " << name << ", defaulting to: " << shaders[0] << std::endl;
     return *shaders[0];
 }
 
@@ -165,6 +182,7 @@ void Renderer::UpdateViewportUBO(int fbWidth, int fbHeight)
 
 void Renderer::UpdateLightUBO()
 {
+    // TODO: yes i know this can overflow
     int i = 0;
     Light light[4];
     for (const auto& entry : scene->GetLampList()) {

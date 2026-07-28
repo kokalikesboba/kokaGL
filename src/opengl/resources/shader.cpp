@@ -20,7 +20,7 @@ std::string get_file_contents(const std::string& filename)
 Shader::Shader(const std::string& vertFile, const std::string& fragFile)
 {
 	std::string base = vertFile.substr(vertFile.find_last_of('/') + 1);
-	shaderName = base.substr(0, base.find_last_of('.'));
+	name = base.substr(0, base.find_last_of('.'));
 	this->vertFile = vertFile;
 	this->fragFile = fragFile;
 	
@@ -58,7 +58,7 @@ void Shader::Reload()
 {
 	uniformLocationCache.clear();
 	printConsole= true;
-	std::cout << "[VERBOSE][SHADER] Reloaded: " << shaderName << std::endl;
+	std::cout << "[VERBOSE][SHADER] Reloaded: " << name << std::endl;
 
 	std::string vertexCode = get_file_contents(vertFile);
 	std::string fragmentCode = get_file_contents(fragFile);
@@ -91,14 +91,19 @@ void Shader::Delete()
 	glDeleteProgram(ID);
 }
 
-GLuint Shader::GetUniformBlockIndex(const std::string& uniformBlockName)
+const GLuint Shader::GetUniformBlockIndex(const std::string& uniformBlockName)
 {
     return glGetUniformBlockIndex(ID, uniformBlockName.c_str());
 }
 
-GLuint Shader::GetID() const
+const GLuint Shader::GetID() const
 {
     return ID;
+}
+
+const std::string Shader::GetName() const
+{
+    return name;
 }
 
 Shader::~Shader()
