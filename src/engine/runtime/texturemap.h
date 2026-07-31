@@ -22,9 +22,6 @@ protected:
     std::shared_ptr<Texture> Get(unsigned int texHash);
 private:
     std::unordered_map<unsigned int, std::weak_ptr<Texture>> cache;
-
-    std::shared_ptr<Texture> errorTex;
-    int errorTexInstances = 0;
 };
 
 #endif

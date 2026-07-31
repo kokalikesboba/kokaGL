@@ -1,13 +1,5 @@
 #include "texturemap.h"
 
-TextureMap::TextureMap()
-{
-	// Initializes the black and magenta fallback texture.
-    errorTex = std::make_shared<Texture>();
-	errorTex->GenRGBATexture(RenderFormat::TexType::BaseColor, RenderFormat::fallbackTexture.data(), 2, 2);
-	cache.insert({0, errorTex});
-}
-
 std::shared_ptr<Texture> TextureMap::GetOrAdd(const RenderFormat::TextureData &textureData)
 {
     if (isCachedAndAlive(textureData.hash)) {
@@ -40,11 +32,8 @@ std::shared_ptr<Texture> TextureMap::Add(const RenderFormat::TextureData& textur
 		cache.insert({textureData.hash, buffer});
 		std::cout << "[VERBOSE][Texturepool] Inserted a texture into cache with hash of: " << textureData.hash << std::endl;
 		return buffer;
-	} else {
-		std::cerr << "[ERROR][TextureMap] Attempted to add a texture whose texHash already exists: " << textureData.hash << std::endl;
-		++errorTexInstances;
-		return errorTex;
 	}
+    throw std::runtime_error("[ERROR][TextureMap] Attempted to add a texture whose texHash already exists");
 }
 
 // Gets a live Texture for the hash, or the fallback if missing/expired.
@@ -58,7 +47,5 @@ std::shared_ptr<Texture> TextureMap::Get(unsigned int texHash)
 		std::cout << "[VERBOSE][TextureMap] Hit cache: " << texHash << std::endl;
         if (tex) return tex; // present and alive
     }
-    std::cerr << "[ERROR][TextureMap] Tried to get a Texture with an invalid hash: " << texHash << std::endl;
-    ++errorTexInstances;
-    return errorTex;
+    throw std::runtime_error("[ERROR][TextureMap] Tried to get a Texture with an invalid hash");
 }

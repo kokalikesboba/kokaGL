@@ -9,19 +9,15 @@
 #include "fastgltf/types.hpp"
 #include "fastgltf/glm_element_traits.hpp"
 
+// TODO: Temporary?
+#include "glm/gtx/quaternion.hpp"
+
 #include <string>
 #include <iostream>
 #include <filesystem>
 #include <memory>
+#include <utility>
 
-
-    struct PNCUVertex {
-        glm::vec3 position;
-        glm::vec3 normal;
-        glm::vec3 color;
-        glm::vec2 uv;
-    };
-    
 struct ModelRenderData {
     std::vector<RenderFormat::PNCUVertex> vertices;
     std::vector<unsigned int> indices;
@@ -35,19 +31,17 @@ class ParseGLTF {
 public:
     ParseGLTF(const std::string& modelDir);
     std::vector<ModelRenderData> data;
-    int partCount;
 protected:
+    RenderFormat::TextureData GetShameTexture(RenderFormat::TexType texType);
     void LoadShameModel();
-    void LoadShameTexture(int meshIndex, int texIndex);
 
     bool FilePathCheck();
     bool DataBufferCheck(const fastgltf::Expected<fastgltf::GltfDataBuffer>& databuffer);
     bool AssetCheck(const fastgltf::Expected<fastgltf::Asset>& loadedAsset);
-
-    std::vector<RenderFormat::PNCUVertex> ParseVertices(fastgltf::Primitive &buffer);
-    std::vector<unsigned int> ParseIndices(fastgltf::Primitive &buffer);
     
-    RenderFormat::TextureData ParseTexture(fastgltf::Material &material);
+    std::vector<RenderFormat::PNCUVertex> ParseVertices(int meshIndex);
+    std::vector<unsigned int> ParseIndices(int meshIndex);
+    std::vector<RenderFormat::TextureData> ParseTextureList(int meshIndex);
 private:
     std::string modelDir;
     std::filesystem::path path;

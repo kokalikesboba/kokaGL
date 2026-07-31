@@ -3,7 +3,6 @@
 using namespace RenderFormat;
 
 // I'm struggling to read the syntax a little bit, so member variables using this-> is intentional
-
 ParseGLTF::ParseGLTF(const std::string& modelDir) :
     modelDir(modelDir)
 {
@@ -16,53 +15,50 @@ ParseGLTF::ParseGLTF(const std::string& modelDir) :
     auto loadedAsset = this->parser.loadGltf(databuffer.get(), path.parent_path(), fastgltf::Options::LoadExternalBuffers);
     if (!AssetCheck(loadedAsset)) return;
     asset = std::move(loadedAsset.get());
-    partCount = asset.meshes.size();
 
-    ModelRenderData entry{};
-    for (auto& mesh : asset.meshes) {
-        for (auto& buffer : mesh.primitives) {
-            entry.vertices.emplace_back(std::move(ParseVertices(buffer)));
-            entry.indices.emplace_back(std::move(ParseIndices(buffer)));
+    for (int i = 0; i < asset.meshes.size(); ++i) {
+        data.emplace_back(ModelRenderData{
+            std::move(ParseVertices(i)),
+            std::move(ParseIndices(i)),
+            std::move(ParseTextureList(i)),
 
-        }
+        });
     }
+}
 
-    RenderFormat::TextureData TextureData;
-    for (auto& materials : asset.materials) {
-        if (materials.pbrData.baseColorTexture.has_value()) {
-            
-        }
-    }
+RenderFormat::TextureData ParseGLTF::GetShameTexture (RenderFormat::TexType texType)
+{
+    RenderFormat::TextureData defaultTexturelist;
+    defaultTexturelist =
+    {
+        2,
+        2,
+        // TODO: Stupid fucking workaround.
+        Hash::djb2(RenderFormat::fallbackTexture) + std::to_underlying<RenderFormat::TexType>(texType),
+        texType,
+        RenderFormat::fallbackTexture
+    };
+    return defaultTexturelist;
 }
 
 void ParseGLTF::LoadShameModel()
 {
-    vertices.resize(1);
-    indices.resize(1);
-    texData.resize(1);
+    std::vector<RenderFormat::TextureData> textureList;
+    textureList.emplace_back(GetShameTexture(RenderFormat::TexType::BaseColor));
+    textureList.emplace_back(GetShameTexture(RenderFormat::TexType::RoughnessMetallic));
+    textureList.emplace_back(GetShameTexture(RenderFormat::TexType::Occlusion));
+    textureList.emplace_back(GetShameTexture(RenderFormat::TexType::Normal));
 
-    vertices[0] = RenderFormat::errorVertices;
-    indices[0] = RenderFormat::errorIndices;
-    auto errorTex = RenderFormat::TextureData{
-        2,
-        2,
-        0,
-        RenderFormat::TexType::BaseColor,
-        std::vector<unsigned char>{}
-    };
-    texData[0].push_back(errorTex); 
-}
-
-void ParseGLTF::LoadShameTexture(int meshIndex, int texIndex)
-{
-    texData[meshIndex][texIndex] = RenderFormat::TextureData
-    {
-        2,
-        2,
-        0,
-        TexType::BaseColor,
-        std::vector<unsigned char>{}
-    };
+    data.push_back(
+        ModelRenderData{
+            RenderFormat::errorVertices,
+            RenderFormat::errorIndices,
+            textureList,
+            {0.f, 0.f, 0.f},
+            {1.f, 0.f, 0.f, 0.f},
+            {1.f, 1.f, 1.f}
+        }
+    );
 }
 
 bool ParseGLTF::FilePathCheck()
@@ -95,92 +91,59 @@ bool ParseGLTF::AssetCheck(const fastgltf::Expected<fastgltf::Asset>& loadedAsse
     return true;
 }
 
-std::vector<RenderFormat::PNCUVertex> ParseGLTF::ParseVertices(fastgltf::Primitive &buffer)
+std::vector<RenderFormat::PNCUVertex> ParseGLTF::ParseVertices(int meshIndex)
 {
-    fastgltf::Attribute* posAttr = buffer.findAttribute("POSITION");
+
+    std::vector<RenderFormat::PNCUVertex> vertices;
+
+    auto& primitive = asset.meshes[meshIndex].primitives[0];
+
+    fastgltf::Attribute* posAttr = primitive.findAttribute("POSITION");
     fastgltf::Accessor& posAccessor = asset.accessors[posAttr->accessorIndex];
 
-    std::vector<RenderFormat::PNCUVertex> vertexEntry;
-    vertexEntry.resize(posAccessor.count);
+    vertices.resize(posAccessor.count);
 
     for (size_t i = 0; i < posAccessor.count; ++i) {
         auto pos = fastgltf::getAccessorElement<fastgltf::math::fvec3>(asset, posAccessor, i);
-        vertexEntry[i].position = {pos.x(), pos.y(), pos.z()};
+        vertices[i].position = {pos.x(), pos.y(), pos.z()};
     }
 
-    fastgltf::Attribute* normalAttribute = buffer.findAttribute("NORMAL");
+    fastgltf::Attribute* normalAttribute = primitive.findAttribute("NORMAL");
     fastgltf::Accessor& normalAccessor = asset.accessors[normalAttribute->accessorIndex];
     for (size_t i = 0; i < normalAccessor.count; ++i) {
         auto normal = fastgltf::getAccessorElement<fastgltf::math::fvec3>(asset, normalAccessor, i);
-        vertexEntry[i].normal = {normal.x(), normal.y(), normal.z()};
+        vertices[i].normal = {normal.x(), normal.y(), normal.z()};
     } 
 
-    fastgltf::Attribute* uvAttribute = buffer.findAttribute("TEXCOORD_0");
+    fastgltf::Attribute* uvAttribute = primitive.findAttribute("TEXCOORD_0");
     fastgltf::Accessor& uvAccessor = asset.accessors[uvAttribute->accessorIndex];
     for (size_t i = 0; i < posAccessor.count; ++i) {
         auto uv = fastgltf::getAccessorElement<fastgltf::math::fvec2>(asset, uvAccessor, i);
-        vertexEntry[i].uv = {uv.x(), uv.y()};    
+        vertices[i].uv = {uv.x(), uv.y()};    
     }
-    return vertexEntry;
+    return vertices;
 }
 
-std::vector<unsigned int> ParseGLTF::ParseIndices(fastgltf::Primitive &buffer)
+std::vector<unsigned int> ParseGLTF::ParseIndices(int meshIndex)
 {
-    std::vector<unsigned int> indexEntry;
-    if (buffer.indicesAccessor.has_value()) {
-        fastgltf::Accessor& idxAccessor = asset.accessors[buffer.indicesAccessor.value()];
+    std::vector<unsigned int> indices;
 
-        for (size_t i = 0; i < idxAccessor.count; ++i) {
-            auto index = fastgltf::getAccessorElement<unsigned int>(asset, idxAccessor, i);
-            indexEntry.push_back(index);
-        }
+    auto& primitive = asset.meshes[meshIndex].primitives[0];
+
+    // TODO: theres probably a better way to do this.
+    if (!primitive.indicesAccessor.has_value()) throw std::runtime_error("No indices found- aborting.");
+    
+    fastgltf::Accessor& idxAccessor = asset.accessors[primitive.indicesAccessor.value()];
+
+    for (size_t i = 0; i < idxAccessor.count; ++i) {
+        auto index = fastgltf::getAccessorElement<unsigned int>(asset, idxAccessor, i);
+        indices.push_back(index);
     }
+    
+    return indices;
 }
 
-RenderFormat::TextureData ParseGLTF::ParseTexture(fastgltf::Material &material)
+std::vector<RenderFormat::TextureData> ParseGLTF::ParseTextureList(int meshIndex)
 {
-    auto& texture = asset.textures[material.pbrData.baseColorTexture->textureIndex];
-        auto& image = asset.images[texture.imageIndex.value()];
-
-        auto* bufferViewSource = std::get_if<fastgltf::sources::BufferView>(&image.data);
-        if (!bufferViewSource) {
-            LoadShameTexture(0,0);
-            continue;
-        }
-
-        auto& bufferView = asset.bufferViews[bufferViewSource->bufferViewIndex];
-        auto& buffer     = asset.buffers[bufferView.bufferIndex];
-
-        auto* bufferArray = std::get_if<fastgltf::sources::Array>(&buffer.data);
-        if (!bufferArray) {
-            LoadShameTexture(0,0);
-            continue;
-        }
-
-        const unsigned char* base = reinterpret_cast<const unsigned char*>(bufferArray->bytes.data());
-        const unsigned char* pngData = base + bufferView.byteOffset;
-        size_t pngLength = bufferView.byteLength;
-
-        ParsePNG png(pngData, pngLength);
-        if (png.data == nullptr) {
-            LoadShameTexture(0,0);
-            continue;
-        }
-        std::vector<unsigned char> bytes(png.data, png.data + png.width * png.height * 4);
-
-        std::vector<RenderFormat::TextureData> texEntry;
-        
-        texEntry.push_back(
-            {
-                png.width,
-                png.height,
-                png.hash,
-                TexType::BaseColor,
-                bytes
-            }
-        );
-        
-        texData.emplace_back(std::move(texEntry));
-    } else {
-    LoadShameTexture(0,0);
+    return std::vector<RenderFormat::TextureData>();
 }
