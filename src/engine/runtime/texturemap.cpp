@@ -1,5 +1,9 @@
 #include "texturemap.h"
 
+TextureMap::TextureMap()
+{
+}
+
 std::shared_ptr<Texture> TextureMap::GetOrAdd(const RenderFormat::TextureData &textureData)
 {
     if (isCachedAndAlive(textureData.hash)) {

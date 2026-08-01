@@ -23,8 +23,7 @@ namespace RenderFormat {
 
     enum class TexType {
         BaseColor,
-        RoughnessMetallic,
-        Occlusion,
+        ORM,
         Normal
     };
 

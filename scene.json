@@ -35,10 +35,10 @@
   "imgDir": "assets/images/",
   "models": [
     {
-      "name": "LaikaRig.glb",
+      "name": "more_pbr_chest.glb",
       "position": [0.0, 0.0, 0.0],
       "rotation": [0.0, 0.0, 0.0]
-    }   
+    }
   ],
   "gizmos": [
     {

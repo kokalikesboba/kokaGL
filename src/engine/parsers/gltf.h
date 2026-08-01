@@ -17,6 +17,7 @@
 #include <filesystem>
 #include <memory>
 #include <utility>
+#include <variant>
 
 struct ModelRenderData {
     std::vector<RenderFormat::PNCUVertex> vertices;
@@ -42,6 +43,8 @@ protected:
     std::vector<RenderFormat::PNCUVertex> ParseVertices(int meshIndex);
     std::vector<unsigned int> ParseIndices(int meshIndex);
     std::vector<RenderFormat::TextureData> ParseTextureList(int meshIndex);
+
+    // RenderFormat::TextureData LoadTextureFromEmbedded();
 private:
     std::string modelDir;
     std::filesystem::path path;
