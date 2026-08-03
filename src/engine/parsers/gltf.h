@@ -44,7 +44,7 @@ protected:
     std::vector<unsigned int> ParseIndices(int meshIndex);
     std::vector<RenderFormat::TextureData> ParseTextureList(int meshIndex);
 
-    // RenderFormat::TextureData LoadTextureFromEmbedded();
+    void LoadTextureFromEmbedded(const std::size_t materialIndex, RenderFormat::TexType type, std::vector<RenderFormat::TextureData>& textures);
 private:
     std::string modelDir;
     std::filesystem::path path;

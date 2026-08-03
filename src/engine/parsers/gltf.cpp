@@ -13,7 +13,7 @@ ParseGLTF::ParseGLTF(const std::string& modelDir) :
     if (!DataBufferCheck(databuffer)) return;
 
     auto loadedAsset = this->parser.loadGltf(databuffer.get(), path.parent_path(), fastgltf::Options::LoadExternalBuffers);
-    if (!AssetCheck(loadedAsset)) return;
+    if (!AssetCheck(loadedAsset));
     asset = std::move(loadedAsset.get());
 
     for (int i = 0; i < asset.meshes.size(); ++i) {
@@ -144,9 +144,6 @@ std::vector<unsigned int> ParseGLTF::ParseIndices(int meshIndex)
 
     auto& primitive = asset.meshes[meshIndex].primitives[0];
 
-    // TODO: theres probably a better way to do this.
-    if (!primitive.indicesAccessor.has_value()) throw std::runtime_error("No indices found- aborting.");
-    
     fastgltf::Accessor& idxAccessor = asset.accessors[primitive.indicesAccessor.value()];
 
     for (size_t i = 0; i < idxAccessor.count; ++i) {
@@ -162,10 +159,10 @@ std::vector<RenderFormat::TextureData> ParseGLTF::ParseTextureList(int meshIndex
     std::vector<RenderFormat::TextureData> textures;
 
     // TODO: unused as of now
-    float metallicFactor;
-    float roughnessFactor;
+    float metallicFactor = 0;
+    float roughnessFactor = 0;
     
-    // If material doesn't exist, create a list of the default textures
+    // No material case
     if(!asset.meshes[meshIndex].primitives[0].materialIndex.has_value()) {
         std::cerr << "[WARN][Parser] Model has no material: " << modelDir << "\n";
         textures.emplace_back(std::move(GetShameTexture(RenderFormat::TexType::BaseColor)));
@@ -179,8 +176,35 @@ std::vector<RenderFormat::TextureData> ParseGLTF::ParseTextureList(int meshIndex
     roughnessFactor = asset.materials[materialIndex].pbrData.roughnessFactor;
     metallicFactor = asset.materials[materialIndex].pbrData.metallicFactor;
 
-    const auto& textureIndex = asset.materials[materialIndex].pbrData.baseColorTexture.value().textureIndex;
+    // No texture case (individual)
+    if (asset.materials[materialIndex].pbrData.baseColorTexture.has_value()) {
+        LoadTextureFromEmbedded(materialIndex, RenderFormat::TexType::BaseColor, textures);
+    } else GetShameTexture(RenderFormat::TexType::BaseColor);
 
+    if (asset.materials[materialIndex].pbrData.metallicRoughnessTexture.has_value()) {
+        LoadTextureFromEmbedded(materialIndex, RenderFormat::TexType::ORM, textures);
+    } else GetShameTexture(RenderFormat::TexType::ORM);
+
+    if (asset.materials[materialIndex].normalTexture.has_value()) {
+        LoadTextureFromEmbedded(materialIndex, RenderFormat::TexType::Normal, textures);
+    } else GetShameTexture(RenderFormat::TexType::Normal);
+
+    return textures;
+}
+
+void ParseGLTF::LoadTextureFromEmbedded(const std::size_t materialIndex, RenderFormat::TexType type, std::vector<RenderFormat::TextureData> &textures)
+{
+    RenderFormat::TextureData texture;
+
+    // Close enough man
+    unsigned long int textureIndex;
+    if (type == RenderFormat::TexType::BaseColor) {
+        textureIndex = asset.materials[materialIndex].pbrData.baseColorTexture.value().textureIndex;
+    } else if (type == RenderFormat::TexType::ORM) {
+        textureIndex = asset.materials[materialIndex].pbrData.metallicRoughnessTexture.value().textureIndex;
+    } else  if (type == RenderFormat::TexType::Normal) {
+        textureIndex = asset.materials[materialIndex].normalTexture.value().textureIndex;
+    }    
     const auto& imageIndex = asset.textures[textureIndex].imageIndex.value();
     const auto& imageData = asset.images[imageIndex].data;
     
@@ -193,12 +217,13 @@ std::vector<RenderFormat::TextureData> ParseGLTF::ParseTextureList(int meshIndex
     const std::byte* start = arr->bytes.data() + view.byteOffset;
     std::size_t size = view.byteLength;
     
-    ParsePNG parsed(reinterpret_cast<const unsigned char*>(start), size);
-    RenderFormat::TextureData baseColor;
+    ParsePNG loaded(reinterpret_cast<const unsigned char*>(start), size);
 
-    textures.emplace_back(std::move(GetShameTexture(RenderFormat::TexType::ORM)));
-    textures.emplace_back(std::move(GetShameTexture(RenderFormat::TexType::ORM)));
-    textures.emplace_back(std::move(GetShameTexture(RenderFormat::TexType::Normal)));
+    texture.width = loaded.width;
+    texture.height = loaded.height;
+    texture.hash = loaded.hash;
+    texture.type = type;
+    texture.bytes = std::move(loaded.bytes);
 
-    return textures;
+    textures.emplace_back(std::move(texture));
 }

@@ -8,7 +8,7 @@ Gizmo::Gizmo(const std::string& imgDir)
     textureData.width = png.width;
     textureData.height = png.height;
     textureData.hash = png.hash;
-    textureData.bytes = std::move(std::vector<unsigned char>().assign(*png.data.get())); 
+    textureData.bytes = std::move(png.bytes);
 }
 
 const RenderFormat::TextureData *Gizmo::GetTexData() const

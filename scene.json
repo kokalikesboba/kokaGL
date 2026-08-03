@@ -7,9 +7,9 @@
   ],
   "lamps": [
     {
-      "color": [1.0, 0.0, 1.0, 1.0],
+      "color": [0.4, 0.4, 0.4, 1.0],
       "position": [0.0, 6.0, 0.0],
-      "rotation": [90.0, 0.0, 0.0],
+      "rotation": [0.0, 90.0, 0.0],
       "type": 1
     },
     {
@@ -34,6 +34,11 @@
   "modelDir": "assets/models/",
   "imgDir": "assets/images/",
   "models": [
+    {
+      "name": "plane.glb",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [0.0, 0.0, 0.0]
+    },
     {
       "name": "more_pbr_chest.glb",
       "position": [0.0, 0.0, 0.0],
