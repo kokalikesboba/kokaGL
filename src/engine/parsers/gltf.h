@@ -19,7 +19,7 @@
 #include <utility>
 #include <variant>
 
-struct ModelRenderData {
+struct MeshRenderData {
     std::vector<RenderFormat::PNCUVertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<RenderFormat::TextureData> texData;
@@ -31,7 +31,7 @@ struct ModelRenderData {
 class ParseGLTF {
 public:
     ParseGLTF(const std::string& modelDir);
-    std::vector<ModelRenderData> data;
+    std::vector<MeshRenderData> data;
 protected:
     RenderFormat::TextureData GetShameTexture(RenderFormat::TexType texType);
     void LoadShameModel();
@@ -40,9 +40,12 @@ protected:
     bool DataBufferCheck(const fastgltf::Expected<fastgltf::GltfDataBuffer>& databuffer);
     bool AssetCheck(const fastgltf::Expected<fastgltf::Asset>& loadedAsset);
     
-    std::vector<RenderFormat::PNCUVertex> ParseVertices(int meshIndex);
-    std::vector<unsigned int> ParseIndices(int meshIndex);
-    std::vector<RenderFormat::TextureData> ParseTextureList(int meshIndex);
+    std::vector<RenderFormat::PNCUVertex> ParseVertices(const fastgltf::Primitive& primitive);
+    std::vector<unsigned int> ParseIndices(const fastgltf::Primitive& primitive);
+    std::vector<RenderFormat::TextureData> ParseTextureList(const fastgltf::Primitive& primitive);
+    const glm::vec3 ParsePosition(const fastgltf::Node &node);
+    const glm::quat ParseOrientation(const fastgltf::Node &node);
+    const glm::vec3 ParseScale(const fastgltf::Node &node);
 
     void LoadTextureFromEmbedded(const std::size_t materialIndex, RenderFormat::TexType type, std::vector<RenderFormat::TextureData>& textures);
 private:

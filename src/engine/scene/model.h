@@ -7,14 +7,12 @@
 class Model : public Transform {
 public:
     Model(const std::string& modelDir);
-    const std::vector<ModelRenderData>* GetRenderData() const;
+    const std::vector<MeshRenderData>* GetRenderData() const;
 
     void DeleteRenderData();
     
-    // TODO: is this really necessary?
-    // const int GetMeshCount() const;
 private:
-    std::vector<ModelRenderData> data;
+    std::vector<MeshRenderData> data;
 };
 
 #endif

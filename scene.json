@@ -35,12 +35,7 @@
   "imgDir": "assets/images/",
   "models": [
     {
-      "name": "plane.glb",
-      "position": [0.0, 0.0, 0.0],
-      "rotation": [0.0, 0.0, 0.0]
-    },
-    {
-      "name": "more_pbr_chest.glb",
+      "name": "parsertest/sponza_default.glb",
       "position": [0.0, 0.0, 0.0],
       "rotation": [0.0, 0.0, 0.0]
     }
