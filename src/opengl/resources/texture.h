@@ -3,7 +3,7 @@
 
 #include "glad/glad.h"
 
-#include "formats/rendererformat.hpp"
+#include "formats/renderformat.hpp"
 
 #include <iostream>
 

@@ -9,7 +9,7 @@
 #include "opengl/resources/shader.h"
 #include "opengl/resources/texture.h"
 
-#include "formats/rendererformat.hpp"
+#include "formats/renderformat.hpp"
 
 #include <memory>
 

@@ -36,12 +36,12 @@
   "models": [
     {
       "name": "parsertest/sponza_split.glb",
-      "position": [-10.0, 0.0, 0.0],
+      "position": [0.0, 0.0, 10.0],
       "rotation": [0.0, 0.0, 0.0]
     },
     {
       "name": "parsertest/sponza_mm.glb",
-      "position": [10.0, 0.0, 0.0],
+      "position": [0.0, 0.0, -10.0],
       "rotation": [0.0, 0.0, 0.0]
     }
   ],

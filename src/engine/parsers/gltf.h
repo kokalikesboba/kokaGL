@@ -1,7 +1,7 @@
 #ifndef GLTF_H
 #define GLTF_H
 
-#include "formats/rendererformat.hpp"
+#include "formats/renderformat.hpp"
 #include "engine/parsers/png.h"
 
 #include "fastgltf/core.hpp"

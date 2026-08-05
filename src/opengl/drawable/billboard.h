@@ -10,7 +10,7 @@
 #include "glm/mat3x3.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "formats/rendererformat.hpp"
+#include "formats/renderformat.hpp"
 
 class Billboard {
 public:

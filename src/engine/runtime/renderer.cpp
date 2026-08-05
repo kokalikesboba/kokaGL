@@ -118,12 +118,14 @@ void Renderer::CreateMesh()
             }
             meshTextureGroups.emplace_back(std::move(textureGroup));
 
-            MeshRenderInstance entry{};
+            MeshRenderInstance entry;
             entry.owner = &*model;
             // TODO: hardcoded to phong shader
             entry.shader = &GetShaderByName("mesh_phong");
             entry.meshOffset = meshes.size() - 1;
             entry.textureGroupOffset = meshTextureGroups.size() - 1;
+            entry.localTransform = renderData.localTransform;
+
             meshRenderQueue.push_back(entry);
         }
         // next model parsed here

@@ -1,7 +1,7 @@
 #ifndef GIZMO_H
 #define GIZMO_H
 
-#include "formats/rendererformat.hpp"
+#include "formats/renderformat.hpp"
 #include "math/transform.h"
 #include "engine/parsers/png.h"
 

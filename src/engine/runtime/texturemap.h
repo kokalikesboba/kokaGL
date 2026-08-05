@@ -1,7 +1,7 @@
 #ifndef TEXTUREMAP_H
 #define TEXTUREMAP_H
 
-#include "formats/rendererformat.hpp"
+#include "formats/renderformat.hpp"
 
 #include "opengl/resources/texture.h"
 
