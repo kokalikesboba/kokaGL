@@ -1,19 +1,20 @@
-# KokaGL 
-This project supersedes [koka3d](https://github.com/kokalikesboba/koka3D) in spirit. It is my first hardware accelerated renderer and it uses the OpenGL API. 
+# koka-runtime 
+This project supersedes [koka3d](https://github.com/kokalikesboba/koka3D). It is a graphics runtime that is designed for data modularity and safety. Right now it uses OpenGL 4.1, but Vulkan is being researched.
 
-You can find design goals, quirks, and documentations on the [wiki](https://github.com/kokalikesboba/kokaGL/wiki) tab.
+You can find design goals, quirks, and documentations on the [wiki](https://github.com/kokalikesboba/koka-runtime/wiki) tab.
 
 <img width="400" height="416" alt="Image" src="https://github.com/user-attachments/assets/326000a6-cd83-44fa-8741-7a57d06d14a8" />
 
 # Features:
-- GLTF File Parsing and loading.
-- Deduplicated texture uploads on GPU.
+- JSON model loading at runtime.
+- GLTF parsing according to it's core specification.
 - Viewport manipulation with trackpad support.
 - Deltatime implementation.
 - Variable window refresh rate.
+- Deduplicated texture uploads on GPU.
 - Framebuffers and GLSL post processing.
-- Phong shading.
-- Billboards and Gizmos.
+- Blinn-phong shading, a partial PBR pipline.
+- Mesh and billboard loading.
 
 # Installation
 
