@@ -1,7 +1,7 @@
-# koka-runtime 
+# kokaGL 
 This project supersedes [koka3d](https://github.com/kokalikesboba/koka3D). It is a graphics runtime that is designed for data modularity and safety. Right now it uses OpenGL 4.1, Vulkan is being researched.
 
-You can find design goals, quirks, and documentations on the [wiki](https://github.com/kokalikesboba/koka-runtime/wiki) tab.
+You can find design goals, quirks, and documentations on the [wiki](https://github.com/kokalikesboba/kokaGL/wiki) tab.
 
 <img width="400" height="416" alt="Image" src="https://github.com/user-attachments/assets/326000a6-cd83-44fa-8741-7a57d06d14a8" />
 
