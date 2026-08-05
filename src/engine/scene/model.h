@@ -7,12 +7,12 @@
 class Model : public Transform {
 public:
     Model(const std::string& modelDir);
-    const std::vector<MeshRenderData>* GetRenderData() const;
+    const std::vector<PrimitiveRenderData>* GetRenderData() const;
 
     void DeleteRenderData();
     
 private:
-    std::vector<MeshRenderData> data;
+    std::vector<PrimitiveRenderData> data;
 };
 
 #endif

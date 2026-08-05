@@ -24,18 +24,16 @@ ParseGLTF::ParseGLTF(const std::string& modelDir) :
         auto meshIndex = node.meshIndex.value();
         // at this mesh, loop through the span of it's primitives
         for (const auto& primitive : asset.meshes[meshIndex].primitives) {
-            MeshRenderData part;
+            PrimitiveRenderData entry;
 
             // at this primitive, get the relevant vertices
-            part.vertices = std::move(ParseVertices(primitive));
-            part.indices = std::move(ParseIndices(primitive));
-            part.texData = std::move(ParseTextureList(primitive));
+            entry.vertices = std::move(ParseVertices(primitive));
+            entry.indices = std::move(ParseIndices(primitive));
+            entry.texData = std::move(ParseTextureList(primitive));
             // because primitives don't have their own transform, get the transform at the currently vi sited node.
-            part.position = ParsePosition(node);
-            part.orientation = ParseOrientation(node);
-            part.scale = ParseScale(node);
+            entry.localTransform = std::move(ParseLocalTransform(node));
 
-            data.emplace_back(std::move(part));
+            data.emplace_back(std::move(entry));
         }
     }
 }
@@ -62,14 +60,12 @@ void ParseGLTF::LoadShameModel()
     textureList.emplace_back(GetShameTexture(RenderFormat::TexType::ORM));
     textureList.emplace_back(GetShameTexture(RenderFormat::TexType::Normal));
 
-    data.push_back(
-        MeshRenderData{
+    data.emplace_back(
+        PrimitiveRenderData {
             RenderFormat::errorVertices,
             RenderFormat::errorIndices,
             textureList,
-            {0.f, 0.f, 0.f},
-            {1.f, 0.f, 0.f, 0.f},
-            {1.f, 1.f, 1.f}
+            glm::identity<glm::mat4>()
         }
     );
 }
@@ -117,7 +113,7 @@ bool ParseGLTF::AssetCheck(const fastgltf::Expected<fastgltf::Asset>& loadedAsse
     return true;
 }
 
-std::vector<RenderFormat::PNCUVertex> ParseGLTF::ParseVertices(const fastgltf::Primitive& primitive)
+const std::vector<RenderFormat::PNCUVertex> ParseGLTF::ParseVertices(const fastgltf::Primitive& primitive)
 {
 
     std::vector<RenderFormat::PNCUVertex> vertices;
@@ -148,7 +144,7 @@ std::vector<RenderFormat::PNCUVertex> ParseGLTF::ParseVertices(const fastgltf::P
     return vertices;
 }
 
-std::vector<unsigned int> ParseGLTF::ParseIndices(const fastgltf::Primitive &primitive)
+const std::vector<unsigned int> ParseGLTF::ParseIndices(const fastgltf::Primitive &primitive)
 {
     std::vector<unsigned int> indices;
 
@@ -162,7 +158,7 @@ std::vector<unsigned int> ParseGLTF::ParseIndices(const fastgltf::Primitive &pri
     return indices;
 }
 
-std::vector<RenderFormat::TextureData> ParseGLTF::ParseTextureList(const fastgltf::Primitive& primitive)
+const std::vector<RenderFormat::TextureData> ParseGLTF::ParseTextureList(const fastgltf::Primitive& primitive)
 {
     std::vector<RenderFormat::TextureData> textures;
 
@@ -200,25 +196,11 @@ std::vector<RenderFormat::TextureData> ParseGLTF::ParseTextureList(const fastglt
     return textures;
 }
 
-const glm::vec3 ParseGLTF::ParsePosition(const fastgltf::Node &node)
+const glm::mat4 ParseGLTF::ParseLocalTransform(const fastgltf::Node &node)
 {
-    const auto trs = std::get_if<fastgltf::TRS>(&node.transform);
-    glm::vec3 position = {trs->translation[0], trs->translation[1], trs->translation[2]};
-    return position;
-}
-
-const glm::quat ParseGLTF::ParseOrientation(const fastgltf::Node &node)
-{
-    const auto trs = std::get_if<fastgltf::TRS>(&node.transform);
-    glm::quat orientation = {trs->rotation[3], trs->rotation[1], trs->rotation[2], trs->rotation[0]};
-    return orientation;
-}
-
-const glm::vec3 ParseGLTF::ParseScale(const fastgltf::Node &node)
-{
-    const auto trs = std::get_if<fastgltf::TRS>(&node.transform);
-    glm::vec3 scale = {trs->scale[0], trs->scale[1], trs->scale[2]};
-    return scale;
+    const auto localTf = std::get_if<fastgltf::math::fmat4x4>(&node.transform);
+    glm::mat4 mat = glm::make_mat4x4(localTf->data());
+    return mat;
 }
 
 void ParseGLTF::LoadTextureFromEmbedded(const std::size_t materialIndex, RenderFormat::TexType type, std::vector<RenderFormat::TextureData> &textures)

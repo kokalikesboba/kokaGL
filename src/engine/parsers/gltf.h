@@ -9,8 +9,7 @@
 #include "fastgltf/types.hpp"
 #include "fastgltf/glm_element_traits.hpp"
 
-// TODO: Temporary?
-#include "glm/gtx/quaternion.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 #include <string>
 #include <iostream>
@@ -19,19 +18,17 @@
 #include <utility>
 #include <variant>
 
-struct MeshRenderData {
+struct PrimitiveRenderData {
     std::vector<RenderFormat::PNCUVertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<RenderFormat::TextureData> texData;
-    glm::vec3 position;
-    glm::quat orientation;
-    glm::vec3 scale;
+    glm::mat4 localTransform;
 };
 
 class ParseGLTF {
 public:
     ParseGLTF(const std::string& modelDir);
-    std::vector<MeshRenderData> data;
+    std::vector<PrimitiveRenderData> data;
 protected:
     RenderFormat::TextureData GetShameTexture(RenderFormat::TexType texType);
     void LoadShameModel();
@@ -40,12 +37,10 @@ protected:
     bool DataBufferCheck(const fastgltf::Expected<fastgltf::GltfDataBuffer>& databuffer);
     bool AssetCheck(const fastgltf::Expected<fastgltf::Asset>& loadedAsset);
     
-    std::vector<RenderFormat::PNCUVertex> ParseVertices(const fastgltf::Primitive& primitive);
-    std::vector<unsigned int> ParseIndices(const fastgltf::Primitive& primitive);
-    std::vector<RenderFormat::TextureData> ParseTextureList(const fastgltf::Primitive& primitive);
-    const glm::vec3 ParsePosition(const fastgltf::Node &node);
-    const glm::quat ParseOrientation(const fastgltf::Node &node);
-    const glm::vec3 ParseScale(const fastgltf::Node &node);
+    const std::vector<RenderFormat::PNCUVertex> ParseVertices(const fastgltf::Primitive& primitive);
+    const std::vector<unsigned int> ParseIndices(const fastgltf::Primitive& primitive);
+    const std::vector<RenderFormat::TextureData> ParseTextureList(const fastgltf::Primitive& primitive);
+    const glm::mat4 ParseLocalTransform(const fastgltf::Node &node);
 
     void LoadTextureFromEmbedded(const std::size_t materialIndex, RenderFormat::TexType type, std::vector<RenderFormat::TextureData>& textures);
 private:
