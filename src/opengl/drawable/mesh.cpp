@@ -18,23 +18,11 @@
         vao.LinkAttrib(vbo, 3, 2, GL_FLOAT, sizeof(PNCUVertex), (void*)offsetof(PNCUVertex, uv));
     }
 
-    void Mesh::Draw(
-        Shader& shader,
-        const glm::vec3& position,
-        const glm::quat& orientation,
-        const glm::vec3& scale)
+    void Mesh::Draw(Shader &shader, const glm::mat4 &modelMatrix)
     {
         vao.Bind();
         ebo.Bind();
         shader.Activate();
-
-        glm::mat4 translationMatrix = glm::mat4(1.0f);
-        translationMatrix = glm::translate(translationMatrix, position);
-        glm::mat4 rotationMatrix = glm::mat4(1.0f);
-        rotationMatrix = glm::mat4_cast(orientation);
-        glm::mat4  scalingMatrix = glm::mat4(1.0f);
-        scalingMatrix = glm::scale(scalingMatrix, scale);
-        glm::mat4 modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
 
         shader.UploadUni("modelMatrix", modelMatrix);
 
@@ -42,6 +30,5 @@
     }
 
     Mesh::~Mesh()
-    {    
-        
+    {
     }

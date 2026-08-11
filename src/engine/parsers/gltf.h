@@ -9,6 +9,7 @@
 #include "fastgltf/types.hpp"
 #include "fastgltf/glm_element_traits.hpp"
 
+#include "glm/gtx/quaternion.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
 #include <string>
@@ -22,7 +23,11 @@ struct PrimitiveRenderData {
     std::vector<RenderFormat::PNCUVertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<RenderFormat::TextureData> texData;
-    glm::mat4 localTransform;
+    glm::vec3 position = {0.f, 0.f, 0.f};
+    glm::quat orientation = {1.f, 0.f, 0.f, 0.f};
+    glm::vec3 scale = {1.f, 1.f, 1.f};
+    // float pbrRoughness;
+    // float pbrMetallic;
 };
 
 class ParseGLTF {
@@ -40,7 +45,10 @@ protected:
     const std::vector<RenderFormat::PNCUVertex> ParseVertices(const fastgltf::Primitive& primitive);
     const std::vector<unsigned int> ParseIndices(const fastgltf::Primitive& primitive);
     const std::vector<RenderFormat::TextureData> ParseTextureList(const fastgltf::Primitive& primitive);
-    const glm::mat4 ParseLocalTransform(const fastgltf::Node &node);
+
+    const glm::vec3 ParsePosition(const fastgltf::Node &node) const;
+    const glm::quat ParseOrientation(const fastgltf::Node &node) const;
+    const glm::vec3 ParseScale(const fastgltf::Node &node) const;
 
     void LoadTextureFromEmbedded(const std::size_t materialIndex, RenderFormat::TexType type, std::vector<RenderFormat::TextureData>& textures);
 private:

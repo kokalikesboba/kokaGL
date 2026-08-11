@@ -49,7 +49,9 @@ struct MeshRenderInstance {
     Shader* shader;
     size_t meshOffset;
     size_t textureGroupOffset;
-    glm::mat4 localTransform;
+    glm::vec3 position;
+    glm::quat orientation;
+    glm::vec3 scale;
 };
 
 struct BillboardRenderInstance {

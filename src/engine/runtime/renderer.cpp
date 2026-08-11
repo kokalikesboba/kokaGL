@@ -21,11 +21,24 @@ void Renderer::DrawModels()
         for (const auto& texture : meshTextureGroups[instance.textureGroupOffset]) {
             texture->Bind(std::to_underlying(texture->GetType()));
         }
-        meshes[instance.meshOffset]->Draw(
-            *instance.shader,
+
+        auto worldMatrix = MatrixOps::TRSMatrix(
             instance.owner->GetPosition(),
             instance.owner->GetOrientation(),
             instance.owner->GetScale()
+        );
+
+        auto localMatrix = MatrixOps::TRSMatrix(
+            instance.position,
+            instance.orientation,
+            instance.scale
+        );
+
+        auto modelMatrix = worldMatrix * localMatrix;
+
+        meshes[instance.meshOffset]->Draw(
+            *instance.shader,
+            modelMatrix
         );
     }
 }
@@ -124,7 +137,10 @@ void Renderer::CreateMesh()
             entry.shader = &GetShaderByName("mesh_phong");
             entry.meshOffset = meshes.size() - 1;
             entry.textureGroupOffset = meshTextureGroups.size() - 1;
-            entry.localTransform = renderData.localTransform;
+
+            entry.position = renderData.position;
+            entry.orientation = renderData.orientation;
+            entry.scale = renderData.scale;
 
             meshRenderQueue.push_back(entry);
         }

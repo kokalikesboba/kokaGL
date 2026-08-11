@@ -101,6 +101,17 @@ namespace MatrixOps {
         );
         return orthogonalView;
     }
+
+    inline glm::mat4 TRSMatrix(glm::vec3 position, glm::quat orientation, glm::vec3 scale) {
+        auto translation = glm::mat4(1.0f);
+        translation = glm::translate(translation, position);
+        auto rotation = glm::mat4(1.0f);
+        rotation = glm::mat4_cast(orientation);
+        auto scaling = glm::mat4(1.0f);
+        scaling = glm::scale(scaling, scale);
+        auto trsMatrix = translation * rotation * scaling;
+        return trsMatrix;
+    }
 }
 
 #endif

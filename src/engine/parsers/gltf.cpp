@@ -31,8 +31,9 @@ ParseGLTF::ParseGLTF(const std::string& modelDir) :
             entry.indices = std::move(ParseIndices(primitive));
             entry.texData = std::move(ParseTextureList(primitive));
             // because primitives don't have their own transform, get the transform at the currently vi sited node.
-            entry.localTransform = std::move(ParseLocalTransform(node));
-
+            entry.position = ParsePosition(node);
+            entry.orientation = ParseOrientation(node);
+            entry.scale = ParseScale(node);
             data.emplace_back(std::move(entry));
         }
     }
@@ -65,7 +66,9 @@ void ParseGLTF::LoadShameModel()
             RenderFormat::errorVertices,
             RenderFormat::errorIndices,
             textureList,
-            glm::identity<glm::mat4>()
+            {0.f, 0.f, 0.f},
+            {1.f, 0.f, 0.f, 0.f},
+            {1.f, 1.f, 1.f}
         }
     );
 }
@@ -196,11 +199,28 @@ const std::vector<RenderFormat::TextureData> ParseGLTF::ParseTextureList(const f
     return textures;
 }
 
-const glm::mat4 ParseGLTF::ParseLocalTransform(const fastgltf::Node &node)
+const glm::vec3 ParseGLTF::ParsePosition(const fastgltf::Node &node) const
 {
-    const auto localTf = std::get_if<fastgltf::math::fmat4x4>(&node.transform);
-    glm::mat4 mat = glm::make_mat4x4(localTf->data());
-    return mat;
+    const auto meshTf = std::get_if<fastgltf::TRS>(&node.transform);
+    if (!meshTf) return {0.0f, 0.0f, 0.0f};
+    auto position = glm::make_vec3(meshTf->translation.data());
+    return position;
+}
+
+const glm::quat ParseGLTF::ParseOrientation(const fastgltf::Node &node) const
+{
+    const auto meshTf = std::get_if<fastgltf::TRS>(&node.transform);
+    if (!meshTf) return {1.0f, 0.0f, 0.0f, 0.0f}; 
+    // GLM breaks quaternion notation where X Y Z W is standard for blender and gltf and W X Y Z is glm's notation. 
+    return {meshTf->rotation.w(), meshTf->rotation.x(), meshTf->rotation.y(), meshTf->rotation.z()};
+}
+
+const glm::vec3 ParseGLTF::ParseScale(const fastgltf::Node &node) const
+{
+    const auto meshTf = std::get_if<fastgltf::TRS>(&node.transform);
+    if (!meshTf) return {1.0f, 1.0f, 1.0f};
+    auto scale = glm::make_vec3(meshTf->scale.data());
+    return scale;
 }
 
 void ParseGLTF::LoadTextureFromEmbedded(const std::size_t materialIndex, RenderFormat::TexType type, std::vector<RenderFormat::TextureData> &textures)

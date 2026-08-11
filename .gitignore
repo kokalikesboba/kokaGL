@@ -1,8 +1,5 @@
 /kokaGL
 /build
-/docs
 /assets
+/temp
 .DS_Store
-.clang-uml
-compile_commands.json
-rendercfg.json
