@@ -69,12 +69,7 @@ int main() {
 		input.Update(*camera[0], framepacer.GetDeltaTime());
 		framepacer.Start();
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        renderer.Clear({0.07f, 0.13f, 0.17f, 1.0f});
         renderer.UpdateUniforms(window.GetFbWidth(), window.GetFbHeight());
         renderer.DrawModels();
         renderer.DrawGizmo();

@@ -62,6 +62,7 @@ struct BillboardRenderInstance {
 class Renderer {
 public:
     Renderer(const std::string& configDir, const Scene& scene);
+    void Clear(glm::vec4 rgba);
     void DrawModels();
     void DrawGizmo();
     void RebuildScene();

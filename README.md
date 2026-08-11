@@ -3,7 +3,8 @@ This project supersedes [koka3d](https://github.com/kokalikesboba/koka3D). It is
 
 You can find design goals, quirks, and documentations on the [wiki](https://github.com/kokalikesboba/kokaGL/wiki) tab.
 
-<img width="400" height="416" alt="Image" src="https://github.com/user-attachments/assets/326000a6-cd83-44fa-8741-7a57d06d14a8" />
+<img width="400" height="400" alt="Image" src="https://github.com/user-attachments/assets/326000a6-cd83-44fa-8741-7a57d06d14a8" />
+<img width="400" height="400" alt="Image" src="https://github.com/user-attachments/assets/9fd1069c-34d6-4c12-aa90-ef1b58f73749" />
 
 # Features:
 - JSON model loading at runtime.
