@@ -34,9 +34,11 @@ std::shared_ptr<Texture> TextureMap::Add(const RenderFormat::TextureData& textur
 		std::shared_ptr<Texture> buffer = std::make_shared<Texture>();
 		buffer->GenRGBATexture(textureData.type, textureData.bytes.data(), textureData.width, textureData.height);
 		cache.insert({textureData.hash, buffer});
-		std::cout << "[VERBOSE][Texturepool] Inserted a texture into cache with hash of: " << textureData.hash << std::endl;
+
+		std::cout << "[VERBOSE][Texturepool] Inserted " << textureData.name << " into cache with hash of: " << textureData.hash << std::endl;
 		return buffer;
 	}
+
     throw std::runtime_error("[ERROR][TextureMap] Attempted to add a texture whose texHash already exists");
 }
 
@@ -48,8 +50,10 @@ std::shared_ptr<Texture> TextureMap::Get(unsigned int texHash)
     auto it = cache.find(texHash);
     if (it != cache.end()) {
         std::shared_ptr<Texture> tex = it->second.lock();
+        
 		std::cout << "[VERBOSE][TextureMap] Hit cache: " << texHash << std::endl;
         if (tex) return tex; // present and alive
     }
+
     throw std::runtime_error("[ERROR][TextureMap] Tried to get a Texture with an invalid hash");
 }

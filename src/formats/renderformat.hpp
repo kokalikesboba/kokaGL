@@ -3,6 +3,7 @@
 
 #include "glm/glm.hpp"
 
+#include <string>
 #include <vector>
 
 namespace RenderFormat {
@@ -32,6 +33,7 @@ namespace RenderFormat {
         int height;
         unsigned int hash;
         TexType type;
+        std::string name;
         std::vector<unsigned char> bytes;
     };
  

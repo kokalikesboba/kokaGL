@@ -49,6 +49,7 @@ RenderFormat::TextureData ParseGLTF::GetShameTexture (RenderFormat::TexType texT
         // TODO: Stupid fucking workaround.
         static_cast<unsigned int>(std::to_underlying<RenderFormat::TexType>(texType)),
         texType,
+        std::string(""),
         RenderFormat::fallbackTexture
     };
     return defaultTexturelist;
@@ -235,10 +236,10 @@ void ParseGLTF::LoadTextureFromEmbedded(const std::size_t materialIndex, RenderF
         textureIndex = asset.materials[materialIndex].pbrData.metallicRoughnessTexture.value().textureIndex;
     } else  if (type == RenderFormat::TexType::Normal) {
         textureIndex = asset.materials[materialIndex].normalTexture.value().textureIndex;
-    }    
+    }
     const auto& imageIndex = asset.textures[textureIndex].imageIndex.value();
     const auto& imageData = asset.images[imageIndex].data;
-    
+
     auto* bufferView = std::get_if<fastgltf::sources::BufferView>(&imageData);
     if (!bufferView) throw std::runtime_error("[ERROR][ParseGLTF]Texture is not embedded in glb");
     const auto& view = asset.bufferViews[bufferView->bufferViewIndex];
@@ -254,6 +255,7 @@ void ParseGLTF::LoadTextureFromEmbedded(const std::size_t materialIndex, RenderF
     texture.height = loaded.height;
     texture.hash = loaded.hash;
     texture.type = type;
+    texture.name = asset.images[imageIndex].name;
     texture.bytes = std::move(loaded.bytes);
 
     textures.emplace_back(std::move(texture));
