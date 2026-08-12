@@ -187,15 +187,15 @@ const std::vector<RenderFormat::TextureData> ParseGLTF::ParseTextureList(const f
     // No texture case (individual)
     if (asset.materials[materialIndex].pbrData.baseColorTexture.has_value()) {
         LoadTextureFromEmbedded(materialIndex, RenderFormat::TexType::BaseColor, textures);
-    } else GetShameTexture(RenderFormat::TexType::BaseColor);
+    } else textures.emplace_back(std::move(GetShameTexture(RenderFormat::TexType::BaseColor)));
 
     if (asset.materials[materialIndex].pbrData.metallicRoughnessTexture.has_value()) {
         LoadTextureFromEmbedded(materialIndex, RenderFormat::TexType::ORM, textures);
-    } else GetShameTexture(RenderFormat::TexType::ORM);
+    } else textures.emplace_back(std::move(GetShameTexture(RenderFormat::TexType::ORM)));
 
     if (asset.materials[materialIndex].normalTexture.has_value()) {
         LoadTextureFromEmbedded(materialIndex, RenderFormat::TexType::Normal, textures);
-    } else GetShameTexture(RenderFormat::TexType::Normal);
+    } else textures.emplace_back(std::move(GetShameTexture(RenderFormat::TexType::Normal)));
 
     return textures;
 }

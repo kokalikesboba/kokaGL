@@ -26,7 +26,7 @@ ParsePNG::ParsePNG(const unsigned char *pngData, const int dataLength, bool flip
 
     if (data == nullptr) throw std::runtime_error("[ERROR][ParsePNG] Failed to decode image from memory");
 
-    hash = Hash::djb2(data.get(), size);
+    hash = Hash::djb2(data.get(), dataLength);
 
     size = colorChannels * width * height;
     bytes.assign(data.get(), data.get() + size);
