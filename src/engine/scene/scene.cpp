@@ -1,6 +1,8 @@
 #include "scene.h"
 
-Scene::Scene(const std::string& manifestDir)
+Scene::Scene(const std::string& manifestDir, const bool verbose)
+:
+verbose(verbose)
 {
     this->manifestDir = manifestDir;
     Reload();
@@ -92,6 +94,12 @@ Scene::~Scene()
 
 void Scene::LoadCameras()
 {
+
+    if (source.at("camera").empty()) {
+        std::cerr << "[WARNING][Scene] Camera list empty. \n";
+        return;
+    }
+
     for (const auto& entry : source.at("camera")) {
         cameras.emplace_back(std::make_unique<Camera>());
         auto& p = entry.at("position");
@@ -99,10 +107,22 @@ void Scene::LoadCameras()
         cameras[0]->SetPosition({p[0], p[1], p[2]});
         cameras[0]->SetEulerRotation({r[0], r[1], r[2]});
     }
+    
+    if (verbose) std::cerr << "[VERBOSE][Scene] Loaded: " << cameras.size() << " cameras. \n";
 }
 
 void Scene::LoadLamps()
 {
+
+    if (source.at("lamps").empty()) {
+        std::cerr << "[WARNING][Scene] Lamp list empty. \n";
+        return;
+    }
+
+    if (source.at("lamps").size() > 4) {
+        std::cerr << "[WARNING][Scene] More than four lamps found. Ignoring >4" << "\n";
+        return;
+    }
 
     for (const auto& entry : source.at("lamps")) {
         auto& l = lamps.emplace_back(std::make_unique<Lamp>());
@@ -115,37 +135,39 @@ void Scene::LoadLamps()
         l->SetEulerRotation({r[0], r[1], r[2]});
         l->SetType(t);
     }
+
+    if (verbose) std::cerr << "[VERBOSE][Scene] Loaded: " << lamps.size() << " lamps. \n";
 }
 
-    void Scene::LoadModels()
-    {
-        /*
-        std::vector<std::unique_ptr<Model>> mtBuffer(source.at("models"));
-        
-        std::vector<std::thread> threads(std::thread::hardware_concurrency());
-
-        for (auto& workers : mtBuffer) {
-            for (int i = 0; i < threads.size(); ++i) {
-                threads[i].detach()
-            }
-        }
-        */
-
-        for (const auto& entry : source.at("models")) {
-            auto& m = models.emplace_back(
-                std::make_unique<Model> (
-                    modelDir + std::string(entry.at("name"))
-                )
-            );
-            const auto& p = entry.at("position");
-            const auto& r = entry.at("rotation");
-            m->SetPosition({p[0], p[1], p[2]});
-            m->SetEulerRotation({r[0], r[1], r[2]});
-        }
+void Scene::LoadModels()
+{
+    if (source.at("models").empty()) {
+        std::cerr << "[WARNING][Scene] Model list empty. \n";
+        return;
     }
+
+    for (const auto& entry : source.at("models")) {
+        auto& m = models.emplace_back(
+            std::make_unique<Model> (
+                modelDir + std::string(entry.at("name"))
+            )
+        );
+        const auto& p = entry.at("position");
+        const auto& r = entry.at("rotation");
+        m->SetPosition({p[0], p[1], p[2]});
+        m->SetEulerRotation({r[0], r[1], r[2]});
+    }
+
+    if (verbose) std::cerr << "[VERBOSE][Scene] Loaded: " << models.size() << " models. \n";
+}
 
 void Scene::LoadGizmos()
 {
+    if (source.at("gizmos").empty()) {
+        std::cerr << "[WARNING][Scene] Gizmo list empty. \n";
+        return;
+    }
+
     for (const auto& entry : source.at("gizmos")) {
         auto& g = gizmos.emplace_back(
             std::make_unique<Gizmo>(
@@ -155,4 +177,6 @@ void Scene::LoadGizmos()
         const auto& p = entry.at("position");
         g->SetPosition({p[0], p[1], p[2]});
     }
+
+    if (verbose) std::cerr << "[VERBOSE][Scene] Loaded: " << gizmos.size() << " gizmos. \n";
 }

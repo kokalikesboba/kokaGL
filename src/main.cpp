@@ -37,7 +37,7 @@ int main() {
     window.MakeContextCurrent();
 	Input input(window);
     Framepacer framepacer;
-	Scene scene("scene.json");
+	Scene scene("scene.json", true);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to init GLAD\n";

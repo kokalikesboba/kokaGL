@@ -15,8 +15,9 @@
 
 class Scene {
 public:
-    Scene(const std::string& manifestDir);
+    Scene(const std::string& manifestDir, const bool verbose = false);
     void Reload();
+    // TODO: Not finished.
     void SaveCurrentArrangement();
     void PurgeModels();
     const std::vector<std::unique_ptr<Camera>>& GetCameraList() const;
@@ -31,6 +32,8 @@ protected:
     void LoadModels();
     void LoadGizmos();
 private:
+    const bool verbose;
+
     std::string manifestDir;
     nlohmann::ordered_json source;
     std::string modelDir;
