@@ -16,7 +16,7 @@
 class Mesh {
 public:
     Mesh(
-        const std::vector<RenderFormat::PNCUVertex>& vertices,
+        const std::vector<RenderFormat::PNUVertex>& vertices,
         const std::vector<unsigned int>& indices
     );
     void Draw(
