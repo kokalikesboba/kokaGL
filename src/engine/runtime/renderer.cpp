@@ -44,7 +44,7 @@ void Renderer::DrawModels()
         );
 
         auto modelMatrix = worldMatrix * localMatrix;
-
+        
         meshes[instance.meshOffset]->Draw(
             *instance.shader,
             modelMatrix
@@ -103,13 +103,34 @@ void Renderer::ParseConfig(const std::string &configDir)
 void Renderer::CreateShaders()
 {
     auto shaderDir = std::string(source.at("shaderDir"));
-    for (const auto& entry : source.at("shaders")) {
-        shaders.emplace_back(
-            std::make_unique<Shader>(
-                shaderDir + std::string(entry.at("name")) + std::string(".vert"),
-                shaderDir + std::string(entry.at("name")) + std::string(".frag")
-            )
+
+    if(source.find("mesh_fallback") == source.end())  {
+        throw std::runtime_error("FATAL][Renderer] Please provide a fallback shader for mesh");
+    } else {
+        shaders.emplace_back(std::make_unique<Shader>(
+            shaderDir + std::string(source.at("mesh_fallback")) + std::string(".vert"),
+            shaderDir + std::string(source.at("mesh_fallback")) + std::string(".frag")
+        ));
+    };
+
+    for (const auto& shaderEntry : source.at("shaders")) {
+        // Create shaders
+        auto shader = std::make_unique<Shader>(
+            shaderDir + std::string(shaderEntry.at("name")) + std::string(".vert"),
+            shaderDir + std::string(shaderEntry.at("name")) + std::string(".frag")
         );
+
+        if (shaderEntry.find("texunits") == shaderEntry.end()) {
+            std::cerr << "[WARNING][Renderer] No texture bindings specified for: " << shaderEntry.at("name") << "\n";
+        } else {
+            // Texture uniform bindings
+            for (const auto& texEntry : shaderEntry.at("texunits")) {
+                shader->UploadUni(std::string(texEntry.at("type")), int(texEntry.at("unit")));
+            }
+        }
+
+        // Emplace back shader
+        shaders.emplace_back(std::move(shader));
     }
 }
 
@@ -153,7 +174,6 @@ void Renderer::CreateMesh()
 
             meshRenderQueue.push_back(entry);
         }
-        // next model parsed here
     }
 }
 

@@ -1,7 +1,10 @@
 #include "texturemap.h"
 
-TextureMap::TextureMap()
+TextureMap::TextureMap(const bool verbose)
+:
+verbose(verbose)
 {
+
 }
 
 std::shared_ptr<Texture> TextureMap::GetOrAdd(const RenderFormat::TextureData &textureData)
@@ -35,7 +38,8 @@ std::shared_ptr<Texture> TextureMap::Add(const RenderFormat::TextureData& textur
 		buffer->GenRGBATexture(textureData.type, textureData.bytes.data(), textureData.width, textureData.height);
 		cache.insert({textureData.hash, buffer});
 
-		std::cout << "[VERBOSE][Texturepool] Inserted " << textureData.name << " into cache with hash of: " << textureData.hash << std::endl;
+        if(verbose) std::cout << "[VERBOSE][Texturepool] Inserted " << textureData.name << " into cache with hash of: " << textureData.hash << std::endl;
+		
 		return buffer;
 	}
 
@@ -51,7 +55,8 @@ std::shared_ptr<Texture> TextureMap::Get(unsigned int texHash)
     if (it != cache.end()) {
         std::shared_ptr<Texture> tex = it->second.lock();
         
-		std::cout << "[VERBOSE][TextureMap] Hit cache: " << texHash << std::endl;
+		if (verbose) std::cout << "[VERBOSE][TextureMap] Hit cache: " << texHash << std::endl;
+
         if (tex) return tex; // present and alive
     }
 

@@ -33,7 +33,7 @@ int main() {
 
     // Variables here are independent from the rendering backend! Yay!
     GlfwContext glfw;
-    Window window(800, 600, "kokaGL", true);
+    Window window(800, 600, "kokaGL", false);
     window.MakeContextCurrent();
 	Input input(window);
     Framepacer framepacer;

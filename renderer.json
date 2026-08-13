@@ -1,15 +1,45 @@
 {
-
 "shaderDir": "shaders/",
+"mesh_fallback": "mesh_fallback",
 "shaders": [
     {
-        "name": "mesh_phong"
+        "name": "mesh_phong",
+        "texunits": [
+            {
+                "type": "BaseColor", "unit": 0
+            },
+            {
+                "type": "ORM", "unit": 1
+            },
+            {
+                "type": "Normal", "unit": 2
+            }
+        ]
+    },
+    {
+        "name": "mesh_pbr",
+        "texunits": [
+            {
+                "type": "BaseColor", "unit": 0
+            },
+            {
+                "type": "ORM", "unit": 1
+            },
+            {
+                "type": "Normal", "unit": 2
+            }
+        ]
     },
     {
         "name": "mesh_depth_map"
     },
     {
-        "name": "bb_default"
+        "name": "bb_default",
+        "texunits": [
+            {
+                "type": "BaseColor", "unit": 0
+            }
+        ]
     },
     {
         "name": "pp_default"

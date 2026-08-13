@@ -12,7 +12,7 @@
 class TextureMap
 {
 public:
-    TextureMap();
+    TextureMap(const bool verbose = false);
     std::shared_ptr<Texture> GetOrAdd(const RenderFormat::TextureData& textureData);
 protected:
     bool isCachedAndAlive(unsigned int texHash);
@@ -21,6 +21,7 @@ protected:
     );
     std::shared_ptr<Texture> Get(unsigned int texHash);
 private:
+    const bool verbose;
     std::unordered_map<unsigned int, std::weak_ptr<Texture>> cache;
 };
 

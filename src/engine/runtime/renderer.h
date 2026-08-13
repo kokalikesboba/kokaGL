@@ -98,7 +98,7 @@ private:
 
     // Meshes
     std::vector<std::unique_ptr<Mesh>> meshes;
-    TextureMap meshTextureMap;
+    TextureMap meshTextureMap{false};
     std::vector<std::vector<std::shared_ptr<Texture>>>  meshTextureGroups;
     std::vector<MeshRenderInstance> meshRenderQueue;
 

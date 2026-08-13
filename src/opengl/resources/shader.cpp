@@ -13,7 +13,7 @@ std::string get_file_contents(const std::string& filename)
 		in.close();
 		return(contents);
 	}
-	throw std::runtime_error("[ERROR][SHADER] Could not open file: " + filename);
+	throw std::runtime_error("[ERROR][Shader] Could not open file: " + filename);
 }
 
 // Constructor that build the Shader Program from 2 different shaders
@@ -58,7 +58,7 @@ void Shader::Reload()
 {
 	uniformLocationCache.clear();
 	printConsole= true;
-	std::cout << "[VERBOSE][SHADER] Reloaded: " << name << std::endl;
+	std::cout << "[VERBOSE][Shader] Reloaded: " << name << std::endl;
 
 	std::string vertexCode = get_file_contents(vertFile);
 	std::string fragmentCode = get_file_contents(fragFile);
@@ -122,9 +122,8 @@ void Shader::compileErrors(unsigned int shader, const char* type)
 		if (hasCompiled == GL_FALSE)
 		{
 			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-			std::cerr << "[ERROR][Shader] Shader compilation error for: " << type << "\n" << infoLog << std::endl;
-			// throw std::runtime_error("Shader comp failed"); 
-		}
+			std::cerr << "[ERROR][Shader] Shader compilation error in: " << name << " for " << type << "\n" << infoLog << std::endl;
+        }
 	}
 	else
 	{
@@ -132,8 +131,7 @@ void Shader::compileErrors(unsigned int shader, const char* type)
 		if (hasCompiled == GL_FALSE)
 		{
 			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-			std::cerr << "[ERROR][Shader] Shader linking error for:" << type << "\n" << infoLog << std::endl;
-			throw std::runtime_error("Shader link failed"); 
+			std::cerr << "[ERROR][Shader] Shader linking error in: " << name << " for " << type << "\n" << infoLog << std::endl; 
 		}
 	}
 }
