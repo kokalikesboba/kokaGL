@@ -1,4 +1,5 @@
-#include "opengl/resources/viewport.h"
+#ifndef INPUT_H
+#define INPUT_H
 
 #include "window/window.h"
 
@@ -26,3 +27,5 @@ private:
     bool trackpadMode = false;
     double trackpadSensitivity = 0.025f;
 };
+
+#endif

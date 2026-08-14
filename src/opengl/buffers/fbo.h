@@ -1,8 +1,6 @@
 #ifndef FBO_H
 #define FBO_H
 
-#include <glad/glad.h>
-
 #include <iostream>
 
 class FBO {

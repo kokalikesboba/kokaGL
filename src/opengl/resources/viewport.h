@@ -1,7 +1,6 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
 
-#include "glad/glad.h"
 #include "glm/glm.hpp"
 
 #include "opengl/buffers/ubo.h"
