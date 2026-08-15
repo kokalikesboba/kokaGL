@@ -3,8 +3,6 @@
 
 #include "formats/renderformat.hpp"
 
-#include "opengl/resources/texture.h"
-
 #include <memory>
 #include <unordered_map>
 #include <iostream>

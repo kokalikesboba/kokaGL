@@ -26,32 +26,12 @@ CPP_SRCS = \
 	$(EXTERN)/fastgltf/src/fastgltf.cpp \
     $(EXTERN)/fastgltf/src/base64.cpp \
 	$(EXTERN)/fastgltf/src/io.cpp \
-	$(EXTERN)/imgui/imgui.cpp \
-	$(EXTERN)/imgui/imgui_draw.cpp \
-	$(EXTERN)/imgui/imgui_tables.cpp \
-	$(EXTERN)/imgui/imgui_widgets.cpp \
-	$(EXTERN)/imgui/imgui_demo.cpp \
-	$(EXTERN)/imgui/backends/imgui_impl_glfw.cpp \
-	$(EXTERN)/imgui/backends/imgui_impl_opengl3.cpp \
 	src/window/window.cpp \
 	src/math/transform.cpp \
-	src/opengl/buffers/vao.cpp \
-	src/opengl/buffers/vbo.cpp \
-	src/opengl/buffers/ebo.cpp \
-	src/opengl/buffers/ubo.cpp \
-	src/opengl/buffers/fbo.cpp \
-	src/opengl/resources/texture.cpp \
-	src/opengl/resources/shader.cpp \
-	src/opengl/resources/viewport.cpp \
-	src/opengl/drawable/mesh.cpp \
-	src/opengl/drawable/billboard.cpp \
-	src/opengl/drawable/framebuffer.cpp \
 	src/window/input.cpp \
 	src/engine/parsers/gltf.cpp \
 	src/engine/parsers/png.cpp \
 	src/engine/runtime/framepacer.cpp \
-	src/engine/runtime/texturemap.cpp \
-	src/engine/runtime/renderer.cpp \
 	src/engine/scene/model.cpp \
 	src/engine/scene/gizmo.cpp \
 	src/engine/scene/lamp.cpp \
