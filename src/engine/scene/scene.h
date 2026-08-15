@@ -20,6 +20,10 @@ public:
     // TODO: Not finished.
     void SaveCurrentArrangement();
     void PurgeModels();
+
+    void SetPrimaryCamera(int cameraIndex);
+    Camera &GetPrimaryCamera();
+
     const std::vector<std::unique_ptr<Camera>>& GetCameraList() const;
     const std::vector<std::unique_ptr<Lamp>>& GetLampList() const;
     const std::vector<std::unique_ptr<Model>>& GetModelList() const;
@@ -43,6 +47,8 @@ private:
     std::vector<std::unique_ptr<Lamp>> lamps;
     std::vector<std::unique_ptr<Model>> models;
     std::vector<std::unique_ptr<Gizmo>> gizmos;
+
+    int cameraIndex;
 };
 
 #endif

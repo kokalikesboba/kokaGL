@@ -13,14 +13,16 @@ int main() {
 	Input input(window);
     Framepacer framepacer;
 	Scene scene("load/scene.json", true);
+    scene.SetPrimaryCamera(0);
 
 	while (!window.ShouldClose())
 	{
 		window.PollEvents();
+        input.Update(scene.GetPrimaryCamera(), framepacer.GetDeltaTime());
 
 		framepacer.Start();
 
-        // Rendering happens here.
+        // Rendering goes here.
 
 		framepacer.End();
 	}
