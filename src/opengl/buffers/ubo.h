@@ -1,6 +1,7 @@
 #ifndef UBO_H
 #define UBO_H
 
+#include "glad/glad.h"
 #include "opengl/resources/shader.h"
 
 #include <iostream>

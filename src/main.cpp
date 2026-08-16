@@ -2,8 +2,6 @@
 	#include <mach-o/dyld.h>  // macOS specific
 #endif
 
-#include "glad/glad.h"
-
 #include "window/input.h"
 
 #include "engine/scene/scene.h"

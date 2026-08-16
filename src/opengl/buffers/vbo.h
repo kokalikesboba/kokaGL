@@ -2,6 +2,7 @@
 #define VBO_H
 
 #include <glm/glm.hpp>
+#include <glad/glad.h>
 
 #include "formats/renderformat.hpp"
 
