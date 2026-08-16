@@ -20,7 +20,7 @@
 #include <variant>
 
 struct PrimitiveRenderData {
-    std::vector<RenderFormat::PNCUVertex> vertices;
+    std::vector<RenderFormat::PNUVertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<RenderFormat::TextureData> texData;
     glm::vec3 position = {0.f, 0.f, 0.f};
@@ -42,7 +42,7 @@ protected:
     bool DataBufferCheck(const fastgltf::Expected<fastgltf::GltfDataBuffer>& databuffer);
     bool AssetCheck(const fastgltf::Expected<fastgltf::Asset>& loadedAsset);
     
-    const std::vector<RenderFormat::PNCUVertex> ParseVertices(const fastgltf::Primitive& primitive);
+    const std::vector<RenderFormat::PNUVertex> ParseVertices(const fastgltf::Primitive& primitive);
     const std::vector<unsigned int> ParseIndices(const fastgltf::Primitive& primitive);
     const std::vector<RenderFormat::TextureData> ParseTextureList(const fastgltf::Primitive& primitive);
 
