@@ -117,9 +117,10 @@ bool ParseGLTF::AssetCheck(const fastgltf::Expected<fastgltf::Asset>& loadedAsse
     return true;
 }
 
-const std::vector<RenderFormat::PNUVertex> ParseGLTF::ParseVertices(const fastgltf::Primitive& primitive)
+const std::vector<RenderFormat::PNCUVertex> ParseGLTF::ParseVertices(const fastgltf::Primitive& primitive)
 {
-    std::vector<RenderFormat::PNUVertex> vertices;
+
+    std::vector<RenderFormat::PNCUVertex> vertices;
 
     const fastgltf::Attribute* posAttr = primitive.findAttribute("POSITION");
     const fastgltf::Accessor& posAccessor = asset.accessors[posAttr->accessorIndex];
