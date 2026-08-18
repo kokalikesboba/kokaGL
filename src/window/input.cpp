@@ -2,7 +2,7 @@
 
 Input::Input(Window& window) : window(window)
 {
-    this->windowPtr = window.GetWindowPtr();
+    this->windowPtr = window.Get();
 }
 
 void Input::Update(Camera& camera, const float dt)

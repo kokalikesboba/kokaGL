@@ -101,7 +101,7 @@ void Window::VerticalSync(bool state) const
     glfwSwapInterval(state);
 }
 
-GLFWwindow *Window::GetWindowPtr() const
+GLFWwindow *Window::Get() const
 {
     // Constructor already checks if windowPtr is NULL
     return windowPtr;

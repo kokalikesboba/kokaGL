@@ -9,7 +9,7 @@ window(window)
 	ImGuiIO& io = ImGui::GetIO();
 	ImFont* font1 = io.Fonts->AddFontFromFileTTF("assets/fonts/Fredoka.ttf", 13.f);
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-	ImGui_ImplGlfw_InitForOpenGL(window.GetWindowPtr(), true);
+	ImGui_ImplGlfw_InitForOpenGL(window.Get(), true);
 	ImGui_ImplOpenGL3_Init();
 }
 
@@ -37,7 +37,7 @@ void DearUI::SubmitWindowDimensionStats() const
 {
     double cursorPosX, cursorPosY;
     ImGui::Text("Window: %i, /  %i", (int)window.GetWidth(),(int)window.GetHeight());
-    glfwGetCursorPos(window.GetWindowPtr(), &cursorPosX, &cursorPosY);
+    glfwGetCursorPos(window.Get(), &cursorPosX, &cursorPosY);
     ImGui::Text("Cursor Position X: %.i  Y: %.i", (int)cursorPosX, (int)cursorPosY);
     ImGui::Text("Framebuffer: %i, / %i", (int)window.GetFbWidth(), (int)window.GetFbHeight());
 }

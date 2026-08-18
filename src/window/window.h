@@ -35,7 +35,8 @@ public:
     void EnableFullscreen() const;
     void DisableFullscreen() const;
 
-    GLFWwindow* GetWindowPtr() const;   
+    // Returns the pointer to the window 
+    GLFWwindow* Get() const;   
     
     bool ShouldClose() const;
 
