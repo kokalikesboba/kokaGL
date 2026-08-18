@@ -2,7 +2,6 @@
 #define TEXTUREMAP_H
 
 #include "formats/renderformat.hpp"
-
 #include "opengl/resources/texture.h"
 
 #include <memory>

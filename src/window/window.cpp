@@ -17,22 +17,22 @@ GlfwContext::~GlfwContext()
     glfwTerminate();
 }
 
-Window::Window(unsigned int width, unsigned int height, const char *title, bool gl_debug_context)
+Window::Window(unsigned int width, unsigned int height, const char *title, GfxAPI api) : 
+width(width),
+height(height),
+glfw()
 {
-    this->width = width; 
-    this->height = height;
 
     glfwSetErrorCallback(error_callback);
-    if (gl_debug_context) {
-        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-    } else {
-        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_FALSE);
-    }
 
-    // TODO: Thank you Apple for abandoning OpenGL right before it was finished.
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    switch (api) {
+        case GfxAPI::OpenGL:
+            OGLWindowHints();
+            break;
+        case GfxAPI::None:
+            NoneWindowHints();
+            break;
+    }
 
     windowPtr = glfwCreateWindow(width, height, title, nullptr, nullptr);
     if (!windowPtr) {
@@ -66,21 +66,19 @@ Window::Window(unsigned int width, unsigned int height, const char *title, bool 
 
 }
 
-void Window::MakeContextCurrent() const
-{   
-    glfwMakeContextCurrent(windowPtr);
-}
-
-void Window::SwapBuffers() const
-{
-    glfwSwapBuffers(windowPtr);
-}
-
 void Window::PollEvents()
 {
     glfwPollEvents();
     glfwGetWindowSize(windowPtr, &this->width, &this->height);
     glfwGetFramebufferSize(windowPtr, &this->fbWidth, &this->fbHeight);
+}
+
+void Window::ConsumeScroll(double& x, double& y)
+{
+    x = scrollX;
+    y = scrollY;
+    scrollX = 0.0;
+    scrollY = 0.0;
 }
 
 void Window::RenameWindow(const char* title) const
@@ -156,10 +154,26 @@ void Window::ScrollCallback(GLFWwindow *win, double x, double y)
     self->scrollY += y;
 }
 
-void Window::ConsumeScroll(double& x, double& y)
+void Window::MakeContextCurrent() const
+{   
+    glfwMakeContextCurrent(windowPtr);
+}
+
+// You only want to do this with OpenGL
+void Window::SwapBuffers() const
 {
-    x = scrollX;
-    y = scrollY;
-    scrollX = 0.0;
-    scrollY = 0.0;
+    glfwSwapBuffers(windowPtr);
+}
+
+void Window::OGLWindowHints() const
+{
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+}
+
+void Window::NoneWindowHints() const
+{
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 }

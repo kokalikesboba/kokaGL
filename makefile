@@ -35,6 +35,7 @@ CPP_SRCS = \
 	$(EXTERN)/imgui/backends/imgui_impl_opengl3.cpp \
 	src/window/window.cpp \
 	src/math/transform.cpp \
+	src/opengl/instance.cpp \
 	src/opengl/buffers/vao.cpp \
 	src/opengl/buffers/vbo.cpp \
 	src/opengl/buffers/ebo.cpp \

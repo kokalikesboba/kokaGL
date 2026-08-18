@@ -68,6 +68,16 @@ void Scene::PurgeModels()
     }
 }
 
+void Scene::SetPrimaryCamera(int cameraIndex) 
+{
+    this->cameraIndex = cameraIndex; 
+}
+
+Camera& Scene::GetPrimaryCamera()
+{
+    return *cameras.at(cameraIndex).get();
+}
+
 const std::vector<std::unique_ptr<Camera>>& Scene::GetCameraList() const
 {
     return cameras;

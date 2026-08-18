@@ -1,7 +1,3 @@
-#ifdef __APPLE__
-	#include <mach-o/dyld.h>  // macOS specific
-#endif
-
 #include "window/window.h"
 #include "window/input.h"
 
@@ -13,45 +9,22 @@
 
 int main() {
 
-	#ifdef __APPLE__
-        #include <filesystem>
-		uint32_t size = PATH_MAX;
-		char exePath[PATH_MAX];
-		_NSGetExecutablePath(exePath, &size);
-
-		std::filesystem::path dir = std::filesystem::path(exePath).parent_path();
-		std::filesystem::current_path(dir);
-	#endif
-	
-	if (std::filesystem::is_empty("assets")) {
-		std::cerr << "Error: assets directory is empty.\n"
-				<< "Did you forget --recurse-submodules?\n"
-				<< "Try: git submodule update --init\n";
-		return -1;
-	}
-
-    // Variables here are independent from the rendering backend! Yay!
-    GlfwContext glfw;
-    Window window(800, 600, "kokaGL", false);
+    Window window(800, 600, "kokaGL", GfxAPI::OpenGL);
     window.MakeContextCurrent();
 	Input input(window);
     Framepacer framepacer;
 	Scene scene("scene.json", true);
+    scene.SetPrimaryCamera(0);
 
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cerr << "Failed to init GLAD\n";
-        return -1;
-    }
-
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) throw std::runtime_error("Failed to init GLAD");
+    
     DearUI ui(window);
     Renderer renderer("renderer.json", scene);
-
-    auto& camera = scene.GetCameraList();
 	
 	while (!window.ShouldClose())
 	{
 		window.PollEvents();
-		input.Update(*camera[0], framepacer.GetDeltaTime());
+		input.Update(scene.GetPrimaryCamera(), framepacer.GetDeltaTime());
 		framepacer.Start();
 
         renderer.Clear({0.07f, 0.13f, 0.17f, 1.0f});

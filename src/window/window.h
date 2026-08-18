@@ -1,8 +1,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include "glad/glad.h"
+
 #include "GLFW/glfw3.h"
-#include "stb/stb_img.h"
+
+#include "engine/parsers/png.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -16,33 +19,48 @@ class GlfwContext {
     GlfwContext& operator=(const GlfwContext&) = delete;
 };
 
+enum class GfxAPI {
+    OpenGL,
+    None
+};
+
 class Window {
 public:
-    Window(unsigned int width, unsigned int height, const char* title, bool gl_debug_context);
-   
-    void MakeContextCurrent() const;
-    void SwapBuffers() const;
+    Window(unsigned int width, unsigned int height, const char* title, GfxAPI api);
+
     void PollEvents();
+    void ConsumeScroll(double& x, double& y);
     void VerticalSync(bool state) const;
     void RenameWindow(const char* title) const;
     void EnableFullscreen() const;
     void DisableFullscreen() const;
 
+    GLFWwindow* GetWindowPtr() const;   
+    
     bool ShouldClose() const;
-    GLFWwindow* GetWindowPtr() const;
+
     int GetWidth() const;
     int GetHeight()  const;
     int GetFbWidth() const;
     int GetFbHeight() const;
 
-    // Returns scroll deltas accumulated since the last call, then zeroes them.
-    // Window owns the GLFW user pointer and all raw callbacks; consumers poll.
-    void ConsumeScroll(double& x, double& y);
-
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;
     ~Window();
+
+// OpenGL related functions.
+public:
+    void MakeContextCurrent() const;
+    void SwapBuffers() const;
+protected:
+    void OGLWindowHints() const;
+
+// API Nuetral
+protected:
+    void NoneWindowHints() const;
+
 private:
+    GlfwContext glfw;
     GLFWmonitor* monitor = nullptr;
     const GLFWvidmode* mode = nullptr;
     GLFWwindow* windowPtr = nullptr;
