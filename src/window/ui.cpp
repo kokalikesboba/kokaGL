@@ -7,6 +7,7 @@ window(window)
     IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
+    io.IniFilename = ".imgui.ini";
 	ImFont* font1 = io.Fonts->AddFontFromFileTTF("assets/fonts/Fredoka.ttf", 13.f);
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	ImGui_ImplGlfw_InitForOpenGL(window.Get(), true);
@@ -47,7 +48,6 @@ void DearUI::SubmitWindowVsyncToggle()
     ImGui::Checkbox("Wait for Vsync", &desired_vsync);
     if (desired_vsync) window.VerticalSync(true);
     else window.VerticalSync(false);
-    ImGui::Separator();
 }
 
 void DearUI::SubmitWindowFullscreenToggle()
@@ -58,7 +58,6 @@ void DearUI::SubmitWindowFullscreenToggle()
     if (ImGui::Button("Disable Fullscreen")) {
         window.DisableFullscreen();
     }; 
-    ImGui::Separator();
 }
 
 void DearUI::SubmitFramepacerStats(const Framepacer &framepacer) const
@@ -95,7 +94,6 @@ void DearUI::SubmitCameraEnterPlanes(Camera& camera)
     if (ImGui::DragFloat("Near", &nearPlane, 0.01f, 0.001f, 10.f)) camera.SetNearPlane(nearPlane);
     if (ImGui::DragFloat("Far", &farPlane, 1.f, 1.f, 1000.f)) camera.SetFarPlane(farPlane);
     if (ImGui::DragFloat("FOV", &fov, 0.5f, 10.f, 170.f))  camera.SetFOV(fov);
-    ImGui::Separator();
 }
 
 void DearUI::SubmitSceneReload(Scene& scene, Renderer& renderer)

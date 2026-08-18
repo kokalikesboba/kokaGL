@@ -13,13 +13,13 @@ int main() {
     window.MakeContextCurrent();
 	Input input(window);
     Framepacer framepacer;
-	Scene scene("scene.json", true);
+	Scene scene("data/scene.json", true);
     scene.SetPrimaryCamera(0);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) throw std::runtime_error("Failed to init GLAD");
     
     DearUI ui(window);
-    Renderer renderer("renderer.json", scene);
+    Renderer renderer("data/renderer.json", scene);
 	
 	while (!window.ShouldClose())
 	{
@@ -33,6 +33,13 @@ int main() {
         renderer.DrawGizmo();
 
         ui.NewFrame();
+        ui.SubmitWindowDimensionStats();
+        ui.SubmitWindowFullscreenToggle();
+        ui.SubmitWindowVsyncToggle();
+        ui.SubmitFramepacerStats(framepacer);
+        ui.SubmitFramepacerEnterTargetFPS(framepacer);
+        ui.SubmitCameraStats(scene.GetPrimaryCamera());
+        ui.SubmitCameraEnterPlanes(scene.GetPrimaryCamera());
         ui.Draw();
         
 		window.SwapBuffers();
