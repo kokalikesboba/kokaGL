@@ -3,7 +3,7 @@ EXTERN = extern
 CXX = clang++
 CC  = clang
 
-CXXFLAGS = -g -O2 -std=c++23 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc -I$(EXTERN)/simdjson
+CXXFLAGS = -g -O2 -std=c++23 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc -I$(EXTERN)/simdjson -DGLFW_INCLUDE_NONE
 CFLAGS   = -g -O2 -I$(EXTERN) -I$(EXTERN)/KHR -I$(EXTERN)/imgui -Isrc
 
 UNAME := $(shell uname)
@@ -57,6 +57,7 @@ CPP_SRCS = \
 	src/engine/scene/lamp.cpp \
 	src/engine/scene/scene.cpp \
 	src/engine/scene/camera.cpp \
+	src/window/ui.cpp \
 	src/main.cpp
 
 C_SRCS = \

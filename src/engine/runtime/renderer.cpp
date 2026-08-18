@@ -44,7 +44,7 @@ void Renderer::DrawModels()
         );
 
         auto modelMatrix = worldMatrix * localMatrix;
-        
+
         meshes[instance.meshOffset]->Draw(
             *instance.shader,
             modelMatrix

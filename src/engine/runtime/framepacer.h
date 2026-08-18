@@ -1,4 +1,5 @@
 #ifndef FRAMEPACER_H
+#define FRAMEPACER_H
 
 #include <chrono>
 #include <thread>
