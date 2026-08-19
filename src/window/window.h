@@ -77,8 +77,8 @@ private:
     int fbHeight;
     double cursorPosX;
     double cursorPosY;
-    double scrollX = 0.0;
-    double scrollY = 0.0;
+    double scrollX;
+    double scrollY;
 
     static void FbSizeCallback(GLFWwindow* win, int w, int h);
     static void ScrollCallback(GLFWwindow* win, double x, double y);
