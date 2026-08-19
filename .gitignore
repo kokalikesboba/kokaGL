@@ -3,6 +3,8 @@ kokaGL
 /assets
 /temp
 
+CMakeCache.txt
+/CMakeFiles
 /.cmake-build
 /build
 
