@@ -1,5 +1,5 @@
-/kokaGL
-/build
+kokaGL
+.DS_Store
+/.cmake-build
 /assets
 /temp
-.DS_Store
