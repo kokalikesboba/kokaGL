@@ -1,3 +1,5 @@
+#include "errorchecks.h"
+
 #include "window/window.h"
 #include "window/input.h"
 
@@ -8,6 +10,9 @@
 #include "window/ui.h"
 
 int main() {
+
+    ErrorCheck::RequireMacDir();
+    ErrorCheck::RequireAssetDir();
 
     Window window(800, 600, "kokaGL", GfxAPI::OpenGL);
     window.MakeContextCurrent();
