@@ -1,5 +1,9 @@
 kokaGL
-.DS_Store
-/.cmake-build
+
 /assets
 /temp
+
+/.cmake-build
+/build
+
+.DS_Store
