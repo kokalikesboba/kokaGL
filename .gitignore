@@ -3,9 +3,6 @@ kokaGL
 /assets
 /temp
 
-CMakeCache.txt
-/CMakeFiles
-/.cmake-build
 /build
 
 .DS_Store
