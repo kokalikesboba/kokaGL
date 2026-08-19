@@ -64,11 +64,12 @@ target_sources(kokaGL PRIVATE
     src/opengl/drawable/mesh.cpp
     src/opengl/drawable/billboard.cpp
     src/opengl/drawable/framebuffer.cpp
+    src/opengl/texturemap.cpp
+    src/opengl/instance.cpp
+    src/opengl/renderer.cpp
     src/engine/parsers/gltf.cpp
     src/engine/parsers/png.cpp
     src/engine/runtime/framepacer.cpp
-    src/engine/runtime/texturemap.cpp
-    src/engine/runtime/renderer.cpp
     src/engine/scene/model.cpp
     src/engine/scene/gizmo.cpp
     src/engine/scene/lamp.cpp

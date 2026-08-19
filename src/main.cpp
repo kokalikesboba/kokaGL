@@ -5,7 +5,7 @@
 
 #include "engine/runtime/framepacer.h"
 #include "engine/scene/scene.h"
-#include "engine/runtime/renderer.h"
+#include "opengl/renderer.h"
 
 #include "window/ui.h"
 
