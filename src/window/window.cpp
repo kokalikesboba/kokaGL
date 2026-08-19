@@ -69,8 +69,9 @@ glfw()
 void Window::PollEvents()
 {
     glfwPollEvents();
-    glfwGetWindowSize(windowPtr, &this->width, &this->height);
-    glfwGetFramebufferSize(windowPtr, &this->fbWidth, &this->fbHeight);
+    glfwGetWindowSize(windowPtr, &width, &height);
+    glfwGetFramebufferSize(windowPtr, &fbWidth, &fbHeight);
+    glfwGetCursorPos(windowPtr, &cursorPosX, &cursorPosY);
 }
 
 void Window::ConsumeScroll(double& x, double& y)
@@ -120,6 +121,16 @@ int Window::GetWidth() const
 int Window::GetHeight() const
 {
     return height;
+}
+
+int Window::GetCursorPosX() const
+{
+    return cursorPosX;
+}
+
+int Window::GetCursorPosY() const
+{
+    return cursorPosY;
 }
 
 int Window::GetFbWidth() const
