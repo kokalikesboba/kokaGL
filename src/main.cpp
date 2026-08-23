@@ -45,8 +45,9 @@ int main() {
         ui.SubmitFramepacerEnterTargetFPS(framepacer);
         ui.SubmitCameraStats(scene.GetPrimaryCamera());
         ui.SubmitCameraEnterPlanes(scene.GetPrimaryCamera());
+
         ui.Draw();
-        
+
 		window.SwapBuffers();
 
 		framepacer.End();

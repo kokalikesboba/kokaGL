@@ -41,6 +41,7 @@ public:
 private:
 
     Window &window;
+    int fontSize = 9;
 
     // Window
 	bool desired_vsync = true;

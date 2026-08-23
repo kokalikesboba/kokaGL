@@ -6,3 +6,4 @@ kokaGL
 /build
 
 .DS_Store
+/.vscode

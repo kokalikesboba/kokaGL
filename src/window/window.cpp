@@ -64,6 +64,7 @@ glfw()
     monitor = glfwGetPrimaryMonitor();
     mode = glfwGetVideoMode(monitor);
 
+    PollEvents();
 }
 
 void Window::PollEvents()

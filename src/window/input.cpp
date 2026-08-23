@@ -13,7 +13,8 @@ void Input::Update(Camera& camera, const float dt)
 void Input::HandleMouseInput(Camera &camera, const float dt)
 {
 	// Trackpad input, accumulated by Window since last frame.
-	double scrollX, scrollY;
+	double scrollX = 0;
+	double scrollY = 0;
 	window.ConsumeScroll(scrollX, scrollY);
 	if (scrollX != 0.0) {
 		float yaw = -scrollX * trackpadSensitivity;

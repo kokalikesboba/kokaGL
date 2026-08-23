@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS "-g -O2")
+set(CMAKE_C_FLAGS "-g -O2")
+
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 

@@ -8,7 +8,10 @@ window(window)
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
     io.IniFilename = ".imgui.ini";
-	ImFont* font1 = io.Fonts->AddFontFromFileTTF("assets/fonts/Fredoka.ttf", 13.f);
+
+    fontSize = int(fontSize) * (float(window.GetFbHeight()) / float(window.GetHeight()));
+
+	ImFont* font1 = io.Fonts->AddFontFromFileTTF("assets/fonts/Fredoka.ttf", fontSize);
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	ImGui_ImplGlfw_InitForOpenGL(window.Get(), true);
 	ImGui_ImplOpenGL3_Init();
