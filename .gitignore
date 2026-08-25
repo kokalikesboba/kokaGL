@@ -6,4 +6,11 @@ kokaGL
 /build
 
 .DS_Store
-/.vscode
+
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
