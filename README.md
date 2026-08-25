@@ -3,8 +3,8 @@ kokaGL is a cross-platform rendering library that is designed with expandability
 
 (Author's note: I use this project as a learning platform for software development and rendering architecture. This project is the successor to [koka3d](https://github.com/kokalikesboba/koka3D))
 
-<img width="400" height="400" alt="Image" src="https://github.com/user-attachments/assets/326000a6-cd83-44fa-8741-7a57d06d14a8" />
-<img width="400" height="400" alt="Image" src="https://github.com/user-attachments/assets/3a9ee5b2-d807-4f59-8a3b-3e41fd3bcfa5" />
+<img width="400" height="400" alt="0.5.0-Linux" src="https://github.com/user-attachments/assets/326000a6-cd83-44fa-8741-7a57d06d14a8" />
+<img width="400" height="400" alt="0.7.0-Windows" src="https://github.com/user-attachments/assets/3a9ee5b2-d807-4f59-8a3b-3e41fd3bcfa5" />
 
 ## Core Features
  - Windows, Mac, Linux as supported platforms.
