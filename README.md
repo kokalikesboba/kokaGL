@@ -1,5 +1,7 @@
 # kokaGL 
-kokaGL is a cross-platform rendering library that is designed with expandability in mind. Right now it uses an OpenGL 4.1 rendering backend, with Vulkan being researched.
+kokaGL is a cross-platform rendering library written with C++23.
+
+It was designed with API agnostic structs, layouts, and features to enable growth in other rendering backends. Right now it uses an OpenGL 4.1, with Vulkan being researched.
 
 (Author's note: I use this project as a learning platform for software development and rendering architecture. This project is the successor to [koka3d](https://github.com/kokalikesboba/koka3D))
 
