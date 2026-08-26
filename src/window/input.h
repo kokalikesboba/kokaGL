@@ -9,18 +9,18 @@ class Input {
 public:
     Input(Window& window);
     void Update(Camera& camera, const float dt);
+protected:
+    void HandleMouseInput(Camera& camera, const float dt);
+    void HandleKeyboardInput(Camera& camera, const float dt);
 private:
     Window& window;
-    GLFWwindow* windowPtr = nullptr;
 
     float movementSpeed = 10.f;
-    double sensitivity = 0.001f;
+    double mouseSensitivity = 0.001f;
+    double trackpadSensitivity = 0.025f;
 
-    glm::dvec2 cursorPos = {0.f, 0.f};
+    glm::dvec2 cursorPos;
     std::deque<glm::dvec2>cursorHistory;
     size_t maxHistory = 2;
     bool firstClick = true;
-
-    bool trackpadMode = false;
-    double trackpadSensitivity = 0.025f;
 };

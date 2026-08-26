@@ -1,7 +1,6 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-// TODO: Until I have a proper build managers, both of these are gonna be compiled.
 #include "glad/glad.h"
 
 #include "GLFW/glfw3.h"
@@ -36,12 +35,15 @@ public:
     void EnableFullscreen() const;
     void DisableFullscreen() const;
 
-    GLFWwindow* GetWindowPtr() const;   
+    // Returns the pointer to the window 
+    GLFWwindow* Get() const;   
     
     bool ShouldClose() const;
 
     int GetWidth() const;
     int GetHeight()  const;
+    int GetCursorPosX() const;
+    int GetCursorPosY() const;
     int GetFbWidth() const;
     int GetFbHeight() const;
 
@@ -61,26 +63,22 @@ protected:
     void NoneWindowHints() const;
 
 private:
-    GlfwContext glfw;
+    const GlfwContext glfw;
     GLFWmonitor* monitor = nullptr;
     const GLFWvidmode* mode = nullptr;
     GLFWwindow* windowPtr = nullptr;
 
-    int width = 800;
-    int height = 600;
-
     int minWidth = 320;
     int minHeight = 240;
 
-    int fbWidth = 800;
-    int fbHeight = 600;
-
-    bool GL_DEBUG = true;
-
-    // Scroll offsets accumulate across events between polls (trackpads can
-    // fire several per frame), and reset on ConsumeScroll().
-    double scrollX = 0.0;
-    double scrollY = 0.0;
+    int width;
+    int height;
+    int fbWidth;
+    int fbHeight;
+    double cursorPosX;
+    double cursorPosY;
+    double scrollX;
+    double scrollY;
 
     static void FbSizeCallback(GLFWwindow* win, int w, int h);
     static void ScrollCallback(GLFWwindow* win, double x, double y);

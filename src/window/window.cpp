@@ -64,13 +64,23 @@ glfw()
     monitor = glfwGetPrimaryMonitor();
     mode = glfwGetVideoMode(monitor);
 
+    PollEvents();
 }
 
 void Window::PollEvents()
 {
     glfwPollEvents();
-    glfwGetWindowSize(windowPtr, &this->width, &this->height);
-    glfwGetFramebufferSize(windowPtr, &this->fbWidth, &this->fbHeight);
+    glfwGetWindowSize(windowPtr, &width, &height);
+    glfwGetFramebufferSize(windowPtr, &fbWidth, &fbHeight);
+    glfwGetCursorPos(windowPtr, &cursorPosX, &cursorPosY);
+}
+
+void Window::ConsumeScroll(double& x, double& y)
+{
+    x = scrollX;
+    y = scrollY;
+    scrollX = 0.0;
+    scrollY = 0.0;
 }
 
 void Window::ConsumeScroll(double& x, double& y)
@@ -101,7 +111,7 @@ void Window::VerticalSync(bool state) const
     glfwSwapInterval(state);
 }
 
-GLFWwindow *Window::GetWindowPtr() const
+GLFWwindow *Window::Get() const
 {
     // Constructor already checks if windowPtr is NULL
     return windowPtr;
@@ -120,6 +130,16 @@ int Window::GetWidth() const
 int Window::GetHeight() const
 {
     return height;
+}
+
+int Window::GetCursorPosX() const
+{
+    return cursorPosX;
+}
+
+int Window::GetCursorPosY() const
+{
+    return cursorPosY;
 }
 
 int Window::GetFbWidth() const
