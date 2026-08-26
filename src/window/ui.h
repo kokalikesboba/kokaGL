@@ -14,7 +14,6 @@ class DearUI {
 public:
     DearUI(Window &window);
     void NewFrame();
-    void QueueEntries();
     void Draw();
 
     // Immutable window entries

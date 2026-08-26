@@ -27,6 +27,8 @@ void Scene::Reload()
     LoadLamps();
     LoadModels();
     LoadGizmos();
+    
+    primaryCamera = cameras.at(0).get();
 }
 void Scene::SaveCurrentArrangement()
 {
@@ -68,14 +70,14 @@ void Scene::PurgeModels()
     }
 }
 
-void Scene::SetPrimaryCamera(int cameraIndex) 
+void Scene::SetPrimaryCamera(Camera &camera) 
 {
-    this->cameraIndex = cameraIndex; 
+    primaryCamera = &camera;
 }
 
 Camera& Scene::GetPrimaryCamera()
 {
-    return *cameras.at(cameraIndex).get();
+    return *primaryCamera;
 }
 
 const std::vector<std::unique_ptr<Camera>>& Scene::GetCameraList() const
@@ -164,6 +166,7 @@ void Scene::LoadModels()
         );
         const auto& p = entry.at("position");
         const auto& r = entry.at("rotation");
+        m->name = entry.at("name");
         m->SetPosition({p[0], p[1], p[2]});
         m->SetEulerRotation({r[0], r[1], r[2]});
     }

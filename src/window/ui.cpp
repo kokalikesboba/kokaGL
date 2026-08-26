@@ -22,12 +22,7 @@ void DearUI::NewFrame()
     ImGui_ImplOpenGL3_NewFrame(); 
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    ImGui::Begin("DearUI", nullptr, ImGuiWindowFlags_NoMove);
-}
-
-void DearUI::QueueEntries()
-{
-    
+    ImGui::Begin("Debug", nullptr);
 }
 
 void DearUI::Draw()
@@ -58,9 +53,10 @@ void DearUI::SubmitWindowFullscreenToggle()
     if (ImGui::Button("Enable Fullscreen")) {
         window.EnableFullscreen();
     };
+    ImGui::SameLine();
     if (ImGui::Button("Disable Fullscreen")) {
         window.DisableFullscreen();
-    }; 
+    };
 }
 
 void DearUI::SubmitFramepacerStats(const Framepacer &framepacer) const

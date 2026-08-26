@@ -27,6 +27,9 @@ void Renderer::Clear(glm::vec4 rgba)
 void Renderer::DrawModels()
 {
     for (auto& instance : meshRenderQueue) {
+
+        if (!instance.owner->wantsToBeDrawn) continue;
+        
         for (const auto& texture : meshTextureGroups[instance.textureGroupOffset]) {
             texture->Bind(std::to_underlying(texture->GetType()));
         }

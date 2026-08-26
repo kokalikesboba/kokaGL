@@ -21,7 +21,7 @@ public:
     void SaveCurrentArrangement();
     void PurgeModels();
 
-    void SetPrimaryCamera(int cameraIndex);
+    void SetPrimaryCamera(Camera &camera);
     Camera &GetPrimaryCamera();
 
     const std::vector<std::unique_ptr<Camera>>& GetCameraList() const;
@@ -48,7 +48,7 @@ private:
     std::vector<std::unique_ptr<Model>> models;
     std::vector<std::unique_ptr<Gizmo>> gizmos;
 
-    int cameraIndex;
+    Camera *primaryCamera = nullptr;
 };
 
 #endif

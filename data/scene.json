@@ -35,11 +35,6 @@
   "imgDir": "assets/images/",
   "models": [
     {
-      "name": "parsertest/sponza_mm.glb",
-      "position": [0.0, 0.0, 0.0],
-      "rotation": [0.0, 0.0, 0.0]
-    },
-    {
       "name": "skyplane.glb",
       "position": [5.0, 20.0, 10.0],
       "rotation": [0.0, 0.0, 0.0]
