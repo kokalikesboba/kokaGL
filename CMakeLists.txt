@@ -55,21 +55,6 @@ target_sources(kokaGL PRIVATE
     src/window/input.cpp
     src/window/ui.cpp
     src/math/transform.cpp
-    src/opengl/instance.cpp
-    src/opengl/buffers/vao.cpp
-    src/opengl/buffers/vbo.cpp
-    src/opengl/buffers/ebo.cpp
-    src/opengl/buffers/ubo.cpp
-    src/opengl/buffers/fbo.cpp
-    src/opengl/resources/texture.cpp
-    src/opengl/resources/shader.cpp
-    src/opengl/resources/viewport.cpp
-    src/opengl/drawable/mesh.cpp
-    src/opengl/drawable/billboard.cpp
-    src/opengl/drawable/framebuffer.cpp
-    src/opengl/texturemap.cpp
-    src/opengl/instance.cpp
-    src/opengl/renderer.cpp
     src/engine/parsers/gltf.cpp
     src/engine/parsers/png.cpp
     src/engine/runtime/framepacer.cpp

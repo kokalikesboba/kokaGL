@@ -83,14 +83,6 @@ void Window::ConsumeScroll(double& x, double& y)
     scrollY = 0.0;
 }
 
-void Window::ConsumeScroll(double& x, double& y)
-{
-    x = scrollX;
-    y = scrollY;
-    scrollX = 0.0;
-    scrollY = 0.0;
-}
-
 void Window::RenameWindow(const char* title) const
 {
     glfwSetWindowTitle(windowPtr, title);

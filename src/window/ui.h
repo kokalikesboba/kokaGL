@@ -8,8 +8,6 @@
 #include "window/window.h"
 #include "engine/scene/scene.h"
 #include "engine/runtime/framepacer.h"
-#include "opengl/renderer.h"
-
 class DearUI {
 public:
     DearUI(Window &window);
@@ -32,9 +30,6 @@ public:
     void SubmitCameraStats(const Camera& camera) const;
     // Mutable camera entries
     void SubmitCameraEnterPlanes(Camera& camera);
-
-    // Mutable scene entries
-    void SubmitSceneReload(Scene& scene, Renderer& renderer); 
 
     ~DearUI();
 

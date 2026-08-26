@@ -99,14 +99,6 @@ void DearUI::SubmitCameraEnterPlanes(Camera& camera)
     if (ImGui::DragFloat("FOV", &fov, 0.5f, 10.f, 170.f))  camera.SetFOV(fov);
 }
 
-void DearUI::SubmitSceneReload(Scene& scene, Renderer& renderer)
-{
-    if (ImGui::Button("Reload Model Manifest")) {
-        scene.Reload();
-        renderer.RebuildScene();
-    }
-}
-
 DearUI::~DearUI()
 {
     ImGui_ImplOpenGL3_Shutdown();
