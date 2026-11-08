@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 4.0.0)
-project(kokaGL VERSION 0.7.0 LANGUAGES C CXX)
+project(kokaGL LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,9 +14,24 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL "Release")
     set(CMAKE_C_FLAGS "-g -O2")
 endif()
 
+# Required packages
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 
+# Uses git describe to set a version variable.
+set(KOKAGL_VERSION "unknown")
+find_package(Git)
+if (Git_FOUND)
+    execute_process(
+        COMMAND ${GIT_EXECUTABLE} describe --tags --always --dirty
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE KOKAGL_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+endif()
+set(KOKAGL_RELEASE_DIR "kokaGL-${KOKAGL_VERSION}")
+
+# Assemble all relevant external library source files
 add_library(imgui STATIC
     extern/imgui/imgui.cpp
     extern/imgui/imgui_draw.cpp
@@ -52,6 +67,7 @@ add_library(stb_img STATIC
 )
 target_include_directories(stb_img PUBLIC extern)
 
+# Files that actually belong to kokaGL
 add_executable(kokaGL)
 target_sources(kokaGL PRIVATE
     src/main.cpp
@@ -99,11 +115,12 @@ set_target_properties(kokaGL PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
-install(TARGETS kokaGL DESTINATION .)
-install(DIRECTORY shaders DESTINATION .)
-install(DIRECTORY data DESTINATION .)
-install(
-    DIRECTORY assets DESTINATION .
-    PATTERN "blender" EXCLUDE
-)
+# Installation
+install(TARGETS kokaGL DESTINATION ${KOKAGL_RELEASE_DIR})
+install(DIRECTORY shaders DESTINATION ${KOKAGL_RELEASE_DIR})
+install(DIRECTORY data DESTINATION ${KOKAGL_RELEASE_DIR})
+install(DIRECTORY assets DESTINATION ${KOKAGL_RELEASE_DIR})
+
+# Messages
+message(STATUS "kokaGL version: ${KOKAGL_VERSION}")
 
