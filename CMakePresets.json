@@ -1,0 +1,25 @@
+{
+  "version": 10,
+  "cmakeMinimumRequired": {
+    "major": 4,
+    "minor": 0,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+        "name": "debug",
+        "binaryDir": "${sourceDir}/build/debug",
+        "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Debug"
+        }
+    },
+    {
+        "name": "release",
+        "binaryDir": "${sourceDir}/build/release",
+        "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Release",  
+            "CMAKE_INSTALL_PREFIX": "${sourceDir}/release"
+        }
+    }
+  ]
+}

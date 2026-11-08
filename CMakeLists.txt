@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 4.0.0)
-project(kokaGL)
+project(kokaGL VERSION 0.7.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -7,8 +7,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_FLAGS "-g -O2")
-set(CMAKE_C_FLAGS "-g -O2")
+# Development builds keep debug info; -DCMAKE_BUILD_TYPE=Release uses CMake's
+# optimized, no-debug-info flags instead.
+if(NOT CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(CMAKE_CXX_FLAGS "-g -O2")
+    set(CMAKE_C_FLAGS "-g -O2")
+endif()
 
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
@@ -94,3 +98,12 @@ target_link_libraries(kokaGL PRIVATE
 set_target_properties(kokaGL PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
+
+install(TARGETS kokaGL DESTINATION .)
+install(DIRECTORY shaders DESTINATION .)
+install(DIRECTORY data DESTINATION .)
+install(
+    DIRECTORY assets DESTINATION .
+    PATTERN "blender" EXCLUDE
+)
+

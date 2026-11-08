@@ -4,6 +4,7 @@ kokaGL
 /temp
 
 /build
+/release
 
 .DS_Store
 
