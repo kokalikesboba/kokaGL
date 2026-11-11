@@ -11,7 +11,10 @@ window(window)
 
     fontSize = int(fontSize) * (float(window.GetFbHeight()) / float(window.GetHeight()));
 
-	ImFont* font1 = io.Fonts->AddFontFromFileTTF("assets/fonts/Fredoka.ttf", fontSize);
+	if (std::filesystem::exists("assets/fonts/Fredoka.ttf")) {
+        ImFont* font1 = io.Fonts->AddFontFromFileTTF("assets/fonts/Fredoka.ttf", fontSize);
+    }
+    
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	ImGui_ImplGlfw_InitForOpenGL(window.Get(), true);
 	ImGui_ImplOpenGL3_Init();

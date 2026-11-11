@@ -12,7 +12,8 @@
 int main() {
 
     ErrorCheck::RequireMacDir();
-    ErrorCheck::RequireAssetDir();
+    ErrorCheck::RequireRenderManifest();
+    ErrorCheck::RequireSceneManifest();
 
     Window window(800, 600, "kokaGL", GfxAPI::OpenGL);
     window.MakeContextCurrent();
@@ -20,7 +21,7 @@ int main() {
     Framepacer framepacer;
 	Scene scene("data/scene.json", true);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) throw std::runtime_error("Failed to init GLAD");
+    if (!gladLoadGLLoader((GLADloadproc)g)) throw std::runtime_error("Failed to init GLAD");
     
     DearUI ui(window);
     Renderer renderer("data/renderer.json", scene);

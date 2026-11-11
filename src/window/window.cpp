@@ -46,19 +46,21 @@ glfw()
 
     // This is an icon loader, only works with Linux on X11 and Windows. 
     #if defined(__linux__) || defined(_WIN32)
-        GLFWimage icon;
-        unsigned char* imgPixels =
-            stbi_load("assets/images/marz_boudle.png",
-                    &icon.width,    
-                    &icon.height,
-                    nullptr,
-                    4);
-        icon.pixels = imgPixels;
-        if (!icon.pixels) {
-            throw std::runtime_error("Failed to load window icon");
+        if (std::filesystem::exists("assets/images/marz_boudle.png")) {
+            GLFWimage icon;
+            unsigned char* imgPixels =
+                stbi_load("assets/images/marz_boudle.png",
+                        &icon.width,    
+                        &icon.height,
+                        nullptr,
+                        4);
+            icon.pixels = imgPixels;
+            if (!icon.pixels) {
+                throw std::runtime_error("Failed to load window icon");
+            }
+            glfwSetWindowIcon(windowPtr, 1, &icon);
+            stbi_image_free(imgPixels);
         }
-        glfwSetWindowIcon(windowPtr, 1, &icon);
-        stbi_image_free(imgPixels);
     #endif
 
     monitor = glfwGetPrimaryMonitor();

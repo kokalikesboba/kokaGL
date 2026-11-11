@@ -8,6 +8,7 @@
 #include "engine/parsers/png.h"
 
 #include <iostream>
+#include <filesystem>
 #include <stdexcept>
 
 class GlfwContext {

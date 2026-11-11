@@ -5,6 +5,7 @@
 #endif
 
 namespace ErrorCheck {
+
 inline void RequireMacDir() {
     #ifdef __APPLE__
         uint32_t size = PATH_MAX;
@@ -16,11 +17,16 @@ inline void RequireMacDir() {
     #endif
 }
 
-inline void RequireAssetDir() {
-    if (std::filesystem::is_empty("assets")) {
-        throw std::runtime_error(
-            "Error: assets directory is empty. \n Did you forget --recurse-submodules? \n Try: git submodule update --init\n"
-        );
+inline void RequireSceneManifest() {
+    if (!std::filesystem::exists("data/scene.json")) {
+        throw std::runtime_error("Missing data/scene.json");
     }
 }
+
+inline void RequireRenderManifest() {
+    if (!std::filesystem::exists("data/renderer.json")) {
+        throw std::runtime_error("Missing data/renderer.json");
+    }
+}
+
 }
