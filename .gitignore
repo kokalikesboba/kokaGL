@@ -1,4 +1,7 @@
 kokaGL
+*.exe
+*.dll
+*.pdb
 
 /assets
 /temp
@@ -9,6 +12,8 @@ kokaGL
 .DS_Store
 
 .vscode/
+.vs/
+
 .idea/
 *.suo
 *.ntvs*

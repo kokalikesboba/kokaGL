@@ -1,4 +1,10 @@
 cmake_minimum_required(VERSION 4.0.0)
+
+# This is bullshit, you need to set the toolchain file 
+if(CMAKE_HOST_WIN32 AND DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+endif()
+
 project(kokaGL LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 23)
@@ -6,6 +12,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
+
+set(CMAKE_C_COMPILER )
 
 # Development builds keep debug info; -DCMAKE_BUILD_TYPE=Release uses CMake's
 # optimized, no-debug-info flags instead.
@@ -112,16 +120,14 @@ target_link_libraries(kokaGL PRIVATE
     stb_img
 )
 set_target_properties(kokaGL PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+    RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_SOURCE_DIR}>
 )
 
 # Installation
 install(TARGETS kokaGL DESTINATION ${KOKAGL_RELEASE_DIR})
 install(DIRECTORY shaders DESTINATION ${KOKAGL_RELEASE_DIR})
 install(DIRECTORY data DESTINATION ${KOKAGL_RELEASE_DIR})
-install(DIRECTORY assets DESTINATION ${KOKAGL_RELEASE_DIR}
-    PATTERN "blender" EXCLUDE
-)
+install(DIRECTORY assets DESTINATION ${KOKAGL_RELEASE_DIR})
 
 # Messages
 message(STATUS "kokaGL version: ${KOKAGL_VERSION}")
